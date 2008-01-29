@@ -40,46 +40,6 @@ mlog.entries = function(){
     }
   };
 
-  // filter an array
-  // @param array entriesArray, string filter, bool isRegex
-  var filterByDescription = function(entriesArray,filter,isRegex) {
-    var res = [];
-    try {
-      if (filter && isRegex) {
-        filter = eval('/' + filter + '/i');
-      }
-      var str = '';
-      if (filter) {
-        for (var i = 0; i < entriesArray.length; i++) {
-          str = entriesArray[i].join('/t');
-          if (isRegex) {
-            if (!filter.test(str))
-              continue;
-          } else {
-            if (str.toLowerCase().indexOf(filter.toLowerCase()) == -1)
-              continue;
-          }
-          res.push(entriesArray[i]);
-        }
-        return res;
-      }
-    }
-    catch (e) {}
-    return [];
-  }
-  var filterByDate = function(entriesArray,dtStart,dtEnd) {
-    dtEnd = dtEnd || dtStart;
-    var res = [];
-    var all = entriesArray.clone();
-    mlog.base.arraySort(all, 0); // sort by date
-    for (var i=0;i<all.length;i++) {
-      if (all[i][0]>=dtStart && all[i][0]<=dtEnd) {
-        res.push(all[i]);
-      }
-    }
-    return res;
-  };
-
   /* public methods */
   return {
     read: function(){
@@ -171,22 +131,45 @@ mlog.entries = function(){
       return entry;
     },
     getByDate: function(dtStart,dtEnd) {
-      return filterByDate(entries,dtStart,dtEnd);
-    },
-    getByDescription: function(filter,isRegex,withFuture){
-      var future = withFuture || false;
-      if (future) {
-        return filterByDescription(entries,filter,isRegex);
+      dtEnd = dtEnd || dtStart;
+      var res = [];
+      for (var i=0;i<entries.length;i++) {
+        if (entries[i][0]>=dtStart && entries[i][0]<=dtEnd) {
+          res.push(entries[i]);
+        }
       }
-      /* return until current date */
-      return filterByDate(
-        filterByDescription(entries,filter,isRegex),
-        '1990-01-01',
-        mlog.base.getCurrentDate()
-        );
+      return res;
     },
-    getUntilPresent: function() {
-      return mlog.entries.getByDate('1990-01-01',mlog.base.getCurrentDate());
+    getByFilter: function(filter,isRegex,withFuture){
+      var res = [];
+      withFuture = withFuture || false;
+      var dtEnd = mlog.base.getCurrentDate();
+      try {
+        if (filter && isRegex) {
+          filter = eval('/' + filter + '/i');
+        }
+        var str = '';
+        for (var i = 0; i < entries.length; i++) {
+          str = entries[i].join('/t');
+          if (filter) {
+            if (isRegex) {
+              if (!filter.test(str))
+                continue;
+            } else {
+              if (str.toLowerCase().indexOf(filter.toLowerCase()) == -1)
+                continue;
+            }
+          }
+          if (!withFuture) {
+            if (entries[i][0]>dtEnd)
+              continue;
+          }
+          res.push(entries[i]);
+        }
+        return res;
+      }
+      catch (e) {}
+      return res;
     }
   };
 }();

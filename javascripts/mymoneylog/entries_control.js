@@ -168,20 +168,13 @@ mlog.entriesControl = function() {
       var theTotal = 0;
       var res = [];
       mlog.entriesControl.init();
+
       var theData;
       var showFuture = $F('opt_future');
       var filter = $F('filter_query');
-      if (filter!='') {
-        /* apply filter if needed */
-        var isRegex = $F('opt_regex')=='on';
-        theData = mlog.entries.getByDescription(filter,isRegex,showFuture);
-      } else {
-        if (showFuture) {
-          theData = mlog.entries.getAll();
-        } else {
-          theData = mlog.entries.getUntilPresent();
-        }
-      }
+      var isRegex = $F('opt_regex')=='on';
+      theData = mlog.entries.getByFilter(filter,isRegex,showFuture);
+
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
       var tp = htmlTemplate.entries;
