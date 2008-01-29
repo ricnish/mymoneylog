@@ -1,0 +1,6 @@
+grant codeBase "file:${user.home}/My Documents/mymoneylog/*" {
+  permission java.io.FilePermission "${user.home}${/}My Documents${/}mymoneylog${/}*", "read,write";
+};
+grant codeBase "file:${user.home}/My Documents/mymoneylog/applets/*" {
+  permission java.io.FilePermission "${user.home}${/}My Documents${/}mymoneylog${/}*", "read,write";
+};

@@ -34,15 +34,17 @@ mlog.base = function() {
     }
     return null;
   };
-  function javaSaveFile(filePath,content)
+  var javaSaveFile = function(filePath,content)
   {
     try {
       if(document.applets["TiddlySaver"])
-        return document.applets["TiddlySaver"].saveFile(javaUrlToFilename(filePath),"UTF-8",content);
+        var res = document.applets["TiddlySaver"].saveFile(filePath,"UTF-8",content);
+        if (res>0)
+          return true;
     } catch(ex) {
     }
     try {
-      var s = new java.io.PrintStream(new java.io.FileOutputStream(javaUrlToFilename(filePath)));
+      var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
       s.print(content);
       s.close();
     } catch(ex) {
@@ -73,19 +75,17 @@ mlog.base = function() {
     },
     saveFile: function(filePath, content){
       if (navigator.appVersion.indexOf("Win")!=-1) {
-        // windows issues
+        // windows filesystem issues
         if (filePath.charAt(0) == '/') {
           filePath = filePath.slice(1);
         }
         filePath = filePath.replace(/\//g,"\\");
       }
-      var browser = navigator.appName || '';
-      browser = browser.toUpperCase();
-      if (browser == 'NETSCAPE')
+      if (Prototype.Browser.Gecko)
         return mozillaSaveFile(filePath, content);
-      if (browser == 'MICROSOFT INTERNET EXPLORER')
+      if (Prototype.Browser.IE)
         return ieSaveFile(filePath, content);
-      return null;
+      return javaSaveFile(filePath, content);
     },
     // sort array by an index
     arraySort: function(theArray, colIndex){

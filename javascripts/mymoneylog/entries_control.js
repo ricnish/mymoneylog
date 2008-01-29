@@ -21,7 +21,7 @@ mlog.entriesControl = function() {
           $("summary_table").removeChild(child);
         });
         /* summary table: append a template hook */
-        $('summary_table').appendChild(document.createTextNode("#{summaryContent}"));
+        $('summary_table').appendChild(document.createTextNode("{summaryContent}"));
         var summaryTemplate = {
           tHead: rows[0],
           tRow: rows[1],
@@ -36,7 +36,7 @@ mlog.entriesControl = function() {
           $("entries_table").removeChild(child);
         });
         /* entries table: append a template hook */
-        $('entries_table').appendChild(document.createTextNode("#{entriesContent}"));
+        $('entries_table').appendChild(document.createTextNode("{entriesContent}"));
         var entriesTemplate = {
           tHead: rows[0],
           tRow: rows[1],
@@ -136,25 +136,25 @@ mlog.entriesControl = function() {
       for (var i=0;i<accounts.length;i++) {
         strRow = tpSum.tRow;
         if (accounts[i][0] != '') {
-          strRow = strRow.replace(/#{account_id}/,accounts[i][0]);
+          strRow = strRow.replace(/{account_id}/,accounts[i][0]);
         } else {
           if (accounts[i][1] == 0) {
             continue; /* if account and value are empty, move next */
           }
-          strRow = strRow.replace(/#{account_id}/,'-');
+          strRow = strRow.replace(/{account_id}/,'-');
         }
         /* bar style */
         strRow = strRow.replace(/class=""/,(accounts[i][1]<0?'class="neg"':''));
         /* bar width */
         strRow = strRow.replace(/99/,Math.abs(Math.round(accounts[i][1])/maxValue*100));
         /* account total */
-        strRow = strRow.replace(/#{account_total}/,mlog.base.formatFloat(accounts[i][1]));
+        strRow = strRow.replace(/{account_total}/,mlog.base.formatFloat(accounts[i][1]));
         res.push(strRow);
         accTotal += accounts[i][1];
       }
       strRow = tpSum.tRowTotal;
-      strRow = strRow.replace(/#{account_id}/,mlog.translator.get('total'));
-      strRow = strRow.replace(/#{account_total}/,mlog.base.formatFloat(accTotal));
+      strRow = strRow.replace(/{account_id}/,mlog.translator.get('total'));
+      strRow = strRow.replace(/{account_total}/,mlog.base.formatFloat(accTotal));
       res.push(strRow);
       res = res.join('');
       return res;
@@ -195,7 +195,7 @@ mlog.entriesControl = function() {
           theData.reverse();
         }
         /* build summary */
-        content = content.replace(/#{summaryContent}/, mlog.entriesControl.getSummary());
+        content = content.replace(/{summaryContent}/, mlog.entriesControl.getSummary());
 
         /* build entries */
         res.push(tp.tHead);
@@ -231,21 +231,21 @@ mlog.entriesControl = function() {
           theTotal += theData[i][1];
           /* apply values to detail row */
           strRow = strRow.replace(/rowId/, theData[i][5]);
-          strRow = strRow.replace(/#{date}/, theData[i][0]);
-          strRow = strRow.replace(/#{value}/, mlog.base.formatFloat(theData[i][1]));
-          strRow = strRow.replace(/#{description}/, theData[i][2]);
-          strRow = strRow.replace(/#{category}/, theData[i][3]);
-          strRow = strRow.replace(/#{account}/, theData[i][4]);
+          strRow = strRow.replace(/{date}/, theData[i][0]);
+          strRow = strRow.replace(/{value}/, mlog.base.formatFloat(theData[i][1]));
+          strRow = strRow.replace(/{description}/, theData[i][2]);
+          strRow = strRow.replace(/{category}/, theData[i][3]);
+          strRow = strRow.replace(/{account}/, theData[i][4]);
           res.push(strRow);
         }
         /* end of data, show total */
         strRow = tp.tRowTotal;
-        strRow = strRow.replace(/#{totalvalue}/, mlog.base.formatFloat(theTotal));
-        strRow = strRow.replace(/#{entriescount}/, res.length-1);
+        strRow = strRow.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
+        strRow = strRow.replace(/{entriescount}/, res.length-1);
         res.push(strRow);
         /* assemble table */
         var res = res.join('');
-        content = content.replace(/#{entriesContent}/, res);
+        content = content.replace(/{entriesContent}/, res);
         content += mlog.entriesControl.getPaginator(nPage,nPages)+'<br/>';
       }
       else {

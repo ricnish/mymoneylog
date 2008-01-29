@@ -25,7 +25,7 @@ mlog.overviewControl = function() {
           $("overview_table").removeChild(child);
         });
         /* entries table: append a template hook */
-        $('overview_table').appendChild(document.createTextNode("#{overviewContent}"));
+        $('overview_table').appendChild(document.createTextNode("{overviewContent}"));
         overviewTemplate = {
           tHeadLabel: rows[0][0],
           tHeadColumn: (rows[0][1]).replace(/<\/tr>/i,''),
@@ -130,7 +130,7 @@ mlog.overviewControl = function() {
             res.push(htmlTemplate.overview.tHeadLabel);
             for (var month in list[category]) {
               str = htmlTemplate.overview.tHeadColumn;
-              str = str.replace(/#{month}/,month);
+              str = str.replace(/{month}/,month);
               res.push(str);
             }
             res.push('</tr>'); // closing tag not included
@@ -143,12 +143,12 @@ mlog.overviewControl = function() {
             str = htmlTemplate.overview.tRowLabel;
           }
           odd = !odd;
-          str = str.replace(/#{title}/,category);
+          str = str.replace(/{title}/,category);
           res.push(str);
           /* build values */
           for (var month in list[category]) {
             str = htmlTemplate.overview.tRowColumn;
-            str = str.replace(/#{value}/,mlog.base.formatFloat(list[category][month]));
+            str = str.replace(/{value}/,mlog.base.formatFloat(list[category][month]));
             res.push(str);
           }
           res.push('</tr>'); // closing tag not included
@@ -157,17 +157,17 @@ mlog.overviewControl = function() {
         list = theData.summary;
         for (var total in list) {
           str = htmlTemplate.overview.tRowTotalLabel;
-          str = str.replace(/#{title}/,total);
+          str = str.replace(/{title}/,total);
           res.push(str);
           /* build values */
           for (var month in list[total]) {
             str = htmlTemplate.overview.tRowTotalColumn;
-            str = str.replace(/#{value}/,mlog.base.formatFloat(list[total][month]));
+            str = str.replace(/{value}/,mlog.base.formatFloat(list[total][month]));
             res.push(str);
           }
         }
         str = htmlTemplate.main;
-        str = str.replace(/#{overviewContent}/,res.join(''));
+        str = str.replace(/{overviewContent}/,res.join(''));
       }
       else {
           str = '<h1>' + mlog.translator.get('no data') + '</h1>';

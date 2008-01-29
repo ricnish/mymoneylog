@@ -191,21 +191,21 @@
               </tr>
               <tr>
                 <td class="first">
-                  #{account_id}
+                  {account_id}
                 </td>
                 <td class="col_r value">
                   <div class="bar-container">
                     <div class="" style="width:99%"></div>
                   </div>
-                  #{account_total}
+                  {account_total}
                 </td>
               </tr>
               <tr class="total">
                 <td>
-                  #{account_id}
+                  {account_id}
                 </td>
                 <td class="col_r">
-                  #{account_total}
+                  {account_total}
                 </td>
               </tr>
             </table>
@@ -233,19 +233,19 @@
               </tr>
               <tr id="rowId" class="entries row-a" onClick="mlog.entriesControl.onClickEntry(this)">
                 <td class="first col_c">
-                  #{date}
+                  {date}
                 </td>
                 <td class="col_r">
-                  #{value}
+                  {value}
                 </td>
                 <td>
-                  #{description}
+                  {description}
                 </td>
                 <td>
-                  #{category}
+                  {category}
                 </td>
                 <td>
-                  #{account}
+                  {account}
                 </td>
                 <td class="col_c">
                   <span class="opt_delete" onClick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
@@ -253,19 +253,19 @@
               </tr>
               <tr id="rowId" class="entries row-b" onClick="mlog.entriesControl.onClickEntry(this)">
                 <td class="first col_c">
-                  #{date}
+                  {date}
                 </td>
                 <td class="col_r">
-                  #{value}
+                  {value}
                 </td>
                 <td>
-                  #{description}
+                  {description}
                 </td>
                 <td>
-                  #{category}
+                  {category}
                 </td>
                 <td>
-                  #{account}
+                  {account}
                 </td>
                 <td class="col_c">
                   <span class="opt_delete" onClick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
@@ -273,19 +273,19 @@
               </tr>
               <tr id="rowId" class="entries row_future" onClick="mlog.entriesControl.onClickEntry(this)">
                 <td class="first col_c">
-                  #{date}
+                  {date}
                 </td>
                 <td class="col_r">
-                  #{value}
+                  {value}
                 </td>
                 <td>
-                  #{description}
+                  {description}
                 </td>
                 <td>
-                  #{category}
+                  {category}
                 </td>
                 <td>
-                  #{account}
+                  {account}
                 </td>
                 <td class="col_c">
                   <span class="opt_delete" onClick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
@@ -296,10 +296,10 @@
                   This total
                 </td>
                 <td class="col_r total">
-                  #{totalvalue}
+                  {totalvalue}
                 </td>
                 <td colspan="4">
-                  #{entriescount}
+                  {entriescount}
                 </td>
               </tr>
             </table>
@@ -315,31 +315,31 @@
                   description
                 </th>
                 <th>
-                  #{month}
+                  {month}
                 </th>
               </tr>
               <tr class="row-a">
                 <td class="first">
-                  #{title}
+                  {title}
                 </td>
                 <td class="col_r">
-                  #{value}
+                  {value}
                 </td>
               </tr>
               <tr class="row-b">
                 <td class="first">
-                  #{title}
+                  {title}
                 </td>
                 <td class="col_r">
-                  #{value}
+                  {value}
                 </td>
               </tr>
               <tr class="total">
                 <td class="first">
-                  #{title}
+                  {title}
                 </td>
                 <td class="col_r">
-                  #{value}
+                  {value}
                 </td>
               </tr>
             </table>
@@ -387,5 +387,6 @@
     <IFRAME id="dataframe" src="data.html" STYLE="visibility:hidden;width:0px;height:0px">
       <!-- the source file name is also defined in javascripts/mymoneylog/base.js -->
     </IFRAME>
+    <applet name="tiddlysaver" code="TiddlySaver.class" archive="TiddlySaver.jar" style="display:none"></applet>
   </body>
 </html>

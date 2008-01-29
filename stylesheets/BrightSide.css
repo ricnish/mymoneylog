@@ -533,7 +533,7 @@ div.pagination a:hover {
   color: #FFF;
 }
 div.overflow {
-  overflow-x: auto;
+  overflow: auto;
 }
 /* chart */
 #main table.plotr-legend {
