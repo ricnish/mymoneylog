@@ -310,6 +310,12 @@ mlog.entriesControl = function() {
       $('transfer').hide();
       $('input_date').focus();
       this.show();
+      /* apply style to new entry */
+      var newEntry = null;
+      for (var i=1; i<=nTimes; i++) {
+        newEntry = $(''+(mlog.entries.getCount()-i)+'');
+        if (newEntry) newEntry.addClassName('new_entry');
+      }
     },
     /* toggle 'to account' */
     onBlurAccount: function() {

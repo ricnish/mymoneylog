@@ -170,6 +170,9 @@ mlog.entries = function(){
       }
       catch (e) {}
       return res;
+    },
+    getCount: function() {
+      return entries.length;
     }
   };
 }();

@@ -400,10 +400,16 @@ form.searchform input.button {
   border-bottom: solid 1px #FFF;
 }
 #main tr.row-a {
-  background: #FAFAFA;
+  background-color: #FAFAFA;
 }
 #main tr.row-b {
-  background: #EFEFEF;
+  background-color: #EFEFEF;
+}
+#main tr.new_entry {
+  background-image: url(../images/new.png);
+  background-repeat: no-repeat;
+  background-position: left;
+  background-color: #ffffcf;
 }
 #main td.col_r {
   text-align: right;
@@ -416,14 +422,14 @@ form.searchform input.button {
   min-width: 70px;
 }
 #main tr.row_future {
-  background: #EFF9FF;
+  background-color: #EFF9FF;
   color: #999;
 }
 #main tr:hover {
-  background: #D1E3EF;
+  background-color: #D1E3EF;
 }
 #main tr.total {
-  background: #D1E3EF;
+  background-color: #D1E3EF;
   font-weight: bold;
 }
 #main tr.total td {
