@@ -59,8 +59,6 @@ mlog.base = function() {
     dataFieldSeparator: '\t',
     dataRecordSeparator: /[\n\r]+/,
     commentChar: '#',
-    centsChar: '.',
-    thousandChar: ',',
     dataFileName: 'data.html',
     /* end config parameters */
     getDataPathName: function() {
@@ -121,9 +119,9 @@ mlog.base = function() {
       num = (Math.round(num * 100) / 100).toString();
       num += (num.indexOf('.') == -1) ? '.00' : '00';
       num = num.substring(0, num.indexOf('.') + 3);
-      num = num.replace('.', mlog.base.centsChar);
-      while (mlog.base.thousandChar && num.search(/[0-9]{4}/) > -1) {
-        num = num.replace(/([0-9])([0-9]{3})([^0-9])/, '$1' + mlog.base.thousandChar + '$2$3');
+      num = num.replace('.', mlog.translation.centschar);
+      while (mlog.translation.thousandchar && num.search(/[0-9]{4}/) > -1) {
+        num = num.replace(/([0-9])([0-9]{3})([^0-9])/, '$1' + mlog.translation.thousandchar + '$2$3');
       }
       return num;
     },

@@ -259,6 +259,7 @@ mlog.entriesControl = function() {
     addEntry: function(){
       var inputValue = $F('input_value');
       var nTimes = 1; /* number of inserts */
+      var entriesCount = mlog.entries.getCount();
       /* parse value */
       if (inputValue.indexOf('*')>0) {
         /* if multiply * : insert n times the same value */
@@ -282,7 +283,7 @@ mlog.entriesControl = function() {
       var original = [];
       original[0] = $F('input_date');
       original[1] = inputValue;
-      original[2] = $F('input_description');
+      original[2] = ($F('input_description')).stripTags();
       original[3] = $F('input_category');
       original[4] = $F('input_account');
       var entry = [];
@@ -312,8 +313,10 @@ mlog.entriesControl = function() {
       this.show();
       /* apply style to new entry */
       var newEntry = null;
-      for (var i=1; i<=nTimes; i++) {
-        newEntry = $(''+(mlog.entries.getCount()-i)+'');
+      entriesCount = mlog.entries.getCount() - entriesCount;
+      for (var i=1; i<=entriesCount; i++) {
+        /* get the new entry element */
+        newEntry = $(''+(mlog.entries.getCount()-i));
         if (newEntry) newEntry.addClassName('new_entry');
       }
     },

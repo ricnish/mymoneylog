@@ -35,11 +35,8 @@ mlog.editorControl = function() {
           } else {
               // unsupported browsers
           }
-          if (event.returnValue) // ie ?
-              event.returnValue = false;
-          if (event.preventDefault) // dom
-              event.preventDefault();
-          return false; // should work in all browsers
+        Event.stop(event);
+        return false;
       }
       return true;
     },
@@ -58,7 +55,9 @@ mlog.editorControl = function() {
       // perform backup
       var srcData = $("dataframe").contentWindow.document.getElementById('data');
       srcData.innerHTML = "";
-      srcData.appendChild($("dataframe").contentWindow.document.createTextNode($('text_data').value));
+      // sanitize
+      var txt = ($('text_data').value).stripTags();
+      srcData.appendChild($("dataframe").contentWindow.document.createTextNode(txt));
       // read fresh data
       mlog.entries.read();
       // perform write
