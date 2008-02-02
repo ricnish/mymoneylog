@@ -17,7 +17,13 @@ mlog.init = function(){
   Event.observe('menu_help', 'click', mlog.helpControl.show);
   // disable browser autocomplete
   $$('input.autocompleteoff').each(function(el) {el.setAttribute('autocomplete', 'off');});
-
+  // disable submit action for sidebar
+  $A($('sidebar').getElementsByTagName('form')).each(
+    function(el) { el.observe('submit', function(e){
+      Event.stop(e);
+      })
+    }
+  );
   // add tiddlysaver applet if needed
   if (!Prototype.Browser.Gecko && !Prototype.Browser.IE) {
     $('applet').innerHTML = '<applet name="TiddlySaver" code="TiddlySaver.class" archive="applets/TiddlySaver.jar" width="0" height="0"></applet>';
