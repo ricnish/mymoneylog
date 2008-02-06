@@ -436,9 +436,17 @@ form.searchform input.button {
   border-right: 1px solid #EFF9FF;
 }
 #main .opt_delete {
-  background: url(../images/cross.png) no-repeat left center;
-  padding-left: 20px; margin: 0 10px 0 5px;
+  background: url(../images/cross.png) no-repeat left;
+  padding-left: 20px;
   cursor:pointer;
+}
+#main .opt_reconcile {
+  background: url(../images/calendar_edit.png) no-repeat left;
+  padding-left: 20px;
+  cursor:pointer;
+}
+#main .hide {
+  display: none;
 }
 #main .neg {
   color: #F66;

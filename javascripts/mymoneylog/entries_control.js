@@ -229,6 +229,10 @@ mlog.entriesControl = function() {
           strRow = strRow.replace(/{description}/, theData[i][2]);
           strRow = strRow.replace(/{category}/, theData[i][3]);
           strRow = strRow.replace(/{account}/, theData[i][4]);
+          /* is reconcilable? */
+          if (theData[i][6]) {
+            strRow = strRow.replace(/opt_reconcile hide/,'opt_reconcile');
+          }
           res.push(strRow);
         }
         /* end of data, show total */
@@ -286,6 +290,7 @@ mlog.entriesControl = function() {
       original[2] = ($F('input_description')).stripTags();
       original[3] = $F('input_category');
       original[4] = $F('input_account');
+      reconcilable = (original[0].charAt(10)=='?')||false;
       var entry = [];
       var toAccount = $F('input_account_to');
       for (var i=0; i<nTimes; i++) {
@@ -298,8 +303,12 @@ mlog.entriesControl = function() {
         if (nTimes>1) {
           entry[2] = original[2] + ' ' + (i+1) + '/' + nTimes;
         }
+        if (reconcilable) {
+          /* add due data description */
+          entry[2] = entry[2] + ' (' + mlog.translator.get('due to') + ' ' + entry[0].substring(0,10) +')';
+        }
         mlog.entries.add(entry);
-        /* if category empty and has toAccount, do a transfer */
+        /* if category is empty and has toAccount, do a transfer */
         if (entry[3]=='' && toAccount!=='' && entry[1] != 0) {
           entry[1] = original[1]*-1;
           entry[2] = entry[2] + ' (' + entry[4] + ')';
@@ -356,6 +365,11 @@ mlog.entriesControl = function() {
       if (page) {
         mlog.entriesControl.show(parseInt(page));
       }
+    },
+    reconcileEntry: function(elem){
+      var id = elem.parentNode.parentNode.getAttribute('id');
+      mlog.entries.reconcile(id);
+      this.show();
     }
   };
 }();

@@ -4,41 +4,60 @@ mlog.entries = function(){
   var currentDate = mlog.base.getCurrentDate();
   var _add = function(entry){
     if (entry) {
-      // parse date
-      entry[0] = entry[0].replace(/[^0-9-]/, '') || '-';
-      // parse value
-      if (typeof entry[1] !== 'number') {
-        entry[1] = mlog.base.toFloat(entry[1]);
-      }
-      // parse description
-      entry[2] = entry[2] || '';
-      entry[2] = entry[2].strip() || '';
-      // parse category
-      entry[3] = entry[3] || '';
-      entry[3] = entry[3].strip().toLowerCase();
-      // parse account
-      entry[4] = entry[4] || '';
-      entry[4] = entry[4].strip().toLowerCase();
-      // id
-      entry[5] = entries.length;
+      try {
+        // parse date
+        // is reconcilable
+        entry[6] = (entry[0].charAt(10)=='?')||false;
+        entry[0] = entry[0].replace(/[^0-9-]/, '') || '-';
+        if (entry[6]) {
+          // if is reconcilable, set past date to current date
+          entry[0]=(entry[0]<currentDate)?currentDate:entry[0];
+        }
+        // parse value
+        if (typeof entry[1] !== 'number') {
+          entry[1] = mlog.base.toFloat(entry[1]);
+        }
+        // parse description
+        entry[2] = entry[2] || '';
+        entry[2] = entry[2].strip() || '';
+        // parse category
+        entry[3] = entry[3] || '';$
+        entry[3] = entry[3].strip().toLowerCase();
+        // parse account
+        entry[4] = entry[4] || '';
+        entry[4] = entry[4].strip().toLowerCase();
+        // id
+        entry[5] = entries.length;
 
-      entries.push(entry.slice(0));
-      // update category
-      if (entry[3] != '') {
-        mlog.categories.add(entry[3]);
-      }
-      // update account and amount
-      if (entry[4] != '') {
-        if (entry[0] <= currentDate) {
-          mlog.accounts.add(entry[4], entry[1]);
+        entries.push(entry.slice(0));
+        // update category list
+        if (entry[3] != '') {
+          mlog.categories.add(entry[3]);
         }
-        else {
-          // do not update future amount
-          mlog.accounts.add(entry[4], 0);
+        // update account list
+        if (entry[4] != '') {
+          if ((entry[0] <= currentDate) && !(entry[6])) {
+            mlog.accounts.add(entry[4], entry[1]);
+          }
+          else {
+            // do not update future amount or reconcilable
+            mlog.accounts.add(entry[4]);
+          }
         }
-      }
+      } catch(e) {};
     }
   };
+  /* remove and return an entry */
+  var _remove = function(id) {
+    var entry = entries.splice(id, 1)[0];
+    // reorder index
+    if (entry) {
+      for (var i = entry[5]; i < entries.length; i++) {
+        entries[i][5] = i;
+      }
+    }
+    return entry;
+  }
 
   /* public methods */
   return {
@@ -84,8 +103,10 @@ mlog.entries = function(){
       var tmp = [];
       for (var i = 0; i < entries.length; i++) {
         // remove index
-        txt = entries[i][0] + mlog.base.dataFieldSeparator +
-          mlog.base.floatToString(entries[i][1]) + mlog.base.dataFieldSeparator; // format value
+        // format date and value
+        txt = entries[i][0] +(entries[i][6]?'?':'')+ mlog.base.dataFieldSeparator +
+          mlog.base.floatToString(entries[i][1]) + mlog.base.dataFieldSeparator;
+        // push description, category and account
         tmp.push(txt + entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
       }
       txt = tmp.join('\n') + '\n';
@@ -113,13 +134,7 @@ mlog.entries = function(){
       this.save();
     },
     remove: function(id){
-      var entry = entries.splice(id, 1)[0];
-      // reorder index
-      if (entry) {
-        for (var i = entry[5]; i < entries.length; i++) {
-          entries[i][5] = i;
-        }
-      }
+      var entry = _remove(id);
       // update account
       if (entry[4] != '') {
         // do not update future amount
@@ -173,6 +188,12 @@ mlog.entries = function(){
     },
     getCount: function() {
       return entries.length;
+    },
+    /* just remove and add to remove reconcile */
+    reconcile: function(id) {
+      // private remove to avoid account update
+      var entry = _remove(id);
+      this.add(entry);
     }
   };
 }();
