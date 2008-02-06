@@ -92,16 +92,14 @@ mlog.entriesControl = function() {
       $('input_category').value = lineData[3] || '';
       $('input_account').value = lineData[4] || '';
       /* some effects */
+      var bkcolor = $('form_entry').getStyle('background-color');
+      bkcolor = bkcolor.parseColor();
       var config = {
         duration: 0.5,
-        endcolor: '#ffffff',
-        restorecolor: '#ffffff'
+        endcolor: bkcolor,
+        restorecolor:  bkcolor
       };
-      new Effect.Highlight('input_date', config);
-      new Effect.Highlight('input_value', config);
-      new Effect.Highlight('input_description', config);
-      new Effect.Highlight('input_category', config);
-      new Effect.Highlight('input_account', config);
+      new Effect.Highlight('form_entry', config);
     },
     /* remove an entry */
     removeEntry: function(elem){
