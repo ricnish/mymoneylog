@@ -436,13 +436,15 @@ form.searchform input.button {
   border-right: 1px solid #EFF9FF;
 }
 #main .opt_delete {
-  background: url(../images/cross.png) no-repeat left;
+  background: url(../images/delete.png) no-repeat left;
   padding-left: 20px;
+  padding-top: 1px;
   cursor:pointer;
 }
 #main .opt_reconcile {
-  background: url(../images/calendar_edit.png) no-repeat left;
+  background: url(../images/accept.png) no-repeat left;
   padding-left: 20px;
+  padding-top: 1px;
   cursor:pointer;
 }
 #main .hide {
