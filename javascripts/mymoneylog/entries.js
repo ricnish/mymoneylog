@@ -2,8 +2,9 @@
 mlog.entries = function(){
   var entries = [];
   var currentDate = mlog.base.getCurrentDate();
-  var _add = function(entry){
-    if (entry) {
+  var _add = function(entryArray){
+    if (entryArray) {
+      var entry = entryArray.slice(0);
       try {
         // parse date
         // is reconcilable
@@ -29,7 +30,7 @@ mlog.entries = function(){
         // id
         entry[5] = entries.length;
 
-        entries.push(entry.slice(0));
+        entries.push(entry);
         // update category list
         if (entry[3] != '') {
           mlog.categories.add(entry[3]);
@@ -62,7 +63,6 @@ mlog.entries = function(){
   /* public methods */
   return {
     read: function(){
-      var temp;
       entries = [];
       mlog.accounts.reset();
       var srcData = null;
@@ -84,9 +84,8 @@ mlog.entries = function(){
         if (rawData[i].indexOf(mlog.base.dataFieldSeparator) == -1) {
           continue;
         }
-        // Normalize
-        temp = rawData[i].split(mlog.base.dataFieldSeparator);
-        _add(temp);
+        // add as array
+        _add( rawData[i].split(mlog.base.dataFieldSeparator) );
       };
     },
     /*

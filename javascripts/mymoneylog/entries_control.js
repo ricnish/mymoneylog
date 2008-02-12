@@ -288,28 +288,27 @@ mlog.entriesControl = function() {
       original[2] = ($F('input_description')).stripTags();
       original[3] = $F('input_category');
       original[4] = $F('input_account');
-      reconcilable = (original[0].charAt(10)=='?')||false;
+      reconcilable = ($F('input_date').charAt(10)=='?')||false;
       var entry = [];
       var toAccount = $F('input_account_to');
       for (var i=0; i<nTimes; i++) {
-        entry = original.slice();
+        entry = original.slice(0);
         if (i>0) {
           /* add month to date */
-          dt = mlog.base.addMonths(mlog.base.stringToDate(original[0]),i);
+          dt = mlog.base.addMonths(mlog.base.stringToDate(original[0].substring(0,10)),i);
           entry[0] = mlog.base.dateToString(dt);
+          entry[0] += reconcilable?'?':'';
         }
         if (nTimes>1) {
           entry[2] = original[2] + ' ' + (i+1) + '/' + nTimes;
         }
-        if (reconcilable) {
-          /* add due data description */
-          entry[2] = entry[2] + ' (' + mlog.translator.get('due to') + ' ' + entry[0].substring(0,10) +')';
-        }
+        /* add due data description */
+        entry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + entry[0].substring(0,10)):'';
         mlog.entries.add(entry);
         /* if category is empty and has toAccount, do a transfer */
         if (entry[3]=='' && toAccount!=='' && entry[1] != 0) {
           entry[1] = original[1]*-1;
-          entry[2] = entry[2] + ' (' + entry[4] + ')';
+          entry[2] = entry[2] + ' - ' + entry[4];
           entry[4] = toAccount;
           mlog.entries.add(entry);
         }
