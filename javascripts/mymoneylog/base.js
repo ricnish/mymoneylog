@@ -79,6 +79,7 @@ mlog.base = function() {
         }
         filePath = filePath.replace(/\//g,"\\");
       }
+      filePath = decodeURI(filePath);
       if (Prototype.Browser.Gecko)
         return mozillaSaveFile(filePath, content);
       if (Prototype.Browser.IE)
