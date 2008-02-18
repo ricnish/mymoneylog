@@ -41,15 +41,28 @@ mlog.overviewControl = function() {
           main: $('main_overview').innerHTML
         };
         $('main_overview').innerHTML = '';
+        /* initialize datepicker */
+        Calendar.setup({
+          inputField: "input_ov_until_date",
+          ifFormat: "%Y-%m-%d",
+          daFormat: "%Y-%m-%d",
+          showsTime: false,
+          button: "input_ov_until_date",
+          singleClick: true,
+          step: 2,
+          weekNumbers: false
+        });
+        /* initial date value */
+        $('input_ov_until_date').value = mlog.base.getCurrentDate();
       }
     },
     /* summarize last n months */
     getLastMonths: function(n) {
       var nMonths = n || 6;
-      var dtStart = mlog.base.addMonths(new Date(),n*-1);
+      var dtEnd = $F('input_ov_until_date') || mlog.base.getCurrentDate();
+      var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),n*-1);
       dtStart.setDate(1);
       dtStart = mlog.base.dateToString(dtStart);
-      var dtEnd = mlog.base.getCurrentDate();
       var entries = mlog.entries.getByDate(dtStart,dtEnd);
       var total = {
         categories:{},
@@ -63,7 +76,7 @@ mlog.overviewControl = function() {
       /* initialize months */
       var months = [];
       for (var i=nMonths;i>=0;i--) {
-        var month = mlog.base.addMonths(new Date(),i*-1);
+        var month = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),i*-1);
         month = mlog.base.dateToString(month);
         month = month.slice(0,7);
         months.push(month);
@@ -115,7 +128,7 @@ mlog.overviewControl = function() {
     },
     show: function() {
       mlog.base.activateMenu('overview');
-      var nMonths = parseInt($F('overviewNumberMonths'));
+      var nMonths = parseInt($F('overviewNumberMonths'))-1;
       var theData = mlog.overviewControl.getLastMonths(nMonths);
       mlog.overviewControl.init();
       var res = [];

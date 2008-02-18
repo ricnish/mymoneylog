@@ -45,5 +45,6 @@ thousandchar          : '.',
 'this total'          : 'este total',
 'to account'          : 'para conta',
 'total'               : 'total',
+'until'               : 'até',
 'value'               : 'valor'
 };

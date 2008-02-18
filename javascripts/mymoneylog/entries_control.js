@@ -2,6 +2,7 @@ mlog.entriesControl = function() {
   var htmlTemplate = null;
   var sortColIndex = 0;
   var sortColRev = true;
+  var entryCalendar;
   return {
     categoryAutoCompleter: null,
     accountAutoCompleter: null,
@@ -75,6 +76,8 @@ mlog.entriesControl = function() {
         step: 2,
         weekNumbers: false
       });
+      /* initial date value */
+      $('input_date').value = mlog.base.getCurrentDate();
       /* attach on blur event for account transfers */
       Event.observe('input_category','blur', this.onBlurAccount);
       $('filter_query').observe('keyup',mlog.entriesControl.show);

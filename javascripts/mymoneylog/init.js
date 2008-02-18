@@ -8,7 +8,9 @@ mlog.translate = function(){
 /* init after data load */
 mlog.init = function(){
   mlog.translate();
+  /* initialize and show entries */
   mlog.entriesControl.show();
+  /* initialize menus */
   Event.observe('menu_entries', 'click', mlog.entriesControl.show);
   Event.observe('menu_overview', 'click', mlog.overviewControl.show);
 // to do:
