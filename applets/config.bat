@@ -1,6 +1,6 @@
 rem script to configure java applet write permission 
-rem still need fixing...
-set file=%homedrive%%homepath%\.java.policy
+echo off
+set file="%homedrive%%homepath%\.java.policy"
 set applethome=%cd%\*
 cd ..
 set apphome=%cd%\*
@@ -22,7 +22,11 @@ set apppermission=%apphome%
 echo.%apppermission%
 set apppermission=%apppermission:/=${/}%
 
-echo grant codeBase "file:%applethome%" { >> file
-echo   permission java.io.FilePermission "%appletpermission%", "read,write"; }; >> file
-echo grant codeBase "file:%apphome%" { >> "teste.txt"
-echo   permission java.io.FilePermission "%apppermission%", "read,write"; }; >> file
+echo // myMoneyLog applet write permission >> %file%
+echo grant codeBase "file:%applethome%" { >> %file%
+echo   permission java.io.FilePermission "%apppermission%", "read,write"; >> %file%
+echo }; >> %file%
+echo grant codeBase "file:%apphome%" { >> %file%
+echo   permission java.io.FilePermission "%apppermission%", "read,write"; >> %file%
+echo }; >> %file%
+echo permission done in: %file%
