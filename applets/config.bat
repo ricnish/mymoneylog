@@ -1,4 +1,7 @@
-rem script to configure java applet write permission 
+rem Script to configure java applet write permission
+rem 2008-02 - Ricardo Nishimura - written for myMoneyLog
+rem run it inside applet folder
+rem it will update java policy write permission for java applet
 echo off
 set file="%homedrive%%homepath%\.java.policy"
 set applethome=%cd%\*
