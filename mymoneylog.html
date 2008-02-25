@@ -136,7 +136,7 @@
               <label class="msg">
                 Show last
               </label>
-              <select id="overviewNumberMonths" class="select_num" onchange="mlog.overviewControl.show()">
+              <select id="overviewNumberMonths" class="select_num">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -239,20 +239,20 @@
                   option
                 </th>
               </tr>
-              <tr id="rowId" class="entries row-a" onClick="mlog.entriesControl.onClickEntry(this)">
-                <td class="first col_c">
+              <tr id="rowId" class="entries row-a">
+                <td class="first col_c" onClick="mlog.entriesControl.onClickEntry(this)">
                   {date}
                 </td>
-                <td class="col_r">
+                <td class="col_r" onClick="mlog.entriesControl.onClickEntry(this)">
                   {value}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {description}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {category}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {account}
                 </td>
                 <td class="col_c">
@@ -260,20 +260,20 @@
                   <span class="opt_reconcile hide" onClick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
                 </td>
               </tr>
-              <tr id="rowId" class="entries row-b" onClick="mlog.entriesControl.onClickEntry(this)">
-                <td class="first col_c">
+              <tr id="rowId" class="entries row-b">
+                <td class="first col_c" onClick="mlog.entriesControl.onClickEntry(this)">
                   {date}
                 </td>
-                <td class="col_r">
+                <td class="col_r" onClick="mlog.entriesControl.onClickEntry(this)">
                   {value}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {description}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {category}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {account}
                 </td>
                 <td class="col_c">
@@ -281,20 +281,20 @@
                   <span class="opt_reconcile hide" onClick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
                 </td>
               </tr>
-              <tr id="rowId" class="entries row_future" onClick="mlog.entriesControl.onClickEntry(this)">
-                <td class="first col_c">
+              <tr id="rowId" class="entries row_future">
+                <td class="first col_c" onClick="mlog.entriesControl.onClickEntry(this)">
                   {date}
                 </td>
-                <td class="col_r">
+                <td class="col_r" onClick="mlog.entriesControl.onClickEntry(this)">
                   {value}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {description}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {category}
                 </td>
-                <td>
+                <td onClick="mlog.entriesControl.onClickEntry(this)">
                   {account}
                 </td>
                 <td class="col_c">

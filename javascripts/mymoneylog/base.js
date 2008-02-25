@@ -116,16 +116,15 @@ mlog.base = function() {
       };
       theArray.sort(sortFn);
     },
+    /* format float as localized currency string*/
     floatToString: function(num) {
-      num = (Math.round(num * 100) / 100).toString();
-      num += (num.indexOf('.') == -1) ? '.00' : '00';
-      num = num.substring(0, num.indexOf('.') + 3);
-      num = num.replace('.', mlog.translation.centschar);
-      while (mlog.translation.thousandchar && num.search(/[0-9]{4}/) > -1) {
-        num = num.replace(/([0-9])([0-9]{3})([^0-9])/, '$1' + mlog.translation.thousandchar + '$2$3');
+      num = num.toFixed(2).replace('.', mlog.translation.centschar);
+      while (num.search(/[0-9]{4}/) > -1) {
+        num = num.replace(/([0-9])([0-9]{3})([^0-9])/, '$1' + (mlog.translation.thousandchar||',') + '$2$3');
       }
       return num;
     },
+    /* format float and stylize to currency */
     formatFloat: function(num){
       var myClass = (num < 0) ? 'neg' : 'pos';
       return '<span class="' + myClass + '">' + mlog.base.floatToString(num) + '<\/span>';
@@ -170,6 +169,7 @@ mlog.base = function() {
     getCurrentDate: function(){
       return this.dateToString(new Date());
     },
+    /* activate a menu tab and its sidebar panel*/
     activateMenu: function(menuId){
       var menu = $('menu_' + menuId);
       // verify if it is already active

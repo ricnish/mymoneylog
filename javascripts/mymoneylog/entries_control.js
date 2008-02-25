@@ -113,7 +113,7 @@ mlog.entriesControl = function() {
     },
     /* display on input when clicked */
     onClickEntry: function(elem){
-      var id = elem.getAttribute('id');
+      var id = elem.parentNode.getAttribute('id');
       this.updateInputEntry(mlog.entries.get(id));
       $('input_date').focus();
       $('transfer').hide();
