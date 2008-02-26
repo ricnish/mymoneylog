@@ -99,7 +99,7 @@
                 </div>
               </div>
               <p>
-                <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry()">Add</button>
+                <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
               </p>
             </form><h1 class="msg">Options</h1>
             <form class="options">
@@ -188,6 +188,7 @@
           <div id="main_entries" style="display:none;">
             <a name="EntriesStart"></a>
             <h1 class="msg">Summary</h1>
+            <div id="entries_summary">
             <table class="summary" id="summary_table">
               <tr>
                 <th class="msg">
@@ -217,6 +218,7 @@
                 </td>
               </tr>
             </table>
+            </div>
             <h1 class="msg">Entries</h1>
             <table id="entries_table">
               <tr id="entries_row_head">

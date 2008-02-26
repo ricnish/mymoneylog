@@ -261,7 +261,7 @@ mlog.entriesControl = function() {
     },
 
     /* add an entry from input */
-    addEntry: function(){
+    addEntry: function(elem){
       var inputValue = $F('input_value');
       var nTimes = 1; /* number of inserts */
       var entriesCount = mlog.entries.getCount();
@@ -328,6 +328,7 @@ mlog.entriesControl = function() {
         newEntry = $(''+(mlog.entries.getCount()-i));
         if (newEntry) newEntry.addClassName('new_entry');
       }
+      new Effect.Pulsate(elem,{pulses:entriesCount,duration:(0.5+(entriesCount*0.2))});
     },
     /* toggle 'to account' */
     onBlurAccount: function() {
