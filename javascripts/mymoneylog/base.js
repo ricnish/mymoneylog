@@ -190,6 +190,19 @@ mlog.base = function() {
       if (panel) {
         panel.show();
       }
+    },
+    // toogle visibility of next div element
+    toggleVisibility: function(elem){
+      if (elem.hasClassName('hide_next')) {
+        new Effect.SlideUp(elem.next('div'));
+        elem.removeClassName('hide_next');
+        elem.addClassName('show_next');
+      } else
+      if (elem.hasClassName('show_next')) {
+        new Effect.SlideDown(elem.next('div'));
+        elem.removeClassName('show_next');
+        elem.addClassName('hide_next');
+      }
     }
   };
 }();

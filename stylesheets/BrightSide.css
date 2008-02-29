@@ -558,3 +558,14 @@ div.overflow {
 #chart tr {
   height: 14px;
 }
+
+.hide_next {
+  background: url(../images/bullet_arrow_up.png) no-repeat right;
+  padding-right: 20px;
+  cursor:pointer;
+}
+.show_next {
+  background: url(../images/bullet_arrow_down.png) no-repeat right;
+  padding-right: 20px;
+  cursor:pointer;
+}
