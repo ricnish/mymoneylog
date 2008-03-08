@@ -187,6 +187,7 @@ mlog.overviewControl = function() {
       }
       $('report').update(str);
       mlog.chartControl.show(theData);
+      Event.observe('toggle_overview_table', 'click', mlog.base.toggleVisibility);
     }
   }
 }();

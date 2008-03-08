@@ -192,7 +192,8 @@ mlog.base = function() {
       }
     },
     // toogle visibility of next div element
-    toggleVisibility: function(elem){
+    toggleVisibility: function(){
+      var elem = this;
       if (elem.hasClassName('hide_next')) {
         new Effect.SlideUp(elem.next('div'));
         elem.removeClassName('hide_next');

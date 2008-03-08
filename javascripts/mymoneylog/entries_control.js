@@ -251,7 +251,8 @@ mlog.entriesControl = function() {
       }
       $('report').innerHTML = content;
       res = null;
-    },
+      Event.observe('toggle_summary', 'click', mlog.base.toggleVisibility);
+},
 
     /* sort table column */
     sortCol: function(index){
