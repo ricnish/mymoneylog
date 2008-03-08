@@ -1,124 +1,61 @@
 mlog.chartControl = function() {
-  var palete = [
-    '#00FFFF',
-    '#008000',
-    '#000080',
-    '#C0C0C0',
-    '#000000',
-    '#808080',
-    '#808000',
-    '#008080',
-    '#0000FF',
-    '#00FF00',
-    '#800080',
-    '#FF00FF',
-    '#800000',
-    '#FF0000',
-    '#FFFF00',
-    '#FF8C00',
-    '#FFA07A',
-    '#D2691E',
-    '#DDA0DD',
-    '#ADFF2F',
-    '#4B0082',
-    '#FFFFA0',
-    '#00FF7F',
-    '#BDB76B',
-    '#B0C4DE'
-    ];
-
   return {
     show: function(data) {
       if (!data) {
         return;
       }
-      var ticks = []; // x labels
+      var xTicks = []; // x labels
       var i = 0;
       var list = data.categories;
-      var strDataset = '{';
-      var strPalete = '{';
+      var strDataset = '[';
       var count = 0;
       for (var category in list) {
         if (i == 0) {
           /* build x labels */
-          /* as: [{v:0, label:'2008-01'},{v:1, label:'2008-02'}]... */
+          /* as: [[0, '2008-01'],[1, '2008-02']]... */
           var str = '[';
           for (var month in list[category]) {
-            str += '{v:'+count+', label:"'+month+'"},';
+            str += '['+count+', "'+month+'"],';
             count++;
           }
           str = str.slice(0,str.length-1) + ']';
-          ticks = eval(str);
+          xTicks = eval(str);
         }
         i++;
-        strDataset += '"'+category+'":[';
-
+        strDataset += '{label: "'+category+'", data: [';
         count = 0;
         str = '';
         /* build category month's values */
-        /* as: category: [[0,100],[1,95]], ... */
+        /* eg: [[0,100],[1,95]], ... */
+        var tmpValue=0;
         for (var month in list[category]) {
-          str += '['+count+', '+Math.round(list[category][month]*-1)+'],';
+          tmpValue = Math.round(list[category][month]*-1);
+          // just display debits
+          tmpValue = (tmpValue>0)?tmpValue:0;
+          str += '['+count+', '+tmpValue+'],';
           count++;
         }
-        strDataset += str.slice(0,str.length-1) + '],';
-
-        // build color palete
-        strPalete += '"'+category +'":"'+palete[i]+'",';
+        strDataset += str.slice(0,str.length-1) + ']},';
       }
-      strDataset = strDataset.slice(0,strDataset.length-1) + '}';
-      strPalete = strPalete.slice(0,strPalete.length-1) + '}';
-      var colorHash = eval('new Hash('+strPalete+')');
+      strDataset = strDataset.slice(0,strDataset.length-1) + ']';
       // Define a dataset.
-      var dataset = {};
+      var dataset = [];
       eval('dataset = '+strDataset+';');
 
       // chart container
-      var size = $('chart').getWidth()-140;
+      var size = $('chart').getWidth()-20;
       $('chart').innerHTML = '<h1>'+ mlog.translator.get('expenses by category') +
-        '</h1><div><canvas id="chart_canvas" height="'+
-        (size/2)+'" width="'+
-        (size)+'"></canvas></div>';
+        '</h1><div id="chart_canvas" style="height:'+
+        (size/2)+'px; width:'+(size)+'px;"></div>';
 
-      // Define options.
-      var options = {
-        // Define a padding for the canvas node
-        padding: {
-          left: 50,
-          right: 0,
-          top: 10,
-          bottom: 30
-        },
-        // Background color to render.
-        background: {
-          color: '#f0f0f0'
-        },
-        shouldFill: false,
-        // Use the predefined blue colorscheme.
-        colorScheme: colorHash,
-        axis: {
-          // The fontcolor of the labels is black.
-          labelColor: '#000000',
-          // Add the ticks. Keep in mind, x and y axis are swapped
-          // when the BarOrientation is horizontal.
-          x: {
-            ticks: ticks
-          }
-        },
-        // Set the legend position.
-        legend: {
-          position:{
-            left: (size+24)+'px'
-          }
-        }
-      };
-
-      // Instantiate a new LineCart.
-      var line = new Plotr.LineChart('chart_canvas',options);
-      // Add a dataset to it.
-      line.addDataset(dataset);
-      // Render it.
-      line.render();
+      // draw
+      var line = Flotr.draw($('chart_canvas'),
+                            dataset,
+                            {
+                              xaxis: {ticks: xTicks},
+                              legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
+                            }
+                            );
     }
   }
 }();

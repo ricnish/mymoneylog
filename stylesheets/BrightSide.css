@@ -369,6 +369,9 @@ form.searchform input.button {
   border-collapse: collapse;
   width: 100%;
 }
+#chart_canvas table {
+  width: auto;
+}
 #main th strong {
   color: #fff;
 }
