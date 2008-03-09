@@ -317,10 +317,10 @@ mlog.entriesControl = function() {
           mlog.entries.add(entry);
         }
       }
-      $('input_account_to').value = '';
-      $('transfer').hide();
-      $('input_date').focus();
+      /* refresh entries */
       this.show();
+      /* blink add button */
+      new Effect.Pulsate(elem,{pulses:1,duration:0.7});
       /* apply style to new entry */
       var newEntry = null;
       entriesCount = mlog.entries.getCount() - entriesCount;
@@ -329,7 +329,10 @@ mlog.entriesControl = function() {
         newEntry = $(''+(mlog.entries.getCount()-i));
         if (newEntry) newEntry.addClassName('new_entry');
       }
-      new Effect.Pulsate(elem,{pulses:entriesCount,duration:(0.5+(entriesCount*0.2))});
+      /* initial state */
+      $('input_account_to').value = '';
+      $('transfer').hide();
+      $('input_date').focus();
     },
     /* toggle 'to account' */
     onBlurAccount: function() {
