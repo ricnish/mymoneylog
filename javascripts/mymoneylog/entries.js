@@ -6,9 +6,19 @@ mlog.entries = function(){
     if (entryArray) {
       var entry = entryArray.slice(0);
       try {
-        // parse date
+        /*
+         entry:
+         0: date: string
+         1: value: float
+         2: description: string
+         3: category: string
+         4: account: string
+         5: line id: int
+         6: is reconcilable: bool
+        */
         // is reconcilable
         entry[6] = (entry[0].charAt(10)=='?')||false;
+        // parse date
         entry[0] = entry[0].replace(/[^0-9-]/, '') || '-';
         if (entry[6]) {
           // if is reconcilable, set past date to current date
