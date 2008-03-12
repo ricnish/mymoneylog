@@ -393,6 +393,10 @@ form.searchform input.button {
   background: #9EC630;
   border-right: 1px solid #B6D59A;
 }
+#main th.date_col {
+  width:6em;
+}
+
 #main tr {
   height: 26px;
 }
@@ -440,13 +444,13 @@ form.searchform input.button {
 }
 #main .opt_delete {
   background: url(../images/delete.png) no-repeat left;
-  padding-left: 20px;
+  padding-left: 16px;
   padding-top: 1px;
   cursor:pointer;
 }
 #main .opt_reconcile {
   background: url(../images/accept.png) no-repeat left;
-  padding-left: 20px;
+  padding-left: 16px;
   padding-top: 1px;
   cursor:pointer;
 }

@@ -103,6 +103,7 @@ mlog.overviewControl = function() {
       var month;
       var value;
       var accumulated = 0;
+      mlog.base.arraySort(entries,0);
       for (var i=0;i<entries.length;i++) {
         month = (entries[i][0]).slice(0, 7);
         value = entries[i][1];
