@@ -97,6 +97,11 @@ mlog.entries = function(){
         // add as array
         _add( rawData[i].split(mlog.base.dataFieldSeparator) );
       };
+      if (!srcData) {
+        /* if there was no data file, create it and reload iframe */
+        this.save();
+        $("dataframe").src = $("dataframe").src;
+      }
     },
     /*
      * Get entries
