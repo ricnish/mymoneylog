@@ -30,6 +30,7 @@ mlog.init = function(){
   if (!Prototype.Browser.Gecko && !Prototype.Browser.IE) {
     $('applet').innerHTML = '<applet name="TiddlySaver" code="TiddlySaver.class" archive="applets/TiddlySaver.jar" width="0" height="0"></applet>';
   }
+  $('logo').observe('click',function(){ open('http://code.google.com/p/mymoneylog/'); });
 }
 /* if data.html is not available init default data */
 mlog.onLoadError = function() {
