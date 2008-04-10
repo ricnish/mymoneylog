@@ -1,3 +1,7 @@
+﻿/**
+ * editor_control.js - data editor controller
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.editorControl = function() {
   var htmlTemplate = null;
   return {
@@ -6,18 +10,19 @@ mlog.editorControl = function() {
       /* get template... */
       if (!htmlTemplate) {
         htmlTemplate = {
-          main: $('main_editor').innerHTML
+          main: $('#main_editor').html()
         };
         htmlTemplate.main = htmlTemplate.main.replace(/  /gi,'');
-        $('main_editor').innerHTML = '';
+        $('#main_editor').html('');
       }
     },
     onKeyPress: function(event) {
       /* handle tab key to insert it on textarea
       * original from: http://l4x.org/261/
+      * tab key code = 9
       */
-      if (event.keyCode == Event.KEY_TAB) {
-          var obj = $('text_data');
+      if (event.which  == 9) {
+          var obj = document.getElementById('text_data');
           if (obj.setSelectionRange) {
               var pos = obj.scrollTop;
               // mozilla
@@ -35,7 +40,6 @@ mlog.editorControl = function() {
           } else {
               // unsupported browsers
           }
-        Event.stop(event);
         return false;
       }
       return true;
@@ -43,21 +47,21 @@ mlog.editorControl = function() {
     show: function() {
       mlog.editorControl.init();
       mlog.base.activateMenu('editor');
-      $('report').innerHTML = htmlTemplate.main;
+      $('#report').html(htmlTemplate.main);
 
-      $('text_data').value = mlog.entries.getAllAsText();
-      $('text_data').rows = 35; // default height
+      $('#text_data').val(mlog.entries.getAllAsText());
+      $('#text_data').height(470); // default height
 
-      Event.observe($('text_data'), (Prototype.Browser.IE)?'keydown':'keypress', mlog.editorControl.onKeyPress);
+      $('#text_data').keydown( mlog.editorControl.onKeyPress );
     },
     applyChanges: function() {
       mlog.entries.backup();
       // perform backup
-      var srcData = $("dataframe").contentWindow.document.getElementById('data');
+      var srcData = document.getElementById("dataframe").contentWindow.document.getElementById('data');
       srcData.innerHTML = "";
       // sanitize
-      var txt = ($('text_data').value).stripTags();
-      srcData.appendChild($("dataframe").contentWindow.document.createTextNode(txt));
+      var txt = $('#text_data').val();
+      srcData.appendChild(document.getElementById("dataframe").contentWindow.document.createTextNode(txt));
       // read fresh data
       mlog.entries.read();
       // perform write
@@ -66,15 +70,3 @@ mlog.editorControl = function() {
     }
   }
 }();
-
-  /*
-
-   // reinsert without blank lines
-
-   // ie parses the text before insert, so use appendChild to avoid it
-
-   srcData.innerHTML = "";
-
-   srcData.appendChild($("dataframe").contentWindow.document.createTextNode($('text_data').value));
-
-   */

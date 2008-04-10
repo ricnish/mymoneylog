@@ -1,3 +1,7 @@
+﻿/**
+ * chart_control.js - chart controller
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.chartControl = function() {
   return {
     show: function(data) {
@@ -43,19 +47,19 @@ mlog.chartControl = function() {
       eval('dataset = '+strDataset+';');
 
       // chart container
-      var size = $('chart').getWidth()-20;
-      $('chart').innerHTML = '<h1>'+ mlog.translator.get('expenses by category') +
+      var size = $('#chart').width()-20;
+      $('#chart').html('<h1>'+ mlog.translator.get('expenses by category') +
         '</h1><div id="chart_canvas" style="height:'+
-        (size/2)+'px; width:'+(size)+'px;"></div>';
+        (size/2)+'px; width:'+(size)+'px;"></div>');
 
       // draw
-      var line = Flotr.draw($('chart_canvas'),
-                            dataset,
-                            {
-                              xaxis: {ticks: xTicks},
-                              legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
-                            }
-                            );
+      $.plot( $('#chart_canvas'),
+                dataset,
+                {
+                  xaxis: {ticks: xTicks},
+                  legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
+                }
+              );
     }
   }
 }();

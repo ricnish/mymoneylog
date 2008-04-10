@@ -1,3 +1,7 @@
+﻿/**
+ * help_control.js - display the help
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.helpControl = function() {
   var htmlTemplate = null;
   return {
@@ -6,17 +10,16 @@ mlog.helpControl = function() {
       /* get template... */
       if (!htmlTemplate) {
         htmlTemplate = {
-          main: $('main_help').innerHTML
+          main: $('#main_help').html()
         };
         htmlTemplate.main = htmlTemplate.main.replace(/  /gi,'');
-        $('main_help').innerHTML = '';
+        $('#main_help').html('');
       }
     },
     show: function() {
       mlog.helpControl.init();
       mlog.base.activateMenu('help');
-      $('report').innerHTML = htmlTemplate.main;
+      $('#report').html(htmlTemplate.main);
     }
   };
-
 }();

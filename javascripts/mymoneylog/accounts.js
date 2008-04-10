@@ -1,4 +1,7 @@
-﻿// accounts
+﻿/**
+ * accounts.js
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.accounts = function(){
   var accounts = {};
   return {
@@ -16,7 +19,7 @@ mlog.accounts = function(){
       for (var account in accounts) {
         accountsDescr.push(account);
       }
-      return accountsDescr;
+      return accountsDescr.sort();
     },
     getAll: function() {
       var ret = [];

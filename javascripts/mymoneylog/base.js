@@ -1,4 +1,7 @@
-
+/**
+ * base.js - provides some base functions
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.base = function() {
   // private:
   // Returns null if it can't do it, false if there's an error, true if it saved OK
@@ -80,9 +83,9 @@ mlog.base = function() {
         filePath = filePath.replace(/\//g,"\\");
       }
       filePath = decodeURI(filePath);
-      if (Prototype.Browser.Gecko)
+      if (jQuery.browser.mozilla)
         return mozillaSaveFile(filePath, content);
-      if (Prototype.Browser.IE)
+      if (jQuery.browser.msie)
         return ieSaveFile(filePath, content);
       return javaSaveFile(filePath, content);
     },
@@ -171,39 +174,22 @@ mlog.base = function() {
     },
     /* activate a menu tab and its sidebar panel*/
     activateMenu: function(menuId){
-      var menu = $('menu_' + menuId);
+      var menu = $('#menu_' + menuId);
       // verify if it is already active
-      if (menu) {
-        if (menu.hasClassName('menu_current')) {
+      if (!menu || menu.hasClass('menu_current')) {
           return;
-        };
-      } else {
-        return;
-      }
+      };
       // deactivate all
-      $$('#header li').invoke('removeClassName', 'menu_current')
-      $$('#sidebar .panel').invoke('hide');
+      $('#header li').removeClass('menu_current')
+      $('#sidebar .panel').hide();
       // activate one menu
-      menu.className = 'menu_current';
+      menu.addClass('menu_current');
       // show toolbar items
-      var panel = $('panel_' + menuId);
-      if (panel) {
-        panel.show();
-      }
+      $('#panel_' + menuId).show();
     },
-    // toogle visibility of next div element
-    toggleVisibility: function(){
-      var elem = this;
-      if (elem.hasClassName('hide_next')) {
-        new Effect.SlideUp(elem.next('div'));
-        elem.removeClassName('hide_next');
-        elem.addClassName('show_next');
-      } else
-      if (elem.hasClassName('show_next')) {
-        new Effect.SlideDown(elem.next('div'));
-        elem.removeClassName('show_next');
-        elem.addClassName('hide_next');
-      }
+    stripTags: function(str) {
+        return str.replace(/<\/?[^>]+>/gi, '');
     }
   };
 }();
+

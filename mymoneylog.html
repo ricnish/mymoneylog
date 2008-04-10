@@ -1,18 +1,20 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta name="Description" content="personal finance application"/>
     <meta name="Keywords" content="money, finance, personal"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="Distribution" content="Global"/>
-    <meta name="Author" content="Ricardo Nishimura - http://ricnishimura.googlepages.com"/>
+    <meta name="Author" content="Ricardo Nishimura - http://code.google.com/p/mymoneylog"/>
     <link rel="stylesheet" href="stylesheets/BrightSide.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" media="all" href="stylesheets/calendar-blue.css" title="calendar-blue.css" />
 
-    <script src="javascripts/prototype/prototype.js" type="text/javascript"></script>
+    <script src="javascripts/jquery/jquery-1.2.3.pack.js" type="text/javascript"></script>
+    <script src="javascripts/jquery/jquery.bgiframe.js" type="text/javascript"></script>
+    <script src="javascripts/jquery/jquery.dimensions.pack.js" type="text/javascript"></script>
+    <script src="javascripts/jquery/jquery.autocomplete.pack.js" type="text/javascript"></script>
 <!--[if IE]><script src="javascripts/excanvas/excanvas.js" type="text/javascript"></script><![endif]-->
-    <script src="javascripts/flotr/flotr-0.1.0alpha.js" type="text/javascript"></script>
-    <script src="javascripts/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+    <script src="javascripts/jquery/jquery.flot.pack.js" type="text/javascript"></script>
     <script src="javascripts/jscalendar/calendar.js" type="text/javascript"></script>
     <script src="javascripts/jscalendar/calendar-setup.js" type="text/javascript"></script>
     <script src="javascripts/mymoneylog/translator.js" type="text/javascript"></script>
@@ -27,7 +29,7 @@
     <script src="javascripts/mymoneylog/chart_control.js" type="text/javascript"></script>
     <script src="javascripts/mymoneylog/init.js" type="text/javascript"></script>
     <script type="text/javascript">
-      Event.observe(window,"load",mlog.init);
+      $(window).load(function(){ mlog.init(); });
     </script>
     <title>myMoneyLog</title>
     <link rel="icon" type="image/png" href="images/money.png"/>
@@ -115,7 +117,7 @@
               <label class="msg">
                 show
               </label>
-              <input id="opt_future" class="input_checkbox" type="checkbox" title="future"/>
+              <input id="opt_future" name="opt_future" class="input_checkbox" type="checkbox" title="future"/>
               <span class="msg">future entries</span>
               <label class="msg">
                 Show last
@@ -174,11 +176,6 @@
           </div><!-- editor panel ends here -->
           <!-- help panel starts here -->
           <div id="panel_help" class="panel" style="display:none;">
-          <!--
-            <h1 class="msg">About</h1>
-            <form>
-            </form>
-          -->
           </div><!-- help panel ends here -->
         </div><!-- main starts here -->
         <div id="main">
@@ -262,48 +259,6 @@
                   <span class="opt_reconcile hide" onClick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
                 </td>
               </tr>
-              <tr id="rowId" class="entries row-b">
-                <td class="first col_c" onClick="mlog.entriesControl.onClickEntry(this)">
-                  {date}
-                </td>
-                <td class="col_r" onClick="mlog.entriesControl.onClickEntry(this)">
-                  {value}
-                </td>
-                <td onClick="mlog.entriesControl.onClickEntry(this)">
-                  {description}
-                </td>
-                <td onClick="mlog.entriesControl.onClickEntry(this)">
-                  {category}
-                </td>
-                <td onClick="mlog.entriesControl.onClickEntry(this)">
-                  {account}
-                </td>
-                <td class="col_c">
-                  <span class="opt_delete" onClick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
-                  <span class="opt_reconcile hide" onClick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
-                </td>
-              </tr>
-              <tr id="rowId" class="entries row_future">
-                <td class="first col_c" onClick="mlog.entriesControl.onClickEntry(this)">
-                  {date}
-                </td>
-                <td class="col_r" onClick="mlog.entriesControl.onClickEntry(this)">
-                  {value}
-                </td>
-                <td onClick="mlog.entriesControl.onClickEntry(this)">
-                  {description}
-                </td>
-                <td onClick="mlog.entriesControl.onClickEntry(this)">
-                  {category}
-                </td>
-                <td onClick="mlog.entriesControl.onClickEntry(this)">
-                  {account}
-                </td>
-                <td class="col_c">
-                  <span class="opt_delete" onClick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
-                  <span class="opt_reconcile hide" onClick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
-                </td>
-              </tr>
               <tr id="rowId" class="total">
                 <td class="first col_c msg">
                   This total
@@ -332,22 +287,6 @@
                 </th>
               </tr>
               <tr class="row-a">
-                <td class="first">
-                  {title}
-                </td>
-                <td class="col_r">
-                  {value}
-                </td>
-              </tr>
-              <tr class="row-b">
-                <td class="first">
-                  {title}
-                </td>
-                <td class="col_r">
-                  {value}
-                </td>
-              </tr>
-              <tr class="total">
                 <td class="first">
                   {title}
                 </td>

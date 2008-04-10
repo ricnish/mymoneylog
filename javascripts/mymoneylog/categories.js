@@ -1,4 +1,7 @@
-﻿// categories
+﻿/**
+ * categories.js
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.categories = function(){
   var categories = {};
   return {
@@ -13,7 +16,7 @@ mlog.categories = function(){
       for (var cat in categories) {
         catDescr.push(cat);
       }
-      return catDescr;
+      return catDescr.sort();
     }
   };
 }();

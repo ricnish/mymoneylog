@@ -1,3 +1,7 @@
+﻿/**
+ * overview_control.js - overview controller
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.overviewControl = function() {
   var htmlTemplate = null;
   return {
@@ -11,7 +15,7 @@ mlog.overviewControl = function() {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
-        rows = $('overview_table').innerHTML.replace(/<\/tr>/gi, '</tr>!*!');
+        rows = $('#overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.replace(/  /gi,'');
         rows = rows.split('!*!');
         for (var i=0;i<rows.length;i++) {
@@ -20,27 +24,22 @@ mlog.overviewControl = function() {
           rows[i] = rows[i].split('!*!');
         }
         /* remove nodes inside entries table */
-        var children = $A($("overview_table").childNodes);
-        children.each(function(child) {
-          $("overview_table").removeChild(child);
-        });
+        $("#overview_table tbody").remove();
         /* entries table: append a template hook */
-        $('overview_table').appendChild(document.createTextNode("{overviewContent}"));
+        $('#overview_table').append(document.createTextNode("{overviewContent}"));
         overviewTemplate = {
           tHeadLabel: rows[0][0],
           tHeadColumn: (rows[0][1]).replace(/<\/tr>/i,''),
           tRowLabel: rows[1][0],
-          tRowColumn: (rows[1][1]).replace(/<\/tr>/i,''),
-          tRowOddLabel: rows[2][0],
-/*          tRowOddColumn: (rows[2][1]).replace(/<\/tr>/,''),*/
-          tRowTotalLabel: rows[3][0],
-          tRowTotalColumn: (rows[3][1]).replace(/<\/tr>/i,'')
+          tRowOddLabel: (rows[1][0]).replace(/row-a/,'row-b'),
+          tRowTotalLabel: rows[1][0].replace(/row-a/,'total'),
+          tRowColumn: (rows[1][1]).replace(/<\/tr>/i,'')
         };
         htmlTemplate = {
           overview: overviewTemplate,
-          main: $('main_overview').innerHTML
+          main: $('#main_overview').html()
         };
-        $('main_overview').innerHTML = '';
+        $('#main_overview').html('');
         /* initialize datepicker */
         Calendar.setup({
           inputField: "input_ov_until_date",
@@ -53,13 +52,13 @@ mlog.overviewControl = function() {
           weekNumbers: false
         });
         /* initial date value */
-        $('input_ov_until_date').value = mlog.base.getCurrentDate();
+        $('#input_ov_until_date').val(mlog.base.getCurrentDate());
       }
     },
     /* summarize last n months */
     getLastMonths: function(n) {
       var nMonths = n || 6;
-      var dtEnd = $F('input_ov_until_date') || mlog.base.getCurrentDate();
+      var dtEnd = $('#input_ov_until_date').val() || mlog.base.getCurrentDate();
       var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),n*-1);
       dtStart.setDate(1);
       dtStart = mlog.base.dateToString(dtStart);
@@ -68,7 +67,7 @@ mlog.overviewControl = function() {
         categories:{},
         summary:{}
         };
-      var categoriesIds = mlog.categories.getNames().sort();
+      var categoriesIds = mlog.categories.getNames();
       var debitId = mlog.translator.get('debit');
       var creditId = mlog.translator.get('credit');
       var balanceId = mlog.translator.get('balance');
@@ -129,7 +128,7 @@ mlog.overviewControl = function() {
     },
     show: function() {
       mlog.base.activateMenu('overview');
-      var nMonths = parseInt($F('overviewNumberMonths'))-1;
+      var nMonths = parseInt($('#overviewNumberMonths').val())-1;
       var theData = mlog.overviewControl.getLastMonths(nMonths);
       mlog.overviewControl.init();
       var res = [];
@@ -175,7 +174,7 @@ mlog.overviewControl = function() {
           res.push(str);
           /* build values */
           for (var month in list[total]) {
-            str = htmlTemplate.overview.tRowTotalColumn;
+            str = htmlTemplate.overview.tRowColumn;
             str = str.replace(/{value}/,mlog.base.formatFloat(list[total][month]));
             res.push(str);
           }
@@ -186,9 +185,14 @@ mlog.overviewControl = function() {
       else {
           str = '<h1>' + mlog.translator.get('no data') + '</h1>';
       }
-      $('report').update(str);
+      $('#report').html(str);
+      res = null;
+      /* hide/show overview table */
+      $('#toggle_overview_table').click( function() {
+        $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
+      });
+      /* display the chart */
       mlog.chartControl.show(theData);
-      Event.observe('toggle_overview_table', 'click', mlog.base.toggleVisibility);
     }
   }
 }();

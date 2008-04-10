@@ -1,4 +1,7 @@
-﻿// entries
+﻿/**
+ * entries.js
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.entries = function(){
   var entries = [];
   var currentDate = mlog.base.getCurrentDate();
@@ -29,14 +32,11 @@ mlog.entries = function(){
           entry[1] = mlog.base.toFloat(entry[1]);
         }
         // parse description
-        entry[2] = entry[2] || '';
-        entry[2] = entry[2].strip() || '';
+        entry[2] = jQuery.trim(entry[2]);
         // parse category
-        entry[3] = entry[3] || '';$
-        entry[3] = entry[3].strip().toLowerCase();
+        entry[3] = jQuery.trim(entry[3]).toLowerCase();
         // parse account
-        entry[4] = entry[4] || '';
-        entry[4] = entry[4].strip().toLowerCase();
+        entry[4] = jQuery.trim(entry[4]).toLowerCase();
         // id
         entry[5] = entries.length;
 
@@ -77,7 +77,7 @@ mlog.entries = function(){
       mlog.accounts.reset();
       var srcData = null;
       try {
-        srcData = $("dataframe").contentWindow.document.getElementById('data');
+        srcData = document.getElementById('dataframe').contentWindow.document.getElementById('data');
       } catch(e) {};
       var rawData = '';
       if (srcData) {
@@ -100,7 +100,7 @@ mlog.entries = function(){
       if (!srcData) {
         /* if there was no data file, create it and reload iframe */
         this.save();
-        $("dataframe").src = $("dataframe").src;
+        $("#dataframe").attr('src', $("#dataframe").attr('src'));
       }
     },
     /*
@@ -110,7 +110,7 @@ mlog.entries = function(){
       if (entries.length==0) {
         this.read();
       }
-      return entries.clone();
+      return entries.slice(0);
     },
     getAllAsText: function() {
       var txt = '';

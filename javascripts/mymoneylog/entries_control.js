@@ -1,3 +1,7 @@
+﻿/**
+ * entries_control.js - entries controller
+ * @author Ricardo Nishimura - 2008
+ */
 mlog.entriesControl = function() {
   var htmlTemplate = null;
   var sortColIndex = 0;
@@ -14,57 +18,55 @@ mlog.entriesControl = function() {
         /* trying to not generate any new markup, just get from html */
         var summaryTemplate;
         /* break table rows */
-        var rows = $('summary_table').innerHTML.replace(/<\/tr>/gi, '</tr>!*!');
+        var rows = $('#summary_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.split('!*!');
         /* remove nodes inside entries table */
-        var children = $A($("summary_table").childNodes);
-        children.each(function(child) {
-          $("summary_table").removeChild(child);
-        });
+        $('#summary_table tbody').remove();
         /* summary table: append a template hook */
-        $('summary_table').appendChild(document.createTextNode("{summaryContent}"));
+        $('#summary_table').append(document.createTextNode("{summaryContent}"));
         var summaryTemplate = {
           tHead: rows[0],
           tRow: rows[1],
           tRowTotal: rows[2]
         };
         /* break table rows */
-        rows = $('entries_table').innerHTML.replace(/<\/tr>/gi, '</tr>!*!');
+        rows = $('#entries_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.split('!*!');
         /* remove nodes inside entries table */
-        children = $A($("entries_table").childNodes);
-        children.each(function(child) {
-          $("entries_table").removeChild(child);
-        });
+        $('#entries_table tbody').remove();
         /* entries table: append a template hook */
-        $('entries_table').appendChild(document.createTextNode("{entriesContent}"));
+        $('#entries_table').append(document.createTextNode("{entriesContent}"));
         var entriesTemplate = {
           tHead: rows[0],
           tRow: rows[1],
-          tRowOdd: rows[2],
-          tRowFuture: rows[3],
-          tRowTotal: rows[4]
+          tRowOdd: rows[1].replace(/row-a/,'row-b'),
+          tRowFuture: rows[1].replace(/row-a/,'row-a row_future'),
+          tRowFutureOdd: rows[1].replace(/row-a/,'row-b row_future'),
+          tRowTotal: rows[2]
         };
         htmlTemplate = {
           summary: summaryTemplate,
           entries: entriesTemplate,
-          main: $('main_entries').innerHTML
+          main: $('#main_entries').html()
         };
-        $('main_entries').innerHTML = '';
+        $('#main_entries').html('');
       } else {
         return; /* it's already initialized */
       };
       mlog.entries.getAll(); /* initialize data */
       /* initialize auto completers */
-      if (!this.categoryAutoCompleter) {
-        this.categoryAutoCompleter = new Autocompleter.Local('input_category', 'category_list', mlog.categories.getNames().sort(), {minChars:-1,choices:30});
-      }
-      if (!this.accountAutoCompleter) {
-        this.accountAutoCompleter = new Autocompleter.Local('input_account', 'account_list', mlog.accounts.getNames().sort(), {minChars:-1,choices:20});
-      }
-      if (!this.accountToAutoCompleter) {
-        this.accountToAutoCompleter = new Autocompleter.Local('input_account_to', 'account_list_to', mlog.accounts.getNames(), {minChars:-1,choices:20});
-      }
+      $('#input_category').autocomplete(
+          mlog.categories.getNames(),
+          { minChars: 0, selectFirst: false }
+        );
+      $('#input_account').autocomplete(
+          mlog.accounts.getNames(),
+          { minChars: 0, selectFirst: false }
+        );
+      $('#input_account_to').autocomplete(
+          mlog.accounts.getNames(),
+          { minChars: 0, selectFirst: false }
+        );
       /* initialize datepicker */
       Calendar.setup({
         inputField: "input_date",
@@ -77,32 +79,25 @@ mlog.entriesControl = function() {
         weekNumbers: false
       });
       /* initial date value */
-      $('input_date').value = mlog.base.getCurrentDate();
+      $('#input_date').val(mlog.base.getCurrentDate());
       /* attach on blur event for account transfers */
-      Event.observe('input_category','blur', this.onBlurAccount);
-      $('filter_query').observe('keyup',mlog.entriesControl.show);
-      $('opt_regex').observe('click',mlog.entriesControl.show);
-      $('opt_future').observe('click',mlog.entriesControl.show);
+      $('#input_category').blur(this.onBlurAccount);
+      $('#filter_query').keyup(mlog.entriesControl.show);
+      $('#opt_regex').click(mlog.entriesControl.show);
+      $('#opt_future').click(mlog.entriesControl.show);
     },
     /* display an entry to input */
     updateInputEntry: function(lineData){
       if (!lineData) {
         return;
       }
-      $('input_date').value = lineData[0];
-      $('input_value').value = mlog.base.floatToString(lineData[1]);
-      $('input_description').value = lineData[2];
-      $('input_category').value = lineData[3] || '';
-      $('input_account').value = lineData[4] || '';
-      /* some effects */
-      var bkcolor = $('form_entry').getStyle('background-color');
-      bkcolor = bkcolor.parseColor();
-      var config = {
-        duration: 0.5,
-        endcolor: bkcolor,
-        restorecolor:  bkcolor
-      };
-      new Effect.Highlight('form_entry', config);
+      $('#input_date').val(lineData[0]);
+      $('#input_value').val(mlog.base.floatToString(lineData[1]));
+      $('#input_description').val(lineData[2]);
+      $('#input_category').val(lineData[3] || '');
+      $('#input_account').val(lineData[4] || '');
+      /* some effects  */
+      $(this).fadeOut().fadeIn();
     },
     /* remove an entry */
     removeEntry: function(elem){
@@ -115,8 +110,8 @@ mlog.entriesControl = function() {
     onClickEntry: function(elem){
       var id = elem.parentNode.getAttribute('id');
       this.updateInputEntry(mlog.entries.get(id));
-      $('input_date').focus();
-      $('transfer').hide();
+      $('#input_date').focus();
+      $('#transfer').hide();
     },
     /* build summary */
     getSummary: function() {
@@ -171,16 +166,16 @@ mlog.entriesControl = function() {
       mlog.entriesControl.init();
 
       var theData;
-      var showFuture = $F('opt_future');
-      var filter = $F('filter_query');
-      var isRegex = $F('opt_regex')=='on';
+      var showFuture = $('#opt_future:checked').length>0;
+      var filter = $('#filter_query').val();
+      var isRegex = $('#opt_regex:checked').length>0;
       theData = mlog.entries.getByFilter(filter,isRegex,showFuture);
 
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
       var tp = htmlTemplate.entries;
       var content = htmlTemplate.main;
-      var maxLenght = parseInt($F('max_entries')) || 100;
+      var maxLenght = $('#max_entries').val() || 100;
       nPages = Math.ceil(theData.length/maxLenght);
       var odd = true;
       if (theData.length > 0) {
@@ -205,20 +200,10 @@ mlog.entriesControl = function() {
           /* apply template tRow or tRowFuture */
           if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
-            if (odd) {
-              strRow = tp.tRowOdd;
-            }
-            else {
-              strRow = tp.tRow;
-            }
+            strRow = odd?tp.tRowOdd:tp.tRow;
           }
           else {
-            if (odd) {
-              strRow = tp.tRowFuture;
-            }
-            else {
-              strRow = tp.tRow;
-            }
+            strRow = odd?tp.tRowFutureOdd:tp.tRowFuture;
           }
           odd = !odd;
           /* the total */
@@ -249,9 +234,11 @@ mlog.entriesControl = function() {
       else {
         content = '<h1>' + mlog.translator.get('no data') + '</h1>';
       }
-      $('report').innerHTML = content;
+      $('#report').html(content);
       res = null;
-      Event.observe('toggle_summary', 'click', mlog.base.toggleVisibility);
+      $('#toggle_summary').click( function() {
+        $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
+      });
 },
 
     /* sort table column */
@@ -263,7 +250,7 @@ mlog.entriesControl = function() {
 
     /* add an entry from input */
     addEntry: function(elem){
-      var inputValue = $F('input_value');
+      var inputValue = $('#input_value').val();
       var nTimes = 1; /* number of inserts */
       var entriesCount = mlog.entries.getCount();
       /* parse value */
@@ -285,16 +272,15 @@ mlog.entriesControl = function() {
       } else {
         inputValue = mlog.base.toFloat(inputValue);
       }
-
       var original = [];
-      original[0] = $F('input_date');
+      original[0] = $('#input_date').val();
       original[1] = inputValue;
-      original[2] = ($F('input_description')).stripTags();
-      original[3] = $F('input_category');
-      original[4] = $F('input_account');
-      reconcilable = ($F('input_date').charAt(10)=='?')||false;
+      original[2] = $('#input_description').val();
+      original[3] = $('#input_category').val();
+      original[4] = $('#input_account').val();
+      reconcilable = ($('#input_date').val().charAt(10)=='?')||false;
       var entry = [];
-      var toAccount = $F('input_account_to');
+      var toAccount = $('#input_account_to').val();
       for (var i=0; i<nTimes; i++) {
         entry = original.slice(0);
         if (i>0) {
@@ -320,26 +306,25 @@ mlog.entriesControl = function() {
       /* refresh entries */
       this.show();
       /* blink add button */
-      new Effect.Pulsate(elem,{pulses:1,duration:0.7});
+      $(elem).fadeOut('fast').fadeIn('fast');
       /* apply style to new entry */
       var newEntry = null;
       entriesCount = mlog.entries.getCount() - entriesCount;
       for (var i=1; i<=entriesCount; i++) {
         /* get the new entry element */
-        newEntry = $(''+(mlog.entries.getCount()-i));
-        if (newEntry) newEntry.addClassName('new_entry');
+        $('#'+(mlog.entries.getCount()-i)).addClass('new_entry');
       }
       /* initial state */
-      $('input_account_to').value = '';
-      $('transfer').hide();
-      $('input_date').focus();
+      $('#input_account_to').val('');
+      $('#transfer').hide();
+      $('#input_date').focus();
     },
     /* toggle 'to account' */
     onBlurAccount: function() {
-      if ($F('input_category') == '') {
-        $('transfer').show();
+      if ($('#input_category').val() == '') {
+        $('#transfer').show();
       } else {
-        $('transfer').hide();
+        $('#transfer').hide();
       }
     },
     /* build paginator */
@@ -366,10 +351,7 @@ mlog.entriesControl = function() {
       return str.join('');
     },
     onPageChange: function() {
-      var page = $F('select_page');
-      if (page) {
-        mlog.entriesControl.show(parseInt(page));
-      }
+        mlog.entriesControl.show(parseInt($('#select_page').val()));
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id');

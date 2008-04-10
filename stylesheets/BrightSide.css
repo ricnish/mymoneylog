@@ -1,4 +1,4 @@
-/********************************************
+﻿/********************************************
    AUTHOR:        Erwin Aligam
    WEBSITE:         http://www.styleshout.com/
   TEMPLATE NAME:  Bright Side of Life
@@ -20,7 +20,6 @@ body {
   font: .70em/1.5em  Verdana, Tahoma, Helvetica, sans-serif;
   color: #666666;
   background: #A9BAC3 url(../images/bg.gif) repeat-x;
-  text-align: center;
 }
 
 /* links */
@@ -32,6 +31,7 @@ a {
 a:hover {
   color: #9EC068;
   background-color: inherit;
+  cursor:pointer;
 }
 
 /* headers */
@@ -122,6 +122,7 @@ input.button:hover, button:hover {
   background: url(../images/tabright.gif) no-repeat right top;
   background-position:0% -3px;
   border: 1px #ffffcf;
+  cursor:pointer;
 }
 input.input_date {
   width:90px;
@@ -424,13 +425,9 @@ form.searchform input.button {
 #main td.col_c {
   text-align: center;
 }
-#main tr.row_future td.col_c {
-  text-align: center;
-  min-width: 70px;
-}
 #main tr.row_future {
-  background-color: #EFF9FF;
-  color: #999;
+  opacity: .60;
+  font-style:italic;
 }
 #main tr:hover {
   background-color: #D1E3EF;
@@ -465,30 +462,41 @@ form.searchform input.button {
 /* end - table */
 
 /* start - suggest list */
-.suggest_list {
-  position: absolute;
-  background-color: #fff;
+.ac_results {
+  padding: 0px;
   border: 1px solid #D3EF86;
+  background-color: white;
+  overflow: hidden;
+  z-index: 99999;
 }
 
-.selected {
+.ac_results ul {
+  width: 100%;
+  list-style-position: outside;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #333;
+}
+
+.ac_results li {
+  margin: 0px;
+  padding: 0px 4px;
+  cursor: default;
+  display: block;
+  line-height: 16px;
+  overflow: hidden;
+  border-bottom: 1px solid #efefef;
+}
+
+.ac_loading {}
+
+.ac_odd {}
+
+.ac_over {
   background-color: #D1E3EF;
 }
 
-.suggest_list ul {
-  margin: 0px;
-  padding: 2px;
-  background: #fff;
-}
-
-.suggest_list li {
-  list-style-type: none;
-  text-indent: 0;
-  border-bottom: 1px solid #efefef;
-  cursor: pointer;
-  color: #333;
-  padding-left: 4px;
-}
 /* end - suggest list */
 /* summary table */
 table.summary {
@@ -554,6 +562,7 @@ div.pagination a:hover {
   font-weight: bold;
   background-color: #9EC630;
   color: #FFF;
+  cursor:pointer;
 }
 div.overflow {
   overflow: auto;

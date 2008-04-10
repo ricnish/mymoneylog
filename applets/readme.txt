@@ -1,9 +1,16 @@
 ﻿TiddlySaver
 This is a helper from TiddlyWiki:
 
-*Original post from http://www.tiddlywiki.com/ - JeremyRuston, 13 August 2007 (created 21 August 2006) adapted to myMoneyLog
+To allow data writing for Opera or Safari browsers is used an java applet, but it is necessary to configure some permission for the jvm perform this task.
 
-The TiddlySaver Java applet allows myMoneyLog from a file:// URL to save changes Safari, Opera and other browsers.
+In Windows run the config.bat script, by double clicking the bat file.
+
+in Linux execute the config.sh script:
+./config.sh
+
+For Mac OS X, sorry, I don't have one to test it, try the following:
+
+*post from http://www.tiddlywiki.com/ - JeremyRuston, 13 August 2007 (created 21 August 2006)  adapted for myMoneyLog:
 
 Before you can use it, you need to give it the necessary privileges by editting your .java.policy file.
 
@@ -24,3 +31,6 @@ If you have trouble setting up the permissions correctly, you can try granting b
 grant codeBase "file://localhost/home/users/Desktop/
 TiddlySaver.jar"
  { permission java.security.AllPermission; };
+
+  
+Enjoy it.

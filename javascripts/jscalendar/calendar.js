@@ -124,12 +124,12 @@ Calendar.isRelated = function (el, evt) {
 			related = evt.toElement;
 		}
 	}
-	while (related) {
+//	while (related) {
 		if (related == el) {
 			return true;
 		}
-		related = related.parentNode;
-	}
+//		related = related.parentNode;
+//	}
 	return false;
 };
 
