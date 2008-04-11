@@ -54,19 +54,37 @@ mlog.entriesControl = function() {
         return; /* it's already initialized */
       };
       mlog.entries.getAll(); /* initialize data */
-      /* initialize auto completers */
+      /* category autocomplete */
       $('#input_category').autocomplete(
           mlog.categories.getNames(),
-          { minChars: 0, selectFirst: false }
+          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '' }
         );
+      $('#input_category').result( function() {
+          /* on accept jump to: */
+          $('#input_account').focus().select();
+        });
+      /* from account autocomplete */
       $('#input_account').autocomplete(
           mlog.accounts.getNames(),
-          { minChars: 0, selectFirst: false }
+          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '' }
         );
+      $('#input_account').result( function() {
+          /* on accept jump to: */
+          if ($('#input_category').val()!='') {
+            $('#form_entry button')[0].focus();
+          } else {
+            $('#input_account_to').focus().select();
+          }
+        });
+      /* to account autocomplete */
       $('#input_account_to').autocomplete(
           mlog.accounts.getNames(),
-          { minChars: 0, selectFirst: false }
+          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '' }
         );
+      $('#input_account_to').result( function() {
+          /* on accept jump to: */
+          $('#form_entry button')[0].focus();
+        });
       /* initialize datepicker */
       Calendar.setup({
         inputField: "input_date",
@@ -81,7 +99,7 @@ mlog.entriesControl = function() {
       /* initial date value */
       $('#input_date').val(mlog.base.getCurrentDate());
       /* attach on blur event for account transfers */
-      $('#input_category').blur(this.onBlurAccount);
+      $('#input_account').focus(this.toggleToAccount);
       $('#filter_query').keyup(mlog.entriesControl.show);
       $('#opt_regex').click(mlog.entriesControl.show);
       $('#opt_future').click(mlog.entriesControl.show);
@@ -320,7 +338,7 @@ mlog.entriesControl = function() {
       $('#input_date').focus();
     },
     /* toggle 'to account' */
-    onBlurAccount: function() {
+    toggleToAccount: function() {
       if ($('#input_category').val() == '') {
         $('#transfer').show();
       } else {

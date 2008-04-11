@@ -481,7 +481,7 @@ form.searchform input.button {
 
 .ac_results li {
   margin: 0px;
-  padding: 0px 4px;
+  padding: 2px 5px;
   cursor: default;
   display: block;
   line-height: 16px;
