@@ -54,20 +54,16 @@ mlog.entriesControl = function() {
         return; /* it's already initialized */
       };
       mlog.entries.getAll(); /* initialize data */
+      /* autocomplete options */
+      var acOptions = { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '  ' };
       /* category autocomplete */
-      $('#input_category').autocomplete(
-          mlog.categories.getNames(),
-          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '' }
-        );
+      $('#input_category').autocomplete(mlog.categories.getNames(),acOptions);
       $('#input_category').result( function() {
           /* on accept jump to: */
           $('#input_account').focus().select();
         });
       /* from account autocomplete */
-      $('#input_account').autocomplete(
-          mlog.accounts.getNames(),
-          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '' }
-        );
+      $('#input_account').autocomplete(mlog.accounts.getNames(),acOptions);
       $('#input_account').result( function() {
           /* on accept jump to: */
           if ($('#input_category').val()!='') {
@@ -77,10 +73,7 @@ mlog.entriesControl = function() {
           }
         });
       /* to account autocomplete */
-      $('#input_account_to').autocomplete(
-          mlog.accounts.getNames(),
-          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '' }
-        );
+      $('#input_account_to').autocomplete(mlog.accounts.getNames(),acOptions);
       $('#input_account_to').result( function() {
           /* on accept jump to: */
           $('#form_entry button')[0].focus();
