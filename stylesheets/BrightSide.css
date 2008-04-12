@@ -206,6 +206,7 @@ form.searchform input.button {
   font: bolder 4em 'Trebuchet MS', Arial, Sans-serif;
   letter-spacing: -2px;
   top: 5px; left: 5px;
+  cursor:pointer;
 }
 #header h2#slogan {
   position: absolute;
