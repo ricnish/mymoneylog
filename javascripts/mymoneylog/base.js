@@ -2,6 +2,9 @@
  * base.js - provides some base functions
  * @author Ricardo Nishimura - 2008
  */
+var mlog = mlog || {};
+mlog.translation = mlog.translation || {};
+
 mlog.base = function() {
   // private:
   // Returns null if it can't do it, false if there's an error, true if it saved OK
@@ -189,6 +192,39 @@ mlog.base = function() {
     },
     stripTags: function(str) {
         return str.replace(/<\/?[^>]+>/gi, '');
+    },
+    setCookie: function(c_name,value,expiredays) {
+      var exdate=new Date();
+      exdate.setDate(exdate.getDate()+expiredays);
+      document.cookie=c_name+ "=" +escape(value)+
+      ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+    },
+    getCookie: function(c_name) {
+      if (document.cookie.length>0) {
+        c_start=document.cookie.indexOf(c_name + "=");
+        if (c_start!=-1)
+          { 
+          c_start=c_start + c_name.length+1; 
+          c_end=document.cookie.indexOf(";",c_start);
+          if (c_end==-1) c_end=document.cookie.length;
+          return unescape(document.cookie.substring(c_start,c_end));
+          } 
+      }
+      return "";
+    },
+    require: function(libraryName) {
+      // inserting via DOM fails in Safari 2.0, so brute force approach
+      // borrowed from scriptaculous
+      document.write('<script type="text/javascript" src="'+libraryName+'"><\/script>');
+    },
+    setLocale: function() {
+      var newLocale = $('#select_locales').val();
+      if (mlog.translator.getLocaleId() != newLocale) {
+        // set new locale in a cookie for 3 years
+        this.setCookie('localeId',newLocale,360*3);
+        // fade out and reload page
+        $('body').fadeOut('normal', function() {window.location.reload();})
+      }
     }
   };
 }();

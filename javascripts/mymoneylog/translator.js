@@ -2,19 +2,29 @@
  * translator.js - load and provides the translations
  * @author Ricardo Nishimura - 2008
  */
-var mlog = {
-  translation: {},
-  require: function(libraryName) {
-    // inserting via DOM fails in Safari 2.0, so brute force approach
-    // borrowed from scriptaculous
-    document.write('<script type="text/javascript" src="'+libraryName+'"><\/script>');
-  },
-  translator: {
-    langId: (navigator.systemLanguage ||
-      navigator.userLanguage ||
-      navigator.language ||
-      navigator.browserLanguage || ''
-    ),
+mlog.translator = function() {
+  var localeId = mlog.base.getCookie('localeId') ||
+        (navigator.systemLanguage ||
+        navigator.language ||
+        navigator.browserLanguage || 'en-us'
+      );
+  localeId = localeId.toLowerCase();
+  
+  // load default locale
+  mlog.base.require('javascripts/jscalendar/lang/calendar-en.js');
+  mlog.base.require('javascripts/mymoneylog/lang/en-us.js');
+
+  if ((localeId != 'en-us') && (localeId != 'en')) {
+    // overwrite with translation
+    mlog.base.require('javascripts/jscalendar/lang/calendar-' + localeId.replace(/-.*/,'') + '.js');
+    mlog.base.require('javascripts/mymoneylog/lang/' + localeId + '.js');
+  }
+  
+  return {
+    getLocaleId: function() {
+      return localeId;
+    },
+
     get: function(msg) {
       msg = jQuery.trim(msg.toLowerCase());
       msg = mlog.translation[msg] || msg;
@@ -26,16 +36,10 @@ var mlog = {
           $(this).html(mlog.translator.get($(this).html()));
         }
       );
+    },
+    /* return the available locales */
+    getLocales: function() {
+      return ['en-us','pt-br'];
     }
   }
-};
-
-// load default translation
-mlog.require('javascripts/jscalendar/lang/calendar-en.js');
-mlog.require('javascripts/mymoneylog/lang/en-US.js');
-
-if (!((mlog.translator.langId == 'en-US') || (mlog.translator.langId == 'en'))) {
-  // overwrite with translation
-  mlog.require('javascripts/jscalendar/lang/calendar-' + mlog.translator.langId.replace(/-.*/,'') + '.js');
-  mlog.require('javascripts/mymoneylog/lang/' + mlog.translator.langId + '.js');
-}
+}();

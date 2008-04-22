@@ -217,7 +217,10 @@ form.searchform input.button {
   font: bold 11px Tahoma, 'trebuchet MS', Sans-serif;
   text-transform: none;
 }
-
+#header #locale {
+  float: right;
+  margin-top: 10px;
+}
 /* main */
 #main {
   float: right;

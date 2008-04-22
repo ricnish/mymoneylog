@@ -17,8 +17,8 @@
     <script src="javascripts/jquery/jquery.flot.pack.js" type="text/javascript"></script>
     <script src="javascripts/jscalendar/calendar.js" type="text/javascript"></script>
     <script src="javascripts/jscalendar/calendar-setup.js" type="text/javascript"></script>
-    <script src="javascripts/mymoneylog/translator.js" type="text/javascript"></script>
     <script src="javascripts/mymoneylog/base.js" type="text/javascript"></script>
+    <script src="javascripts/mymoneylog/translator.js" type="text/javascript"></script>
     <script src="javascripts/mymoneylog/categories.js" type="text/javascript"></script>
     <script src="javascripts/mymoneylog/accounts.js" type="text/javascript"></script>
     <script src="javascripts/mymoneylog/entries.js" type="text/javascript"></script>
@@ -38,6 +38,12 @@
     <!-- wrap starts here -->
     <div id="wrap">
       <div id="header">
+        <div id="locale">
+          <select id="select_locales" class="select_num" onchange="mlog.base.setLocale()">
+            <option value="en-us">en-us</option>
+          </select>
+        </div>
+        
         <h1 id="logo">my<span class="green">Money</span>Log</h1>
         <h2 id="slogan">beta</h2>
         <!-- Menu Tabs -->

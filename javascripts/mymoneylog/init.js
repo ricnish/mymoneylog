@@ -24,4 +24,13 @@ mlog.init = function(){
     $('#applet').html('<applet name="TiddlySaver" code="TiddlySaver.class" archive="applets/TiddlySaver.jar" width="0" height="0"></applet>');
   }
   $('#logo').click( function() { open('http://code.google.com/p/mymoneylog/'); });
+  
+  // init locales selection
+  var selLocales = '';
+  jQuery.each(mlog.translator.getLocales(), function() {
+    selLocales += '<option value="'+ this +'" '+
+        (mlog.translator.getLocaleId()==this?'selected="selected"':'')+
+        '>'+ this +'</option>';
+  })
+  $('#select_locales').html(selLocales);
 }
