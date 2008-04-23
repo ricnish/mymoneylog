@@ -98,9 +98,8 @@ mlog.entries = function(){
         _add( rawData[i].split(mlog.base.dataFieldSeparator) );
       };
       if (!srcData) {
-        /* if there was no data file, create it and reload iframe */
-        this.save();
-        $("#dataframe").attr('src', $("#dataframe").attr('src'));
+        /* if there was no data file, set source to empty */
+        $("#dataframe").attr('src', '');
       }
     },
     /*

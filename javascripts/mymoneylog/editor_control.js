@@ -55,12 +55,22 @@ mlog.editorControl = function() {
       $('#text_data').keydown( mlog.editorControl.onKeyPress );
     },
     applyChanges: function() {
-      mlog.entries.backup();
-      // perform backup
-      var srcData = document.getElementById("dataframe").contentWindow.document.getElementById('data');
-      srcData.innerHTML = "";
-      // sanitize
+
+      // if data.html doesn't exists, create and load it
+      if (!$("#dataframe").attr('src')) {
+        mlog.entries.save();
+        $("#dataframe").load( function() {mlog.editorControl.applyChanges();} );
+        $("#dataframe").attr('src', mlog.base.dataFileName);
+        return;
+      }
+      $("#dataframe").unbind('load');
+
+      // to do: sanitize
       var txt = $('#text_data').val();
+      // perform backup
+      mlog.entries.backup();
+      var srcData = document.getElementById('dataframe').contentWindow.document.getElementById('data');
+      srcData.innerHTML = "";
       srcData.appendChild(document.getElementById("dataframe").contentWindow.document.createTextNode(txt));
       // read fresh data
       mlog.entries.read();
