@@ -26,7 +26,7 @@ mlog.translator = function() {
     },
 
     get: function(msg) {
-      msg = jQuery.trim(msg.toLowerCase());
+      msg = $.trim(msg.toLowerCase());
       msg = mlog.translation[msg] || msg;
       return msg;
     },

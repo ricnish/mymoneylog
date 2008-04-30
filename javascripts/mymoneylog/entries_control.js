@@ -59,10 +59,6 @@ mlog.entriesControl = function() {
       /* category autocomplete */
       $('#input_category').autocomplete(mlog.categories.getNames(),
           { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: mlog.base.categorySeparator });
-      //$('#input_category').result( function() {
-      //    /* on accept jump to: */
-      //    $('#input_account').focus().select();
-      //  });
       /* clean category separator */
       $('#input_category').blur( function() {
           var value = $(this).val();
@@ -81,7 +77,7 @@ mlog.entriesControl = function() {
       $('#input_account').result( function() {
           /* on accept jump to: */
           if ($('#input_category').val()!='') {
-            $('#form_entry button')[0].focus();
+            if (!$.browser.opera) $('#form_entry button')[0].focus();
           } else {
             $('#input_account_to').focus().select();
           }
@@ -90,7 +86,7 @@ mlog.entriesControl = function() {
       $('#input_account_to').autocomplete(mlog.accounts.getNames(),acOptions);
       $('#input_account_to').result( function() {
           /* on accept jump to: */
-          $('#form_entry button')[0].focus();
+          if (!$.browser.opera) $('#form_entry button')[0].focus();
         });
       /* initialize datepicker */
       Calendar.setup({

@@ -87,9 +87,9 @@ mlog.base = function() {
         filePath = filePath.replace(/\//g,"\\");
       }
       filePath = decodeURI(filePath);
-      if (jQuery.browser.mozilla)
+      if ($.browser.mozilla)
         return mozillaSaveFile(filePath, content);
-      if (jQuery.browser.msie)
+      if ($.browser.msie)
         return ieSaveFile(filePath, content);
       return javaSaveFile(filePath, content);
     },

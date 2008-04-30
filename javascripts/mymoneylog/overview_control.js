@@ -55,85 +55,11 @@ mlog.overviewControl = function() {
         $('#input_ov_until_date').val(mlog.base.getCurrentDate());
       }
     },
-    /* summarize last n months */
-    getLastMonths: function(n) {
-      var nMonths = n || 6;
-      var dtEnd = $('#input_ov_until_date').val() || mlog.base.getCurrentDate();
-      var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),n*-1);
-      dtStart.setDate(1);
-      dtStart = mlog.base.dateToString(dtStart);
-      var entries = mlog.entries.getByDate(dtStart,dtEnd);
-      var total = {
-        categories:{},
-        summary:{}
-        };
-      var categoriesIds = mlog.categories.getNames();
-      var debitId = mlog.translator.get('debit');
-      var creditId = mlog.translator.get('credit');
-      var balanceId = mlog.translator.get('balance');
-      var totalId = mlog.translator.get('accumulated');
-      /* initialize months */
-      var months = [];
-      for (var i=nMonths;i>=0;i--) {
-        var month = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),i*-1);
-        month = mlog.base.dateToString(month);
-        month = month.slice(0,7);
-        months.push(month);
-      }
-      // initialize total
-      for (var i=0;i<categoriesIds.length;i++) {
-        total['categories'][categoriesIds[i]] = {};
-      }
-      total['summary'][debitId] = {};
-      total['summary'][creditId] = {};
-      total['summary'][balanceId] = {};
-      total['summary'][totalId] = {};
-      for (var m=0; m<months.length; m++) {
-        total['summary'][debitId][months[m]] = 0;
-        total['summary'][creditId][months[m]] = 0;
-        total['summary'][balanceId][months[m]] = 0;
-        total['summary'][totalId][months[m]] = 0;
-        for (var i=0;i<categoriesIds.length;i++) {
-          total['categories'][categoriesIds[i]][months[m]] = 0;
-        }
-      }
-      // process entries
-      var categories;
-      var month;
-      var value;
-      var accumulated = 0;
-      mlog.base.arraySort(entries,0);
-      for (var i=0;i<entries.length;i++) {
-        month = (entries[i][0]).slice(0, 7);
-        value = entries[i][1];
-        categories = entries[i][3];
-        categories = categories.split(mlog.base.categorySeparator);
-        if (categories[0] != '') {
-          // sum for each category/tag
-          for (var ncat=0;ncat<categories.length;ncat++) {
-            total['categories'][categories[ncat]][month] += value;
-          }
-          /* sum credit (if has category) */
-          if (value>0) {
-            total['summary'][creditId][month] += value;
-          }
-          /* sum debit (if has category) */
-          if (value<0) {
-            total['summary'][debitId][month] += value;
-          }
-        }
-        /* calc balance */
-        total['summary'][balanceId][month] += value;
-        /* sum total */
-        accumulated += value;
-        total['summary'][totalId][month] = accumulated;
-      }
-      return total;
-    },
+    /* show overview */
     show: function() {
       mlog.base.activateMenu('overview');
-      var nMonths = parseInt($('#overviewNumberMonths').val())-1;
-      var theData = mlog.overviewControl.getLastMonths(nMonths);
+      var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
+        $('#input_ov_until_date').val());
       mlog.overviewControl.init();
       var res = [];
       var str = '';
