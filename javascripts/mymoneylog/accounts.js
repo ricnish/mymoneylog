@@ -6,7 +6,7 @@ mlog.accounts = function(){
   var accounts = {};
   return {
     add: function(account,amount){
-      account = account.toLowerCase();
+      //account = account.toLowerCase();
       var value = amount || 0;
       if (accounts[account] === undefined) {
         accounts[account] = value;

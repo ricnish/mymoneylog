@@ -6,9 +6,13 @@ mlog.categories = function(){
   var categories = {};
   return {
     add: function(category){
-      category = category.toLowerCase();
-      if (categories[category] === undefined) {
-        categories[category] = true;
+      //category = category.toLowerCase();
+      // if have more than one, split and insert
+      category = category.split(mlog.base.categorySeparator);
+      for (var i=0;i<category.length;i++) {
+        if ((category[i] != '') && (categories[category[i]] === undefined)) {
+          categories[category[i]] = true;
+        }
       }
     },
     getNames: function(){

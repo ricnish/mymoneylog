@@ -64,6 +64,7 @@ mlog.base = function() {
     /* begin config parameters */
     dataFieldSeparator: '\t',
     dataRecordSeparator: /[\n\r]+/,
+    categorySeparator: '; ',
     commentChar: '#',
     dataFileName: 'data.html',
     /* end config parameters */

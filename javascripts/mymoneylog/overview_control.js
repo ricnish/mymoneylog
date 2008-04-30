@@ -98,7 +98,7 @@ mlog.overviewControl = function() {
         }
       }
       // process entries
-      var category;
+      var categories;
       var month;
       var value;
       var accumulated = 0;
@@ -106,9 +106,13 @@ mlog.overviewControl = function() {
       for (var i=0;i<entries.length;i++) {
         month = (entries[i][0]).slice(0, 7);
         value = entries[i][1];
-        category = entries[i][3];
-        if (category != '') {
-          total['categories'][category][month] += value;
+        categories = entries[i][3];
+        categories = categories.split(mlog.base.categorySeparator);
+        if (categories[0] != '') {
+          // sum for each category/tag
+          for (var ncat=0;ncat<categories.length;ncat++) {
+            total['categories'][categories[ncat]][month] += value;
+          }
           /* sum credit (if has category) */
           if (value>0) {
             total['summary'][creditId][month] += value;
