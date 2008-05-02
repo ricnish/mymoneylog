@@ -215,7 +215,7 @@ mlog.entries = function(){
       var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),nMonths*-1);
       dtStart.setDate(1);
       dtStart = mlog.base.dateToString(dtStart);
-      var entries = mlog.entries.getByDate(dtStart,dtEnd);
+      var ovEntries = mlog.entries.getByDate(dtStart,dtEnd);
       var total = {
         categories:{},
         summary:{}
@@ -255,11 +255,13 @@ mlog.entries = function(){
       var month;
       var value;
       var accumulated = 0;
-      mlog.base.arraySort(entries,0);
-      for (var i=0;i<entries.length;i++) {
-        month = (entries[i][0]).slice(0, 7);
-        value = entries[i][1];
-        categories = entries[i][3];
+      mlog.base.arraySort(ovEntries,0);
+      for (var i=0;i<ovEntries.length;i++) {
+        // skip if reconcilable
+        if (ovEntries[i][6]) continue;
+        month = (ovEntries[i][0]).slice(0, 7);
+        value = ovEntries[i][1];
+        categories = ovEntries[i][3];
         categories = categories.split(mlog.base.categorySeparator);
         if (categories[0] != '') {
           // sum for each category/tag
