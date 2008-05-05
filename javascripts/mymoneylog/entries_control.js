@@ -6,8 +6,8 @@ mlog.entriesControl = function() {
   var htmlTemplate = null;
   var sortColIndex = 0;
   var sortColRev = true;
-  var entryCalendar;
   return {
+    hideSummary: false,
     categoryAutoCompleter: null,
     accountAutoCompleter: null,
     accountToAutoCompleter: null,
@@ -206,7 +206,11 @@ mlog.entriesControl = function() {
         }
         /* build summary */
         content = content.replace(/{summaryContent}/, mlog.entriesControl.getSummary());
-
+        if (mlog.entriesControl.hideSummary) {
+          /* apply hide style */
+          content = content.replace(/show_next/, 'hide_next');
+          content = content.replace(/ block/, ' none');
+        }
         /* build entries */
         res.push(tp.tHead);
         var i = 0;
@@ -259,6 +263,7 @@ mlog.entriesControl = function() {
       res = null;
       $('#toggle_summary').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
+        mlog.entriesControl.hideSummary = !mlog.entriesControl.hideSummary;
       });
 },
 
