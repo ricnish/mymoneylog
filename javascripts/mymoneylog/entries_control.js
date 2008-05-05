@@ -209,7 +209,7 @@ mlog.entriesControl = function() {
         if (mlog.entriesControl.hideSummary) {
           /* apply hide style */
           content = content.replace(/show_next/, 'hide_next');
-          content = content.replace(/ block/, ' none');
+          content = content.replace(/display: block/i, 'display: none');
         }
         /* build entries */
         res.push(tp.tHead);
