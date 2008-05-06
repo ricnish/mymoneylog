@@ -5,13 +5,11 @@
 mlog.overviewControl = function() {
   var htmlTemplate = null;
   return {
-    data: [],
-    sortColIndex: 0,
-    sortColRev: false,
-    /* initialize template ... */
     init: function() {
       /* initialize template... */
-      if (!htmlTemplate) {
+      if (htmlTemplate) {
+        return; /* it's already initialized */
+      } else {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
@@ -58,9 +56,9 @@ mlog.overviewControl = function() {
     /* show overview */
     show: function() {
       mlog.base.activateMenu('overview');
+      mlog.overviewControl.init();
       var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
-      mlog.overviewControl.init();
       var res = [];
       var str = '';
       var isHeader = true;
@@ -76,7 +74,7 @@ mlog.overviewControl = function() {
               str = str.replace(/{month}/,month);
               res.push(str);
             }
-            res.push('</tr>'); // closing tag not included
+            res.push('</tr>'); // closing tag
             isHeader = false; // just one time
           }
           /* get description */
@@ -94,7 +92,7 @@ mlog.overviewControl = function() {
             str = str.replace(/{value}/,mlog.base.formatFloat(list[category][month]));
             res.push(str);
           }
-          res.push('</tr>'); // closing tag not included
+          res.push('</tr>'); // closing tag
         }
         /* build summary */
         list = theData.summary;

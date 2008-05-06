@@ -6,15 +6,17 @@ mlog.entriesControl = function() {
   var htmlTemplate = null;
   var sortColIndex = 0;
   var sortColRev = true;
+  var filter_query = '';
+  var opt_regex = false;
+  var opt_future = false;
+  var max_entries = 50;
   return {
     hideSummary: false,
-    categoryAutoCompleter: null,
-    accountAutoCompleter: null,
-    accountToAutoCompleter: null,
     /* initialize template, completers, datepicker... */
     init: function() {
-      /* initialize: get template, create completers, datepicker... */
-      if (!htmlTemplate) {
+      if (htmlTemplate) {
+        return; /* it's already initialized */
+      } else {
         /* trying to not generate any new markup, just get from html */
         var summaryTemplate;
         /* break table rows */
@@ -50,62 +52,59 @@ mlog.entriesControl = function() {
           main: $('#main_entries').html()
         };
         $('#main_entries').html('');
-      } else {
-        return; /* it's already initialized */
-      };
-      mlog.entries.getAll(); /* initialize data */
-      /* autocomplete options */
-      var acOptions = { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '  ' };
-      /* category autocomplete */
-      $('#input_category').autocomplete(mlog.categories.getNames(),
-          { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: mlog.base.categorySeparator });
-      /* clean category separator */
-      $('#input_category').blur( function() {
-          var value = $(this).val();
-          var separator = mlog.base.categorySeparator;
-          var cut = true;
-          for (var i=0;i<separator.length;i++) {
-            if (value[value.length-i-1]!=separator[separator.length-i-1]) {
-              cut = false;
-              break;
+
+        mlog.entries.getAll(); /* initialize data */
+        /* autocomplete options */
+        var acOptions = { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '  ' };
+        /* category autocomplete */
+        $('#input_category').autocomplete(mlog.categories.getNames(),
+            { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: mlog.base.categorySeparator });
+        /* clean category separator */
+        $('#input_category').blur( function() {
+            var value = $(this).val();
+            var separator = mlog.base.categorySeparator;
+            var cut = true;
+            for (var i=0;i<separator.length;i++) {
+              if (value[value.length-i-1]!=separator[separator.length-i-1]) {
+                cut = false;
+                break;
+              }
             }
-          }
-          if (cut) $(this).val(value.substring(0,value.length-separator.length));
-        });
-      /* from account autocomplete */
-      $('#input_account').autocomplete(mlog.accounts.getNames(),acOptions);
-      $('#input_account').result( function() {
-          /* on accept jump to: */
-          if ($('#input_category').val()!='') {
+            if (cut) $(this).val(value.substring(0,value.length-separator.length));
+          });
+        /* from account autocomplete */
+        $('#input_account').autocomplete(mlog.accounts.getNames(),acOptions);
+        $('#input_account').result( function() {
+            /* on accept jump to: */
+            if ($('#input_category').val()!='') {
+              if (!$.browser.opera) $('#form_entry button')[0].focus();
+            } else {
+              $('#input_account_to').focus().select();
+            }
+          });
+        /* to account autocomplete */
+        $('#input_account_to').autocomplete(mlog.accounts.getNames(),acOptions);
+        $('#input_account_to').result( function() {
+            /* on accept jump to: */
             if (!$.browser.opera) $('#form_entry button')[0].focus();
-          } else {
-            $('#input_account_to').focus().select();
-          }
+          });
+        /* initialize datepicker */
+        Calendar.setup({
+          inputField: "input_date",
+          ifFormat: "%Y-%m-%d",
+          daFormat: "%Y-%m-%d",
+          showsTime: false,
+          button: "input_date",
+          singleClick: true,
+          step: 2,
+          weekNumbers: false
         });
-      /* to account autocomplete */
-      $('#input_account_to').autocomplete(mlog.accounts.getNames(),acOptions);
-      $('#input_account_to').result( function() {
-          /* on accept jump to: */
-          if (!$.browser.opera) $('#form_entry button')[0].focus();
-        });
-      /* initialize datepicker */
-      Calendar.setup({
-        inputField: "input_date",
-        ifFormat: "%Y-%m-%d",
-        daFormat: "%Y-%m-%d",
-        showsTime: false,
-        button: "input_date",
-        singleClick: true,
-        step: 2,
-        weekNumbers: false
-      });
-      /* initial date value */
-      $('#input_date').val(mlog.base.getCurrentDate());
-      /* attach on blur event for account transfers */
-      $('#input_account').focus(this.toggleToAccount);
-      $('#filter_query').keyup(mlog.entriesControl.show);
-      $('#opt_regex').click(mlog.entriesControl.show);
-      $('#opt_future').click(mlog.entriesControl.show);
+        /* initial date value */
+        $('#input_date').val(mlog.base.getCurrentDate());
+        /* attach on blur event for account transfers */
+        $('#input_account').focus(this.toggleToAccount);
+        this.updateOptions();
+      }
     },
     /* display an entry to input */
     updateInputEntry: function(lineData){
@@ -178,26 +177,17 @@ mlog.entriesControl = function() {
     },
     /* display the entries */
     show: function(page){
-      var nPage = (typeof page == 'number')? page : 1;
-      var nPages = 1;
-      var t = [];
       mlog.base.activateMenu('entries');
+      mlog.entriesControl.init();
+      var nPage = (typeof page == 'number')? page : 1;
       var theTotal = 0;
       var res = [];
-      mlog.entriesControl.init();
-
-      var theData;
-      var showFuture = $('#opt_future:checked').length>0;
-      var filter = $('#filter_query').val();
-      var isRegex = $('#opt_regex:checked').length>0;
-      theData = mlog.entries.getByFilter(filter,isRegex,showFuture);
-
+      var theData = mlog.entries.getByFilter(filter_query,opt_regex,opt_future);
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
       var tp = htmlTemplate.entries;
       var content = htmlTemplate.main;
-      var maxLenght = $('#max_entries').val() || 100;
-      nPages = Math.ceil(theData.length/maxLenght);
+      var nPages = Math.ceil(theData.length/max_entries);
       var odd = true;
       if (theData.length > 0) {
         mlog.base.arraySort(theData, sortColIndex);
@@ -215,11 +205,11 @@ mlog.entriesControl = function() {
         res.push(tp.tHead);
         var i = 0;
         if (nPage>1) {
-          i = (nPage-1)*maxLenght;
+          i = (nPage-1)*max_entries;
           i = i>(theData.length-1)?0:i;
         }
         for (i; i < theData.length; i++) {
-          if ((res.length-1)>=maxLenght) {
+          if ((res.length-1)>=max_entries) {
             break;
           }
           /* apply template tRow or tRowFuture */
@@ -246,13 +236,13 @@ mlog.entriesControl = function() {
           }
           res.push(strRow);
         }
-        /* end of data, show total */
+        /* end of data, put total */
         strRow = tp.tRowTotal;
         strRow = strRow.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
         strRow = strRow.replace(/{entriescount}/, res.length-1);
         res.push(strRow);
         /* assemble table */
-        var res = res.join('');
+        res = res.join('');
         content = content.replace(/{entriesContent}/, res);
         content += mlog.entriesControl.getPaginator(nPage,nPages)+'<br/>';
       }
@@ -260,12 +250,11 @@ mlog.entriesControl = function() {
         content = '<h1>' + mlog.translator.get('no data') + '</h1>';
       }
       $('#report').html(content);
-      res = null;
       $('#toggle_summary').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         mlog.entriesControl.hideSummary = !mlog.entriesControl.hideSummary;
       });
-},
+    },
 
     /* sort table column */
     sortCol: function(index){
@@ -382,6 +371,17 @@ mlog.entriesControl = function() {
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id');
       mlog.entries.reconcile(id);
+      this.show();
+    },
+    /* read options panel and set to variables*/
+    updateOptions: function() {
+      filter_query = $('#filter_query').val();
+      opt_regex = $('#opt_regex:checked').length>0;
+      opt_future = $('#opt_future:checked').length>0;
+      max_entries = $('#max_entries').val() || 50;
+    },
+    applyOptions: function() {
+      this.updateOptions();
       this.show();
     }
   };

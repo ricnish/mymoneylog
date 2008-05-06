@@ -128,12 +128,15 @@
               <label class="msg">
                 Show last
               </label>
-              <select id="max_entries" class="select_num" onchange="mlog.entriesControl.show()">
+              <select id="max_entries" class="select_num">
                 <option value="50" selected="selected">50</option>
                 <option value="100">100</option>
                 <option value="200">200</option>
                 <option value="400">400</option>
               </select>&nbsp;<span class="msg">entries</span>
+              <p>
+                <button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>
+              </p>
             </form>
           </div>
           <!-- entries panel ends here -->
@@ -149,7 +152,9 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4" selected="selected">4</option>
+                <option value="5">5</option>
                 <option value="6">6</option>
+                <option value="9">9</option>
                 <option value="12">12</option>
               </select>&nbsp;<span class="msg">months</span>
               <label class="msg">
