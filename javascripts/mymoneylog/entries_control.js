@@ -107,7 +107,7 @@ mlog.entriesControl = function() {
         /* fill filter autocomplete */
         storedSearches = mlog.base.getCookie('storedSearches').split('~');
         $('#filter_query').autocomplete(storedSearches, 
-          { minChars: 1, max: 50, selectFirst: false })
+          { minChars: 0, max: 50, selectFirst: false })
         /* read options */
         this.updateOptions();
       }
@@ -385,7 +385,7 @@ mlog.entriesControl = function() {
     },
     /* read options panel and set to variables*/
     updateOptions: function() {
-      filter_query = $('#filter_query').val();
+      filter_query = $.trim($('#filter_query').val());
       opt_regex = $('#opt_regex:checked').length>0;
       opt_future = $('#opt_future:checked').length>0;
       max_entries = $('#max_entries').val() || 50;
@@ -400,7 +400,7 @@ mlog.entriesControl = function() {
         mlog.base.setCookie('storedSearches',str);
         /* refresh filter autocomplete */
         $('#filter_query').setOptions({data: storedSearches});
-      }      
+      }
     },
     applyOptions: function() {
       this.updateOptions();
