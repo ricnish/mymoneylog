@@ -10,6 +10,7 @@ mlog.entriesControl = function() {
   var opt_regex = false;
   var opt_future = false;
   var max_entries = 50;
+  var storedSearches = [];
   return {
     hideSummary: false,
     /* initialize template, completers, datepicker... */
@@ -103,6 +104,11 @@ mlog.entriesControl = function() {
         $('#input_date').val(mlog.base.getCurrentDate());
         /* attach on blur event for account transfers */
         $('#input_account').focus(this.toggleToAccount);
+        /* fill filter autocomplete */
+        storedSearches = mlog.base.getCookie('storedSearches').split('~');
+        $('#filter_query').autocomplete(storedSearches, 
+          { minChars: 1, max: 50, selectFirst: false })
+        /* read options */
         this.updateOptions();
       }
     },
@@ -333,6 +339,10 @@ mlog.entriesControl = function() {
       $('#input_account_to').val('');
       $('#transfer').hide();
       $('#input_date').focus();
+      /* update autocompleters */
+      $('#input_category').setOptions({data: mlog.categories.getNames()});
+      $('#input_account').setOptions({data: mlog.accounts.getNames()});
+      $('#input_account_to').setOptions({data: mlog.accounts.getNames()});
     },
     /* toggle 'to account' */
     toggleToAccount: function() {
@@ -379,6 +389,18 @@ mlog.entriesControl = function() {
       opt_regex = $('#opt_regex:checked').length>0;
       opt_future = $('#opt_future:checked').length>0;
       max_entries = $('#max_entries').val() || 50;
+      /* update stored searches */
+      if (filter_query!='' && $.inArray(filter_query, storedSearches)<0) {
+        storedSearches.unshift(filter_query);
+        var str = storedSearches.join('~');
+        while (str.length>1024) {
+          storedSearches.pop();
+          str = storedSearches.join('~');
+        }
+        mlog.base.setCookie('storedSearches',str);
+        /* refresh filter autocomplete */
+        $('#filter_query').setOptions({data: storedSearches});
+      }      
     },
     applyOptions: function() {
       this.updateOptions();
