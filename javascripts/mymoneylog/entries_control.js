@@ -397,7 +397,7 @@ mlog.entriesControl = function() {
           storedSearches.pop();
           str = storedSearches.join('~');
         }
-        mlog.base.setCookie('storedSearches',str);
+        mlog.base.setCookie('storedSearches',str,120);
         /* refresh filter autocomplete */
         $('#filter_query').setOptions({data: storedSearches});
       }
