@@ -187,7 +187,7 @@ mlog.entriesControl = function() {
       mlog.entriesControl.init();
       var nPage = (typeof page == 'number')? page : 1;
       var theTotal = 0;
-      var res = [];
+      var res = '';
       var theData = mlog.entries.getByFilter(filter_query,opt_regex,opt_future);
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
@@ -208,16 +208,10 @@ mlog.entriesControl = function() {
           content = content.replace(/display: block/i, 'display: none');
         }
         /* build entries */
-        res.push(tp.tHead);
-        var i = 0;
-        if (nPage>1) {
-          i = (nPage-1)*max_entries;
-          i = i>(theData.length-1)?0:i;
-        }
-        for (i; i < theData.length; i++) {
-          if ((res.length-1)>=max_entries) {
-            break;
-          }
+        res+=tp.tHead;
+        var i = (nPage-1)*max_entries;
+        var start = i;
+        for (i; i < theData.length && (i-start)<max_entries; i++) {
           /* apply template tRow or tRowFuture */
           if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
@@ -240,15 +234,14 @@ mlog.entriesControl = function() {
           if (theData[i][6]) {
             strRow = strRow.replace(/opt_reconcile hide/,'opt_reconcile');
           }
-          res.push(strRow);
+          res+=strRow;
         }
         /* end of data, put total */
         strRow = tp.tRowTotal;
         strRow = strRow.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
-        strRow = strRow.replace(/{entriescount}/, res.length-1);
-        res.push(strRow);
+        strRow = strRow.replace(/{entriescount}/, i - start);
+        res+=strRow;
         /* assemble table */
-        res = res.join('');
         content = content.replace(/{entriesContent}/, res);
         content += mlog.entriesControl.getPaginator(nPage,nPages)+'<br/>';
       }
