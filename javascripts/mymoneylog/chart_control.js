@@ -47,10 +47,10 @@ mlog.chartControl = function() {
       eval('dataset = '+strDataset+';');
 
       // chart container
-      var size = $('#chart').width()-20;
+      var size = $('#chart').width()-25;
       $('#chart').html('<h1>'+ mlog.translator.get('expenses by category') +
         '</h1><div id="chart_canvas" style="height:'+
-        (size/2)+'px; width:'+(size)+'px;"></div>');
+        (size/1.75)+'px; width:'+(size)+'px;"></div>');
 
       // draw
       $.plot($('#chart_canvas'),
