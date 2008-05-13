@@ -42,11 +42,6 @@ mlog.overviewControl = function() {
         Calendar.setup({
           inputField: "input_ov_until_date",
           ifFormat: "%Y-%m-%d",
-          daFormat: "%Y-%m-%d",
-          showsTime: false,
-          button: "input_ov_until_date",
-          singleClick: true,
-          step: 2,
           weekNumbers: false
         });
         /* initial date value */
@@ -55,8 +50,8 @@ mlog.overviewControl = function() {
     },
     /* show overview */
     show: function() {
-      mlog.base.activateMenu('overview');
       mlog.overviewControl.init();
+      mlog.base.activateMenu('overview');
       var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
       var res = [];

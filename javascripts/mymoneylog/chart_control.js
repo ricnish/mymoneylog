@@ -53,13 +53,13 @@ mlog.chartControl = function() {
         (size/2)+'px; width:'+(size)+'px;"></div>');
 
       // draw
-      $.plot( $('#chart_canvas'),
-                dataset,
-                {
-                  xaxis: {ticks: xTicks},
-                  legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
-                }
-              );
+      $.plot($('#chart_canvas'),
+              dataset,
+              {
+                xaxis: {ticks: xTicks},
+                legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
+              }
+            );
     }
   }
 }();

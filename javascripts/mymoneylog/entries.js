@@ -39,7 +39,6 @@ mlog.entries = function(){
         entry[4] = $.trim(entry[4]).toLowerCase();
         // id
         entry[5] = entries.length;
-
         entries.push(entry);
         // update category list
         if (entry[3] != '') {
@@ -126,14 +125,14 @@ mlog.entries = function(){
       return txt;
     },
     save: function(){
-      var result = mlog.base.saveFile( mlog.base.getDataPathName(),
+      var result = mlog.base.saveFile(mlog.base.getDataPathName(),
                                       '<pre id="data">\n'+this.getAllAsText()+'</pre>');
       if (result !== true) {
         alert('Could not store the data.');
       }
     },
     backup: function(){
-      var result = mlog.base.saveFile( mlog.base.getDataPathName() + '.old',
+      var result = mlog.base.saveFile(mlog.base.getDataPathName() + '.old',
                                       '<pre id="data">\n'+this.getAllAsText()+'</pre>');
       if (result !== true) {
         alert('Could not backup the data.');
@@ -162,7 +161,7 @@ mlog.entries = function(){
       dtEnd = dtEnd || dtStart;
       var res = [];
       for (var i=0;i<entries.length;i++) {
-        if (entries[i][0]>=dtStart && entries[i][0]<=dtEnd) {
+        if (entries[i][0] >= dtStart && entries[i][0] <= dtEnd) {
           res.push(entries[i]);
         }
       }
@@ -189,7 +188,7 @@ mlog.entries = function(){
             }
           }
           if (!withFuture) {
-            if (entries[i][0]>dtEnd)
+            if (entries[i][0] > dtEnd)
               continue;
           }
           res.push(entries[i]);
@@ -235,19 +234,19 @@ mlog.entries = function(){
       }
       // initialize total
       for (var i=0;i<categoriesIds.length;i++) {
-        total['categories'][categoriesIds[i]] = {};
+        total.categories[categoriesIds[i]] = {};
       }
-      total['summary'][debitId] = {};
-      total['summary'][creditId] = {};
-      total['summary'][balanceId] = {};
-      total['summary'][totalId] = {};
+      total.summary[debitId] = {};
+      total.summary[creditId] = {};
+      total.summary[balanceId] = {};
+      total.summary[totalId] = {};
       for (var m=0; m<months.length; m++) {
-        total['summary'][debitId][months[m]] = 0;
-        total['summary'][creditId][months[m]] = 0;
-        total['summary'][balanceId][months[m]] = 0;
-        total['summary'][totalId][months[m]] = 0;
+        total.summary[debitId][months[m]] = 0;
+        total.summary[creditId][months[m]] = 0;
+        total.summary[balanceId][months[m]] = 0;
+        total.summary[totalId][months[m]] = 0;
         for (var i=0;i<categoriesIds.length;i++) {
-          total['categories'][categoriesIds[i]][months[m]] = 0;
+          total.categories[categoriesIds[i]][months[m]] = 0;
         }
       }
       // process entries
@@ -266,22 +265,22 @@ mlog.entries = function(){
         if (categories[0] != '') {
           // sum for each category/tag
           for (var ncat=0;ncat<categories.length;ncat++) {
-            total['categories'][categories[ncat]][month] += value;
+            total.categories[categories[ncat]][month] += value;
           }
           /* sum credit (if has category) */
           if (value>0) {
-            total['summary'][creditId][month] += value;
+            total.summary[creditId][month] += value;
           }
           /* sum debit (if has category) */
           if (value<0) {
-            total['summary'][debitId][month] += value;
+            total.summary[debitId][month] += value;
           }
         }
         /* calc balance */
-        total['summary'][balanceId][month] += value;
+        total.summary[balanceId][month] += value;
         /* sum total */
         accumulated += value;
-        total['summary'][totalId][month] = accumulated;
+        total.summary[totalId][month] = accumulated;
       }
       return total;
     }

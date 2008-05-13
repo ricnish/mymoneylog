@@ -93,11 +93,6 @@ mlog.entriesControl = function() {
         Calendar.setup({
           inputField: "input_date",
           ifFormat: "%Y-%m-%d",
-          daFormat: "%Y-%m-%d",
-          showsTime: false,
-          button: "input_date",
-          singleClick: true,
-          step: 2,
           weekNumbers: false
         });
         /* initial date value */
@@ -106,7 +101,7 @@ mlog.entriesControl = function() {
         $('#input_account').focus(this.toggleToAccount);
         /* fill filter autocomplete */
         storedSearches = mlog.base.getCookie('storedSearches').split('~');
-        $('#filter_query').autocomplete(storedSearches, 
+        $('#filter_query').autocomplete(storedSearches,
           { minChars: 0, max: 50, selectFirst: false })
         /* read options */
         this.updateOptions();
@@ -183,8 +178,8 @@ mlog.entriesControl = function() {
     },
     /* display the entries */
     show: function(page){
-      mlog.base.activateMenu('entries');
       mlog.entriesControl.init();
+      mlog.base.activateMenu('entries');
       var nPage = (typeof page == 'number')? page : 1;
       var theTotal = 0;
       var res = '';

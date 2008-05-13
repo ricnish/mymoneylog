@@ -11,7 +11,7 @@ mlog.base = function() {
   var ieSaveFile = function(filePath,content) {
     try {
       var fso = new ActiveXObject("Scripting.FileSystemObject");
-    } catch(ex) {
+    } catch(e) {
       return null;
     }
     var file = fso.OpenTextFile(filePath,2,true,-1);
@@ -34,7 +34,7 @@ mlog.base = function() {
         out.flush();
         out.close();
         return true;
-      } catch(ex) {
+      } catch(e) {
         return false;
       }
     }
@@ -47,13 +47,12 @@ mlog.base = function() {
         var res = document.applets["TiddlySaver"].saveFile(filePath,"UTF-8",content);
         if (res>0)
           return true;
-    } catch(ex) {
-    }
+    } catch(e) {}
     try {
       var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
       s.print(content);
       s.close();
-    } catch(ex) {
+    } catch(e) {
       return null;
     }
     return true;
@@ -105,20 +104,15 @@ mlog.base = function() {
             a = a.toLowerCase();
             b = b.toLowerCase();
           }
-        }
-        catch (e) {
-        }
+        } catch(e) {}
         try { // IE6...
           if (a < b) {
             return -1;
-          }
-          else
+          } else
             if (a > b) {
               return 1;
             }
-        }
-        catch (e2) {
-        }
+        } catch(e) {}
         return 0;
       };
       theArray.sort(sortFn);
@@ -195,21 +189,20 @@ mlog.base = function() {
         return str.replace(/<\/?[^>]+>/gi, '');
     },
     setCookie: function(c_name,value,expiredays) {
-      var exdate=new Date();
+      var exdate = new Date();
       exdate.setDate(exdate.getDate()+expiredays);
-      document.cookie=c_name+ "=" +escape(value)+
-      ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+      document.cookie = c_name+"="+escape(value)+
+        ((expiredays == null) ? "" : ";expires="+exdate.toGMTString());
     },
     getCookie: function(c_name) {
-      if (document.cookie.length>0) {
-        c_start=document.cookie.indexOf(c_name + "=");
-        if (c_start!=-1)
-          {
-          c_start=c_start + c_name.length+1;
-          c_end=document.cookie.indexOf(";",c_start);
-          if (c_end==-1) c_end=document.cookie.length;
-          return unescape(document.cookie.substring(c_start,c_end));
-          }
+      if (document.cookie.length > 0) {
+        var c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+          c_start = c_start + c_name.length+1;
+          var c_end = document.cookie.indexOf(";", c_start);
+          if (c_end == -1) c_end = document.cookie.length;
+          return unescape(document.cookie.substring(c_start, c_end));
+        }
       }
       return "";
     },
