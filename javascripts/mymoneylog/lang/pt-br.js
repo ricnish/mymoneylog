@@ -5,6 +5,7 @@
 mlog.translation = {
 centschar: ',',
 thousandchar: '.',
+'all': 'tudo',
 'account': 'conta',
 'accumulated': 'acumulado',
 'add': 'adicionar',

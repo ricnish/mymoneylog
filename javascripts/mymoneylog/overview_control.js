@@ -52,27 +52,33 @@ mlog.overviewControl = function() {
     show: function() {
       mlog.overviewControl.init();
       mlog.base.activateMenu('overview');
+      mlog.overviewControl.updateCategoriesCheckBoxes();
+      /* get selected categories */
+      var categoriesChecked = [];
+      $.each($('#show_ov_categories input:checked'), function() {
+        categoriesChecked.push($(this).attr('title'));
+      });
+
       var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
       var res = [];
       var str = '';
-      var isHeader = true;
       var odd = true;
       if (theData) {
         var list = theData.categories;
+        /* build header */
+        res.push(htmlTemplate.overview.tHeadLabel);
+        for (var month in list[mlog.categories.getNames()[0]]) {
+          str = htmlTemplate.overview.tHeadColumn;
+          str = str.replace(/{month}/,month);
+          res.push(str);
+        }
+        res.push('</tr>'); // closing tag
+        /* build categories rows */
         for (var category in list) {
-          /* build header */
-          if (isHeader) {
-            res.push(htmlTemplate.overview.tHeadLabel);
-            for (var month in list[category]) {
-              str = htmlTemplate.overview.tHeadColumn;
-              str = str.replace(/{month}/,month);
-              res.push(str);
-            }
-            res.push('</tr>'); // closing tag
-            isHeader = false; // just one time
-          }
-          /* get description */
+          /* if not checked skip */
+          if ($.inArray(category,categoriesChecked)<0) continue;
+          
           if (odd) {
             str = htmlTemplate.overview.tRowOddLabel;
           } else {
@@ -116,6 +122,35 @@ mlog.overviewControl = function() {
       });
       /* display the chart */
       mlog.chartControl.show(theData);
+    },
+    updateCategoriesCheckBoxes: function() {
+      /* show categories check boxes */
+      var cList = mlog.categories.getNames();
+      var listed = [];
+      show = false;
+      /* check if is needed to update */
+      $.each($('#show_ov_categories input'), function() { listed.push($(this).attr('title'));});
+      $.each(cList, function() {
+        if ($.inArray(this,listed)<0) {
+          show = true;
+          return false;
+        }
+      });
+      if (show) {
+        var list = '';
+        for (var i=0;i<cList.length;i++) {
+          list += '<input id="chkbox_ov_'+cList[i]+'" name="chkbox_ov_'+cList[i]+
+            '" class="input_checkbox" type="checkbox" title="'+cList[i]+
+            '" checked="checked"/>'+cList[i]+'<br/>';
+        }
+        $('#show_ov_categories').html(list);
+      }
+    },
+    toggleCategoriesCheckBoxes: function() {
+      var chk = ($('#chkbox_ov_all').attr('checked')!=null);
+      $.each($('#show_ov_categories input'), function() {
+        $(this).attr('checked',chk?'checked':'');
+      });
     }
   }
 }();

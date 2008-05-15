@@ -161,6 +161,13 @@
                 Until
               </label>
               <input id="input_ov_until_date" class="input_date autocompleteoff" type="text"/>
+              <label class="msg">
+                show
+              </label>
+              <input id="chkbox_ov_all" name="chkbox_ov_all" class="input_checkbox" type="checkbox" title="all" checked="checked" onclick="mlog.overviewControl.toggleCategoriesCheckBoxes()"/>
+              <span class="msg" style="font-weight:bold;">all</span><br/>
+              <div id="show_ov_categories">
+              </div>
               <p>
                 <button class="button msg" type="button" onclick="mlog.overviewControl.show()">Apply</button>
               </p>

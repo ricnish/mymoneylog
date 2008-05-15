@@ -13,7 +13,16 @@ mlog.chartControl = function() {
       var list = data.categories;
       var strDataset = '[';
       var count = 0;
+      /* get selected categories */
+      var categoriesChecked = [];
+      $.each($('#show_ov_categories input:checked'), function() {
+        categoriesChecked.push($(this).attr('title'));
+      });
+      if (categoriesChecked.length==0) return; // return if none
+      
       for (var category in list) {
+        /* if not checked skip */
+        if ($.inArray(category,categoriesChecked)<0) continue;
         if (i == 0) {
           /* build x labels */
           /* as: [[0, '2008-01'],[1, '2008-02']]... */
