@@ -142,7 +142,48 @@ mlog.entries = function(){
       return entries[id];
     },
     add: function(entry){
-      _add(entry);
+      /* number of inserts */
+      var nTimes = 1;
+      /* parse value */
+      if (entry[1].indexOf('*')>0) {
+        /* if multiply * : insert n times the same value */
+        var args = entry[1].split('*');
+        entry[1] = mlog.base.toFloat(args[0]);
+        nTimes = parseInt(args[1]) || 1;
+      } else
+        if (entry[1].indexOf('/') > 0) {
+          /* if divided / : insert n times the value/nTimes */
+          var args = entry[1].split('/');
+          nTimes = parseInt(args[1]) || 1;
+          entry[1] = Math.round(mlog.base.toFloat(args[0])/nTimes*100)/100;
+        }
+        else {
+          entry[1] = mlog.base.toFloat(entry[1]);
+        }
+      var reconcilable = (entry[0].charAt(10)=='?')||false;
+      var toAccount = entry[5];
+      for (var i=0; i<nTimes; i++) {
+        var newEntry = entry.slice(0);
+        if (i>0) {
+          /* add month to date */
+          var dt = mlog.base.addMonths(mlog.base.stringToDate(entry[0].substring(0,10)),i);
+          newEntry[0] = mlog.base.dateToString(dt);
+          newEntry[0] += reconcilable?'?':'';
+        }
+        if (nTimes>1) {
+          newEntry[2] = entry[2] + ' ' + (i+1) + '/' + nTimes;
+        }
+        /* add due data description */
+        newEntry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + newEntry[0].substring(0,10)):'';
+        _add(newEntry);
+        /* if category is empty and has toAccount, do a transfer */
+        if (newEntry[3]=='' && toAccount!=='' && newEntry[1] != 0) {
+          newEntry[1] = entry[1]*-1;
+          newEntry[2] = newEntry[2] + ' - ' + newEntry[4];
+          newEntry[4] = toAccount;
+          _add(newEntry);
+        }
+      }
       this.save();
     },
     remove: function(id){
@@ -205,7 +246,8 @@ mlog.entries = function(){
     reconcile: function(id) {
       // private remove to avoid account update
       var entry = _remove(id);
-      this.add(entry);
+      _add(entry);
+      this.save();
     },
     /* summarize last n months */
     getOverview: function(numberOfMonths, untilDate) {
@@ -268,13 +310,9 @@ mlog.entries = function(){
             total.categories[categories[ncat]][month] += value;
           }
           /* sum credit (if has category) */
-          if (value>0) {
-            total.summary[creditId][month] += value;
-          }
+          if (value>0) total.summary[creditId][month] += value;
           /* sum debit (if has category) */
-          if (value<0) {
-            total.summary[debitId][month] += value;
-          }
+          if (value<0) total.summary[debitId][month] += value;
         }
         /* calc balance */
         total.summary[balanceId][month] += value;

@@ -117,8 +117,6 @@ mlog.entriesControl = function() {
       $('#input_description').val(lineData[2]);
       $('#input_category').val(lineData[3] || '');
       $('#input_account').val(lineData[4] || '');
-      /* some effects  */
-      $(this).fadeOut().fadeIn();
     },
     /* remove an entry */
     removeEntry: function(elem){
@@ -259,78 +257,31 @@ mlog.entriesControl = function() {
 
     /* add an entry from input */
     addEntry: function(elem){
-      var inputValue = $('#input_value').val();
-      var nTimes = 1; /* number of inserts */
-      var entriesCount = mlog.entries.getCount();
-      /* parse value */
-      if (inputValue.indexOf('*')>0) {
-        /* if multiply * : insert n times the same value */
-        var args = inputValue.split('*');
-        inputValue = args[0];
-        nTimes = args[1] || '1';
-        nTimes = parseInt(nTimes);
-        inputValue = mlog.base.toFloat(inputValue);
-      } else
-      if (inputValue.indexOf('/') > 0) {
-        /* if divided / : insert n times the value/nTimes */
-        var args = inputValue.split('/');
-        inputValue = args[0];
-        nTimes = args[1] || '1';
-        nTimes = parseInt(nTimes);
-        inputValue = Math.round(mlog.base.toFloat(inputValue)/nTimes*100)/100;
-      } else {
-        inputValue = mlog.base.toFloat(inputValue);
-      }
-      var original = [];
-      original[0] = $('#input_date').val();
-      original[1] = inputValue;
-      original[2] = $('#input_description').val();
-      original[3] = $('#input_category').val();
-      original[4] = $('#input_account').val();
-      reconcilable = ($('#input_date').val().charAt(10)=='?')||false;
-      var entry = [];
-      var toAccount = $('#input_account_to').val();
-      for (var i=0; i<nTimes; i++) {
-        entry = original.slice(0);
-        if (i>0) {
-          /* add month to date */
-          dt = mlog.base.addMonths(mlog.base.stringToDate(original[0].substring(0,10)),i);
-          entry[0] = mlog.base.dateToString(dt);
-          entry[0] += reconcilable?'?':'';
-        }
-        if (nTimes>1) {
-          entry[2] = original[2] + ' ' + (i+1) + '/' + nTimes;
-        }
-        /* add due data description */
-        entry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + entry[0].substring(0,10)):'';
-        mlog.entries.add(entry);
-        /* if category is empty and has toAccount, do a transfer */
-        if (entry[3]=='' && toAccount!=='' && entry[1] != 0) {
-          entry[1] = original[1]*-1;
-          entry[2] = entry[2] + ' - ' + entry[4];
-          entry[4] = toAccount;
-          mlog.entries.add(entry);
-        }
-      }
+      var entry = [ $('#input_date').val(),
+                    $('#input_value').val(),
+                    $('#input_description').val(),
+                    $('#input_category').val(),
+                    $('#input_account').val(),
+                    $('#input_account_to').val()];
+      var addCount = mlog.entries.getCount();
+      mlog.entries.add(entry);
       /* refresh entries */
       this.show();
       /* blink add button */
       $(elem).fadeOut('fast').fadeIn('fast');
       /* apply style to new entry */
-      var newEntry = null;
-      entriesCount = mlog.entries.getCount() - entriesCount;
-      for (var i=1; i<=entriesCount; i++) {
-        /* get the new entry element */
-        $('#'+(mlog.entries.getCount()-i)).addClass('new_entry');
+      var newCount = mlog.entries.getCount();
+      addCount = newCount - addCount;
+      for (var i=1; i<=addCount; i++) {
+        /* stylise new entries */
+        $('#'+(newCount-i)).addClass('new_entry');
       }
-      /* initial state */
-      $('#input_account_to').val('');
+      /* initial state and update autocompleters */
       $('#transfer').hide();
       $('#input_date').focus();
-      /* update autocompleters */
       $('#input_category').setOptions({data: mlog.categories.getNames()});
       $('#input_account').setOptions({data: mlog.accounts.getNames()});
-      $('#input_account_to').setOptions({data: mlog.accounts.getNames()});
+      $('#input_account_to').val('').setOptions({data: mlog.accounts.getNames()});
     },
     /* toggle 'to account' */
     toggleToAccount: function() {
