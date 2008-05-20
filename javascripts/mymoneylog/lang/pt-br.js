@@ -15,11 +15,13 @@ thousandchar: '.',
 'category by month': 'categoria por mês',
 'chart': 'gráfico',
 'credit': 'crédito',
+'credits by category': 'créditos por categoria',
 'data editor': 'editor dados',
 'datasample': '2000-01-01\t0,00\tinicio\t\tconta\n2000-01-01\t0,00\tinicio\t\tinvestimento\n2000-01-01\t0,00\tinicio\t\tbolso\n2000-01-01\t0,00\tinicio\t\tcartao credito\n2000-01-01\t0,00\tinicio\talimentacao\n2000-01-01\t0,00\tinicio\tbanco\n2000-01-01\t0,00\tinicio\tcarro\n2000-01-01\t0,00\tinicio\teducacao\n2000-01-01\t0,00\tinicio\tcreditos\n2000-01-01\t0,00\tinicio\tlazer e turismo\n2000-01-01\t0,00\tinicio\tmercado\n2000-01-01\t0,00\tinicio\tmoradia\n2000-01-01\t0,00\tinicio\toutros\n2000-01-01\t0,00\tinicio\tsaude e beleza\n2000-01-01\t0,00\tinicio\ttransporte\n2000-01-01\t0,00\tinicio\tvestuario\n2000-01-01\t0,00\tinicio\timposto e taxa',
 'date': 'data',
 'debit': 'débito',
 'description': 'descrição',
+'draw values kind': 'desenhe valores tipo',
 'due to': 'devido para',
 'entries': 'lançamentos',
 'entry': 'entrada',
@@ -179,4 +181,3 @@ Calendar._TT["TT_DATE_FORMAT"] = "%a, %e %b";
 
 Calendar._TT["WK"] = "sm";
 Calendar._TT["TIME"] = "Hora:";
-

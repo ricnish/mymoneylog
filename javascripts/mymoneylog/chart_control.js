@@ -8,6 +8,7 @@ mlog.chartControl = function() {
       if (!data) {
         return;
       }
+      var showDebits = eval($('#drawValuesKind').val());
       var xTicks = []; // x labels
       var i = 0;
       var list = data.categories;
@@ -19,7 +20,7 @@ mlog.chartControl = function() {
         categoriesChecked.push($(this).attr('title'));
       });
       if (categoriesChecked.length==0) return; // return if none
-      
+
       for (var category in list) {
         /* if not checked skip */
         if ($.inArray(category,categoriesChecked)<0) continue;
@@ -42,7 +43,8 @@ mlog.chartControl = function() {
         /* eg: [[0,100],[1,95]], ... */
         var tmpValue=0;
         for (var month in list[category]) {
-          tmpValue = Math.round(list[category][month]*-1);
+          tmpValue = Math.round(list[category][month]);
+          tmpValue = tmpValue * (showDebits?-1:1)
           // just display debits
           tmpValue = (tmpValue>0)?tmpValue:0;
           str += '['+count+', '+tmpValue+'],';
@@ -57,7 +59,8 @@ mlog.chartControl = function() {
 
       // chart container
       var size = $('#chart').width()-25;
-      $('#chart').html('<h1>'+ mlog.translator.get('expenses by category') +
+      var chartTitle = showDebits?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
+      $('#chart').html('<h1>'+ chartTitle +
         '</h1><div id="chart_canvas" style="height:'+
         (size/1.75)+'px; width:'+(size)+'px;"></div>');
 
