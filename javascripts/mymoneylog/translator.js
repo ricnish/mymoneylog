@@ -9,7 +9,7 @@ mlog.translator = function() {
         navigator.browserLanguage || 'en-us'
       );
   localeId = localeId.toLowerCase();
-  
+
   // load default locale
   mlog.base.require('javascripts/mymoneylog/lang/en-us.js');
 
@@ -17,7 +17,7 @@ mlog.translator = function() {
     // overwrite with translation
     mlog.base.require('javascripts/mymoneylog/lang/' + localeId + '.js');
   }
-  
+
   return {
     getLocaleId: function() {
       return localeId;

@@ -8,7 +8,8 @@ mlog.chartControl = function() {
       if (!data) {
         return;
       }
-      var showDebits = eval($('#drawValuesKind').val());
+      var chartSelection = $('#chartSelection').val();
+      var showDebits = true;
       var xTicks = []; // x labels
       var i = 0;
       var list;
@@ -31,10 +32,12 @@ mlog.chartControl = function() {
       str = str.slice(0,str.length-1) + ']';
       xTicks = eval(str);
 
-      // if any category selected: draw category chart
-      if (categoriesChecked.length>0) {
+      // if any category selected: draw line category chart
+      if (categoriesChecked.length>0 &&
+          (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
+        showDebits = (chartSelection == 'line_debit');
         list = data.categories;
-        chartTitle = showDebits?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
+        chartTitle = chartSelection?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
         for (var category in list) {
           /* if not checked skip */
           if ($.inArray(category,categoriesChecked)<0) continue;
@@ -56,6 +59,7 @@ mlog.chartControl = function() {
           strDataset += str.slice(0,str.length-1) + ']},';
         }
       } else {
+        // chart line (total)
         // draw summary chart
         list = data.summary;
         chartTitle = mlog.translator.get('overview chart');
@@ -100,7 +104,8 @@ mlog.chartControl = function() {
               dataset,
               {
                 xaxis: {ticks: xTicks},
-                legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
+                legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
+                colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080','#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF','#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E','#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B','#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
               }
             );
     }

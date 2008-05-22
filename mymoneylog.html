@@ -169,11 +169,12 @@
               <div id="show_ov_categories">
               </div>
               <label class="msg">
-                draw values kind
+                chart
               </label>
-              <select id="drawValuesKind" class="select_num">
-                <option value="true" selected="selected" class="msg">debit</option>
-                <option value="false" class="msg">credit</option>
+              <select id="chartSelection" class="">
+                <option value="line_debit" selected="selected" class="msg">line (debit)</option>
+                <option value="line_credit" class="msg">line (credit)</option>
+                <option value="line_total" class="msg">line (total)</option>
               </select>
               <p>
                 <button class="button msg" type="button" onclick="mlog.overviewControl.show()">Apply</button>

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * base.js - provides some base functions
  * @author Ricardo Nishimura - 2008
  */
@@ -11,13 +11,15 @@ mlog.base = function() {
   var ieSaveFile = function(filePath,content) {
     try {
       var fso = new ActiveXObject("Scripting.FileSystemObject");
+      var file = fso.OpenTextFile(filePath,2,true,-1);
+      file.Write(content);
+      file.Close();
+      fso = null;
+      return true;
     } catch(e) {
       return null;
     }
-    var file = fso.OpenTextFile(filePath,2,true,-1);
-    file.Write(content);
-    file.Close();
-    return true;
+    return false;
   };
   // Returns null if it can't do it, false if there's an error, true if it saved OK
   var mozillaSaveFile = function(filePath,content) {
@@ -26,8 +28,7 @@ mlog.base = function() {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(filePath);
-        if(!file.exists())
-          file.create(0,0664);
+        if(!file.exists()) file.create(0,0664);
         var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
         out.init(file,0x20|0x02,00004,null);
         out.write(content,content.length);
@@ -40,13 +41,12 @@ mlog.base = function() {
     }
     return null;
   };
-  var javaSaveFile = function(filePath,content)
-  {
+  var javaSaveFile = function(filePath,content) {
     try {
-      if(document.applets["TiddlySaver"])
+      if(document.applets["TiddlySaver"]) {
         var res = document.applets["TiddlySaver"].saveFile(filePath,"UTF-8",content);
-        if (res>0)
-          return true;
+        if (res>0) return true;
+      }
     } catch(e) {}
     try {
       var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
@@ -56,7 +56,7 @@ mlog.base = function() {
       return null;
     }
     return true;
-  }
+  };
 
   // public:
   return {
@@ -88,9 +88,9 @@ mlog.base = function() {
       filePath = decodeURI(filePath);
       if ($.browser.mozilla)
         return mozillaSaveFile(filePath, content);
-      if ($.browser.msie)
+      else if ($.browser.msie)
         return ieSaveFile(filePath, content);
-      return javaSaveFile(filePath, content);
+      else return javaSaveFile(filePath, content);
     },
     // sort array by an index
     arraySort: function(theArray, colIndex){
@@ -157,7 +157,7 @@ mlog.base = function() {
     },
     /* parse 'YYYY-mm-dd' to date */
     stringToDate: function(str) {
-      return new Date(str.replace(/-/g,'/'))
+      return new Date(str.replace(/-/g,'/'));
     },
     /* convert date to 'YYYY-mm-dd' string format */
     dateToString: function(dt) {
@@ -174,11 +174,9 @@ mlog.base = function() {
     activateMenu: function(menuId){
       var menu = $('#menu_' + menuId);
       // verify if it is already active
-      if (!menu || menu.hasClass('menu_current')) {
-          return;
-      };
+      if (!menu || menu.hasClass('menu_current')) return;
       // deactivate all
-      $('#header li').removeClass('menu_current')
+      $('#header li').removeClass('menu_current');
       $('#sidebar .panel').hide();
       // activate one menu
       menu.addClass('menu_current');
@@ -219,7 +217,7 @@ mlog.base = function() {
         // fade out and reload page
         $('body').fadeOut('normal', function() {
           window.location.href=window.location.href;
-          })
+          });
       }
     }
   };

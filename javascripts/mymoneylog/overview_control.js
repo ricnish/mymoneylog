@@ -78,7 +78,7 @@ mlog.overviewControl = function() {
         for (var category in list) {
           /* if not checked skip */
           if ($.inArray(category,categoriesChecked)<0) continue;
-          
+
           if (odd) {
             str = htmlTemplate.overview.tRowOddLabel;
           } else {

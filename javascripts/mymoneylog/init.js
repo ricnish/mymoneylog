@@ -24,7 +24,7 @@ mlog.init = function(){
     $('#applet').html('<applet name="TiddlySaver" code="TiddlySaver.class" archive="applets/TiddlySaver.jar" width="0" height="0"></applet>');
   }
   $('#logo').click( function() { open('http://code.google.com/p/mymoneylog/'); });
-  
+
   // init locales selection
   var selLocales = '';
   $.each(mlog.translator.getLocales(), function() {
