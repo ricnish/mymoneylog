@@ -127,11 +127,11 @@ mlog.overviewControl = function() {
       /* show categories check boxes */
       var cList = mlog.categories.getNames();
       var listed = [];
-      show = false;
+      var show = false;
       /* check if is needed to update */
       $.each($('#show_ov_categories input'), function() { listed.push($(this).attr('title'));});
       $.each(cList, function() {
-        if ($.inArray(this,listed)<0) {
+        if ($.inArray(this.toString(),listed)<0) {
           show = true;
           return false;
         }
@@ -147,7 +147,7 @@ mlog.overviewControl = function() {
       }
     },
     toggleCategoriesCheckBoxes: function() {
-      var chk = ($('#chkbox_ov_all').attr('checked')!=null);
+      var chk = $('#chkbox_ov_all:checked').length>0;
       $.each($('#show_ov_categories input'), function() {
         $(this).attr('checked',chk?'checked':'');
       });
