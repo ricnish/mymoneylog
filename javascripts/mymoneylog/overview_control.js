@@ -4,12 +4,11 @@
  */
 mlog.overviewControl = function() {
   var htmlTemplate = null;
+  var listedCategories = [];
   return {
     init: function() {
       /* initialize template... */
-      if (htmlTemplate) {
-        return; /* it's already initialized */
-      } else {
+      if (!htmlTemplate) {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
@@ -54,11 +53,10 @@ mlog.overviewControl = function() {
       mlog.base.activateMenu('overview');
       mlog.overviewControl.updateCategoriesCheckBoxes();
       /* get selected categories */
-      var categoriesChecked = [];
+      var categoriesList = [];
       $.each($('#show_ov_categories input:checked'), function() {
-        categoriesChecked.push($(this).attr('title'));
+        categoriesList.push($(this).attr('title'));
       });
-
       var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
       var res = [];
@@ -75,23 +73,15 @@ mlog.overviewControl = function() {
         }
         res.push('</tr>'); // closing tag
         /* build categories rows */
-        for (var category in list) {
-          /* if not checked skip */
-          if ($.inArray(category,categoriesChecked)<0) continue;
-
-          if (odd) {
-            str = htmlTemplate.overview.tRowOddLabel;
-          } else {
-            str = htmlTemplate.overview.tRowLabel;
-          }
+        for (var i=0;i<categoriesList.length;i++) {
+          str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
           odd = !odd;
-          str = str.replace(/{title}/,category);
+          str = str.replace(/{title}/,categoriesList[i]);
           res.push(str);
           /* build values */
-          for (var month in list[category]) {
-            str = htmlTemplate.overview.tRowColumn;
-            str = str.replace(/{value}/,mlog.base.formatFloat(list[category][month]));
-            res.push(str);
+          str = htmlTemplate.overview.tRowColumn;
+          for (var month in list[categoriesList[i]]) {
+            res.push(str.replace(/{value}/,mlog.base.formatFloat(list[categoriesList[i]][month])));
           }
           res.push('</tr>'); // closing tag
         }
@@ -102,14 +92,12 @@ mlog.overviewControl = function() {
           str = str.replace(/{title}/,total);
           res.push(str);
           /* build values */
+          str = htmlTemplate.overview.tRowColumn;
           for (var month in list[total]) {
-            str = htmlTemplate.overview.tRowColumn;
-            str = str.replace(/{value}/,mlog.base.formatFloat(list[total][month]));
-            res.push(str);
+            res.push(str.replace(/{value}/,mlog.base.formatFloat(list[total][month])));
           }
         }
-        str = htmlTemplate.main;
-        str = str.replace(/{overviewContent}/,res.join(''));
+        str = htmlTemplate.main.replace(/{overviewContent}/,res.join(''));
       }
       else {
           str = '<h1>' + mlog.translator.get('no data') + '</h1>';
@@ -126,12 +114,11 @@ mlog.overviewControl = function() {
     updateCategoriesCheckBoxes: function() {
       /* show categories check boxes */
       var cList = mlog.categories.getNames();
-      var listed = [];
+      var listed = listedCategories;
       var show = false;
       /* check if is needed to update */
-      $.each($('#show_ov_categories input'), function() { listed.push($(this).attr('title'));});
-      $.each(cList, function() {
-        if ($.inArray(this.toString(),listed)<0) {
+      $.each(cList, function(i,v) {
+        if ($.inArray(v,listed)<0) {
           show = true;
           return false;
         }
@@ -144,6 +131,7 @@ mlog.overviewControl = function() {
             '" checked="checked"/>'+cList[i]+'<br/>';
         }
         $('#show_ov_categories').html(list);
+        listedCategories = cList;
       }
     },
     toggleCategoriesCheckBoxes: function() {

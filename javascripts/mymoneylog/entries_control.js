@@ -15,9 +15,7 @@ mlog.entriesControl = function() {
     hideSummary: false,
     /* initialize template, completers, datepicker... */
     init: function() {
-      if (htmlTemplate) {
-        return; /* it's already initialized */
-      } else {
+      if (!htmlTemplate) {
         /* trying to not generate any new markup, just get from html */
         var summaryTemplate;
         /* break table rows */
@@ -167,8 +165,7 @@ mlog.entriesControl = function() {
         res.push(strRow);
         accTotal += accounts[i][1];
       }
-      strRow = tpSum.tRowTotal;
-      strRow = strRow.replace(/{account_id}/,mlog.translator.get('total'));
+      strRow = tpSum.tRowTotal.replace(/{account_id}/,mlog.translator.get('total'));
       strRow = strRow.replace(/{account_total}/,mlog.base.formatFloat(accTotal));
       res.push(strRow);
       res = res.join('');
@@ -230,8 +227,7 @@ mlog.entriesControl = function() {
           res+=strRow;
         }
         /* end of data, put total */
-        strRow = tp.tRowTotal;
-        strRow = strRow.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
+        strRow = tp.tRowTotal.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
         strRow = strRow.replace(/{entriescount}/, i - start);
         res+=strRow;
         /* assemble table */

@@ -14,6 +14,14 @@ mlog.editorControl = function() {
         };
         htmlTemplate.main = htmlTemplate.main.replace(/  /gi,'');
         $('#main_editor').html('');
+        /* initialize datepicker */
+        Calendar.setup({
+          inputField: "input_export_from_date",
+          ifFormat: "%Y-%m-%d",
+          weekNumbers: false
+        });
+        /* initial date value */
+        $('#input_export_from_date').val(mlog.base.getCurrentDate());
       }
     },
     onKeyPress: function(event) {
@@ -74,6 +82,12 @@ mlog.editorControl = function() {
       // perform write
       mlog.entries.save();
       mlog.entriesControl.show();
+    },
+    exportFromDate: function() {
+      // to do:
+      // export initial account values with following transactions from selected date
+      // save file with file name as 'data_'+selected date+'.html'
+      alert('still not implemented');
     }
   }
 }();
