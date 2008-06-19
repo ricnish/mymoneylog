@@ -58,19 +58,6 @@ mlog.entriesControl = function() {
         /* category autocomplete */
         $('#input_category').autocomplete(mlog.categories.getNames(),
             { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: mlog.base.categorySeparator });
-        /* clean category separator */
-        $('#input_category').blur( function() {
-            var value = $(this).val();
-            var separator = mlog.base.categorySeparator;
-            var cut = true;
-            for (var i=0;i<separator.length;i++) {
-              if (value[value.length-i-1]!=separator[separator.length-i-1]) {
-                cut = false;
-                break;
-              }
-            }
-            if (cut) $(this).val(value.substring(0,value.length-separator.length));
-          });
         /* from account autocomplete */
         $('#input_account').autocomplete(mlog.accounts.getNames(),acOptions);
         $('#input_account').result( function() {

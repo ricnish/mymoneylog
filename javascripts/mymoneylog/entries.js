@@ -35,15 +35,26 @@ mlog.entries = function(){
         entry[2] = $.trim(entry[2]);
         // parse category
         entry[3] = $.trim(entry[3]).toLowerCase();
+        // update category list
+        if (entry[3] != '') {
+          // deals with multiple categories
+          var str = entry[3].split($.trim(mlog.base.categorySeparator));
+          var tmp = [];
+          var value = '';
+          for (var i=0;i<str.length;i++) {
+            value = $.trim(str[i]);
+            if (value != '') {
+              tmp.push(value);
+              mlog.categories.add(value);
+            }
+          }
+          entry[3] = tmp.join(mlog.base.categorySeparator);
+        }
         // parse account
         entry[4] = $.trim(entry[4]).toLowerCase();
         // id
         entry[5] = entries.length;
         entries.push(entry);
-        // update category list
-        if (entry[3] != '') {
-          mlog.categories.add(entry[3]);
-        }
         // update account list
         if (entry[4] != '') {
           if ((entry[0] <= currentDate) && !(entry[6])) {

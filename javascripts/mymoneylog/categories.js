@@ -3,24 +3,17 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.categories = function(){
-  var categories = {};
+  var categories = [];
   return {
     add: function(category){
-      //category = category.toLowerCase();
-      // if have more than one, split and insert
-      category = category.split(mlog.base.categorySeparator);
-      for (var i=0;i<category.length;i++) {
-        if ((category[i] != '') && (categories[category[i]] === undefined)) {
-          categories[category[i]] = true;
-        }
+      str = $.trim(category);
+      if ((str != '') && ($.inArray(str,categories)<0)) {
+        categories.push(str);
+        categories.sort();
       }
     },
     getNames: function(){
-      var catDescr = [];
-      for (var cat in categories) {
-        catDescr.push(cat);
-      }
-      return catDescr.sort();
+      return categories.slice(0); // return a clone
     }
   };
 }();
