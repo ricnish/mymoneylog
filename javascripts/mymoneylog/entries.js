@@ -221,7 +221,6 @@ mlog.entries = function(){
         /* if category is empty and has toAccount, do a transfer */
         if (newEntry[3]=='' && toAccount!=='' && newEntry[1] != 0) {
           newEntry[1] = entry[1]*-1;
-          newEntry[2] = newEntry[2] + ' - ' + newEntry[4];
           newEntry[4] = toAccount;
           _add(newEntry);
         }
