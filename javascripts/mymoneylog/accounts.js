@@ -2,11 +2,10 @@
  * accounts.js
  * @author Ricardo Nishimura - 2008
  */
-mlog.accounts = function(){
+mlog.accountsClass = function(){
   var accounts = {};
   return {
     add: function(account,amount){
-      //account = account.toLowerCase();
       var value = amount || 0;
       if (accounts[account] === undefined) {
         accounts[account] = value;
@@ -32,4 +31,6 @@ mlog.accounts = function(){
       accounts = {};
     }
   };
-}();
+};
+
+mlog.accounts = mlog.accountsClass();

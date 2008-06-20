@@ -121,10 +121,18 @@ mlog.entries = function(){
       }
       return entries.slice(0);
     },
-    getAllAsText: function() {
+    /* convert entries array to string */
+    toString: function(startdate) {
+      var startDate = startdate || '1980-01-01';
       var txt = '';
       var tmp = [];
+      var initialAccounts = mlog.accountsClass();
       for (var i = 0; i < entries.length; i++) {
+        if (entries[i][0]<startDate) {
+          // set initial accounts values
+          initialAccounts.add(entries[i][4],entries[i][1]);
+          continue;
+        }
         // remove index
         // format date and value
         txt = entries[i][0] +(entries[i][6]?'?':'')+ mlog.base.dataFieldSeparator +
@@ -132,19 +140,34 @@ mlog.entries = function(){
         // push description, category and account
         tmp.push(txt + entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
       }
-      txt = tmp.join('\n') + '\n';
+      initialAccounts = initialAccounts.getAll();
+      if (initialAccounts.length>0) {
+        txt = '';
+        for (var i=0; i<initialAccounts.length;i++) {
+          if (initialAccounts[i][0] != '') {
+            txt += startDate + mlog.base.dataFieldSeparator +
+              mlog.base.floatToString(initialAccounts[i][1]) + mlog.base.dataFieldSeparator +
+              mlog.translator.get('initial value') + mlog.base.dataFieldSeparator +
+              mlog.base.dataFieldSeparator +
+              initialAccounts[i][0] + '\n';
+          }
+        }
+      }
+      txt += tmp.join('\n') + '\n';
       return txt;
+    },
+    exportTo: function(filename,startdate) {
     },
     save: function(){
       var result = mlog.base.saveFile(mlog.base.getDataPathName(),
-                                      '<pre id="data">\n'+this.getAllAsText()+'</pre>');
+                                      '<pre id="data">\n'+this.toString()+'</pre>');
       if (result !== true) {
         alert('Could not store the data.');
       }
     },
     backup: function(){
       var result = mlog.base.saveFile(mlog.base.getDataPathName() + '.old',
-                                      '<pre id="data">\n'+this.getAllAsText()+'</pre>');
+                                      '<pre id="data">\n'+this.toString()+'</pre>');
       if (result !== true) {
         alert('Could not backup the data.');
       }
