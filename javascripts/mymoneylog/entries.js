@@ -141,8 +141,8 @@ mlog.entries = function(){
         tmp.push(txt + entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
       }
       initialAccounts = initialAccounts.getAll();
+      txt = '';
       if (initialAccounts.length>0) {
-        txt = '';
         for (var i=0; i<initialAccounts.length;i++) {
           if (initialAccounts[i][0] != '') {
             txt += startDate + mlog.base.dataFieldSeparator +
