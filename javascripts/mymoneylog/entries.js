@@ -156,20 +156,28 @@ mlog.entries = function(){
       txt += tmp.join('\n') + '\n';
       return txt;
     },
-    exportTo: function(filename,startdate) {
+    exportFromStartDate: function(startdate) {
+      var filename = mlog.base.getDataPathName().replace(/.html/,'_'+startdate+'.html');
+      var result = mlog.base.saveFile(filename,
+                                      '<pre id="data">\n'+this.toString(startdate)+'</pre>');
+      if (!result) {
+        alert(mlog.translator.get('could not store the data'));
+        return;
+      }
+      alert(mlog.translator.get('data exported to file:')+'\n'+filename);
     },
     save: function(){
       var result = mlog.base.saveFile(mlog.base.getDataPathName(),
                                       '<pre id="data">\n'+this.toString()+'</pre>');
-      if (result !== true) {
-        alert('Could not store the data.');
+      if (!result) {
+        alert(mlog.translator.get('could not store the data'));
       }
     },
     backup: function(){
       var result = mlog.base.saveFile(mlog.base.getDataPathName() + '.old',
                                       '<pre id="data">\n'+this.toString()+'</pre>');
-      if (result !== true) {
-        alert('Could not backup the data.');
+      if (!result) {
+        alert(mlog.translator.get('could not store the data'));
       }
     },
     get: function(id){

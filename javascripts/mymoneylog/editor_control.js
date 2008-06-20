@@ -84,10 +84,7 @@ mlog.editorControl = function() {
       mlog.entriesControl.show();
     },
     exportFromDate: function() {
-      // to do:
-      // export initial account values with following transactions from selected date
-      // save file with file name as 'data_'+selected date+'.html'
-      alert('still not implemented');
+      mlog.entries.exportFromStartDate($('#input_export_from_date').val());
     }
   }
 }();
