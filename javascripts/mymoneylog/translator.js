@@ -11,11 +11,11 @@ mlog.translator = function() {
   localeId = localeId.toLowerCase();
 
   // load default locale
-  mlog.base.require('javascripts/mymoneylog/lang/en-us.js');
+  mlog.base.require('javascripts/translation/en-us.js');
 
   if ((localeId != 'en-us') && (localeId != 'en')) {
     // overwrite with translation
-    mlog.base.require('javascripts/mymoneylog/lang/' + localeId + '.js');
+    mlog.base.require('javascripts/translation/' + localeId + '.js');
   }
 
   return {
