@@ -259,7 +259,7 @@ mlog.entries = function(){
         }
         var str = '';
         for (var i = 0; i < entries.length; i++) {
-          str = entries[i].join('/t');
+          str = entries[i].join(mlog.base.dataFieldSeparator);
           if (filter) {
             if (isRegex) {
               if (!filter.test(str))
