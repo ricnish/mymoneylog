@@ -229,10 +229,10 @@ mlog.entries = function(){
     },
     remove: function(id){
       var entry = _remove(id);
-      // update account
+      // if has account, update it
       if (entry[4] != '') {
-        // do not update future amount
-        if (entry[0] <= currentDate) {
+        // do not update future or reconcilable  entry
+        if ((entry[0] <= currentDate) && !entry[6]) {
           mlog.accounts.add(entry[4],entry[1]*-1);
         }
       }
