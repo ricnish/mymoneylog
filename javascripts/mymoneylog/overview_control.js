@@ -67,12 +67,14 @@ mlog.overviewControl = function() {
         /* build header */
         res.push(htmlTemplate.overview.tHeadLabel);
         for (var month in list[mlog.categories.getNames()[0]]) {
-          str = htmlTemplate.overview.tHeadColumn;
-          str = str.replace(/{month}/,month);
+          str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,month);
           res.push(str);
         }
-        res.push('</tr>'); // closing tag
+        str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,mlog.translator.get('average'));
+        res.push(str + '</tr>'); // closing tag
         /* build categories rows */
+        var avgSum = 0;
+        var avgCount = 0;
         for (var i=0;i<categoriesList.length;i++) {
           str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
           odd = !odd;
@@ -80,9 +82,14 @@ mlog.overviewControl = function() {
           res.push(str);
           /* build values */
           str = htmlTemplate.overview.tRowColumn;
+          avgSum = 0;
+          avgCount = 0;
           for (var month in list[categoriesList[i]]) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(list[categoriesList[i]][month])));
+            avgSum += list[categoriesList[i]][month];
+            avgCount++;
           }
+          res.push(str.replace(/{value}/,mlog.base.formatFloat(avgSum/avgCount)));
           res.push('</tr>'); // closing tag
         }
         /* build summary */
@@ -93,9 +100,16 @@ mlog.overviewControl = function() {
           res.push(str);
           /* build values */
           str = htmlTemplate.overview.tRowColumn;
+          avgSum = 0;
           for (var month in list[total]) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(list[total][month])));
+            avgSum += list[total][month];
           }
+          if (total != mlog.translator.get('accumulated'))
+            res.push(str.replace(/{value}/,mlog.base.formatFloat(avgSum/avgCount)));
+          else
+            res.push(str.replace(/{value}/,'&nbsp;'));
+          res.push('</tr>'); // closing tag
         }
         str = htmlTemplate.main.replace(/{overviewContent}/,res.join(''));
       }
