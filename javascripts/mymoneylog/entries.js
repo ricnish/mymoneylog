@@ -77,6 +77,11 @@ mlog.entries = function(){
         entries[i][5] = i;
       }
     }
+    // update if not future or reconcilable entry
+    if ((entry[0] <= currentDate) && !entry[6]) {
+      mlog.accounts.remove(entry[4],entry[1]);
+      mlog.categories.remove(entry[3]);
+    }
     return entry;
   }
 
@@ -85,6 +90,7 @@ mlog.entries = function(){
     read: function(){
       entries = [];
       mlog.accounts.reset();
+      mlog.categories.reset();
       var srcData = null;
       try {
         srcData = document.getElementById('dataframe').contentWindow.document.getElementById('data');
@@ -229,13 +235,6 @@ mlog.entries = function(){
     },
     remove: function(id){
       var entry = _remove(id);
-      // if has account, update it
-      if (entry[4] != '') {
-        // do not update future or reconcilable  entry
-        if ((entry[0] <= currentDate) && !entry[6]) {
-          mlog.accounts.add(entry[4],entry[1]*-1);
-        }
-      }
       this.save();
       return entry;
     },

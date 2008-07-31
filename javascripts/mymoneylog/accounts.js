@@ -6,11 +6,13 @@ mlog.accountsClass = function(){
   var accounts = {};
   return {
     add: function(account,amount){
-      var value = amount || 0;
-      if (accounts[account] === undefined) {
-        accounts[account] = value;
-      } else {
-        accounts[account] += value;
+      if (account!="") {
+        var value = amount || 0;
+        if (accounts[account] === undefined) {
+          accounts[account] = value;
+        } else {
+          accounts[account] += value;
+        }
       }
     },
     getNames: function(){
@@ -29,6 +31,9 @@ mlog.accountsClass = function(){
     },
     reset: function() {
       accounts = {};
+    },
+    remove: function(account,amount) {
+      this.add(account,amount*-1);
     }
   };
 };
