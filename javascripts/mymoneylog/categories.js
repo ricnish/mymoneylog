@@ -3,23 +3,20 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.categories = function(){
-  var categories = [];
+  var categories = {};
   return {
     add: function(category){
-<<<<<<< .mine
       if (category != '') {
         if (categories[category] === undefined) categories[category] = 1;
         else categories[category]++; // count it
-=======
-      str = $.trim(category);
-      if ((str != '') && ($.inArray(str,categories)<0)) {
-        categories.push(str);
-        categories.sort();
->>>>>>> .r101
       }
     },
     getNames: function(){
-      return categories.slice(0); // return a clone
+      var catDescr = [];
+      for (var cat in categories) {
+        catDescr.push(cat);
+      }
+      return catDescr.sort();
     },
     getAll: function() {
       var ret = [];
