@@ -51,12 +51,12 @@ mlog.overviewControl = function() {
     show: function() {
       mlog.overviewControl.init();
       mlog.base.activateMenu('overview');
-      mlog.overviewControl.updateCategoriesCheckBoxes();
       /* get selected categories */
       var categoriesList = [];
-      $.each($('#show_ov_categories input:checked'), function() {
-        categoriesList.push($(this).attr('title'));
+      $.each($('#show_ov_categories .selectTag'), function(i,v) {
+        categoriesList.push($(v).html());
       });
+      mlog.overviewControl.updateCategoriesCheckBoxes();
       var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
       var res = [];
@@ -126,32 +126,13 @@ mlog.overviewControl = function() {
       mlog.chartControl.show(theData);
     },
     updateCategoriesCheckBoxes: function() {
-      /* show categories check boxes */
-      var cList = mlog.categories.getNames();
-      var listed = listedCategories;
-      var show = false;
-      /* check if is needed to update */
-      $.each(cList, function(i,v) {
-        if ($.inArray(v,listed)<0) {
-          show = true;
-          return false;
-        }
-      });
-      if (show) {
-        var list = '';
-        for (var i=0;i<cList.length;i++) {
-          list += '<input id="chkbox_ov_'+cList[i]+'" name="chkbox_ov_'+cList[i]+
-            '" class="input_checkbox" type="checkbox" title="'+cList[i]+
-            '" checked="checked"/>'+cList[i]+'<br/>';
-        }
-        $('#show_ov_categories').html(list);
-        listedCategories = cList;
-      }
+        $('#show_ov_categories').html(mlog.base.getTagCloud(mlog.categories.getAll(),1));
     },
     toggleCategoriesCheckBoxes: function() {
       var chk = $('#chkbox_ov_all:checked').length>0;
-      $.each($('#show_ov_categories input'), function() {
-        $(this).attr('checked',chk?'checked':'');
+      $.each($('#show_ov_categories .cloudTag'), function(i,v) {
+        $(v).removeClass("selectTag");
+        if (chk) $(v).addClass("selectTag");
       });
     }
   }

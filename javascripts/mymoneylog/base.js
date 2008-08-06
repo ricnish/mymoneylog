@@ -219,6 +219,35 @@ mlog.base = function() {
           window.location.href=window.location.href;
           });
       }
+    },
+    /*
+     * return a formated tag cloud string
+     * param: array arrayTags, where idx 0 is the tag name
+     * and idx indexCount is the count for the tag name
+    */
+    getTagCloud: function(arrayTags,indexCount) {
+      var indexQtd = indexCount || 1;
+      var cList = arrayTags;
+      var count = 0;
+      var minCount = 999999;
+      var maxCount = 0;
+      var minSize = 9; // px min font size 
+      var maxSize = 29; // px max font size
+      var fontSize =  9;
+      /* iterate to get min and max */
+      $.each(cList, function(i,v) {
+        if (v[indexQtd]>maxCount) maxCount = v[indexQtd];
+        if (v[indexQtd]<minCount) minCount = v[indexQtd];
+      });
+      var list = '';
+      for (var i=0;i<cList.length;i++) {
+        fontSize =  ( ((cList[i][indexQtd]-minCount) * (maxSize-minSize)) / (maxCount-minCount) ) + minSize;
+        list += '<span class="cloudTag" style="font-size: '+fontSize+'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
+      }
+      return list;
+    },
+    toggleTag: function(elem) {
+      $(elem).toggleClass('selectTag');
     }
   };
 }();

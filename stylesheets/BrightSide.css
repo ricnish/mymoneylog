@@ -589,3 +589,9 @@ div.overflow {
   padding-right: 20px;
   cursor:pointer;
 }
+.cloudTag {
+  cursor:pointer;
+}
+.selectTag {
+  color: #9EC630;
+}
