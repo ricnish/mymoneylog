@@ -146,7 +146,7 @@
               <label class="msg">
                 Show last
               </label>
-              <select id="overviewNumberMonths" class="select_num">
+              <select id="overviewNumberMonths" class="select_num" onChange="mlog.overviewControl.updateView()">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -163,24 +163,21 @@
               <label class="msg">
                 Until
               </label>
-              <input id="input_ov_until_date" class="input_date autocompleteoff" type="text"/>
+              <input id="input_ov_until_date" class="input_date autocompleteoff" type="text" READONLY onChange="mlog.overviewControl.updateView()"/>
               <label class="msg">
                 show
               </label>
-              <input id="chkbox_ov_all" name="chkbox_ov_all" class="input_checkbox" type="checkbox" title="all" checked="checked" onclick="mlog.overviewControl.toggleCategoriesCheckBoxes()"/>
-              <span class="msg" style="font-weight:bold;">all</span><br/>
-              <div id="show_ov_categories">
-              </div>
+              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.overviewControl.toggleAllTagCloud()">all</span>
+              <span id="show_ov_categories">
+              </span>
               <label class="msg">
                 chart
               </label>
-              <select id="chartSelection" class="">
+              <select id="chartSelection" class="" onChange="mlog.overviewControl.updateView()">
                 <option value="line_debit" selected="selected" class="msg">line (debit)</option>
                 <option value="line_credit" class="msg">line (credit)</option>
                 <option value="line_total" class="msg">line (total)</option>
               </select>
-              <p>
-                <button class="button msg" type="button" onclick="mlog.overviewControl.show()">Apply</button>
               </p>
             </form>
           </div>
@@ -209,7 +206,7 @@
               </label>
               <input id="input_export_from_date" class="input_date autocompleteoff" type="text"/>
               <p>
-                <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">Save</button>
+                <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
               </p>
             </form>
           </div><!-- editor panel ends here -->

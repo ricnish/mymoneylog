@@ -221,18 +221,18 @@ mlog.base = function() {
       }
     },
     /*
-     * return a formated tag cloud string
-     * param: array arrayTags, where idx 0 is the tag name
-     * and idx indexCount is the count for the tag name
+     * format array as tag cloud string
+     * @param: array arrayTags - where index 0 is the tag name
+     * @param: int indexCount - is the index of the quantity for the tag name, default to index 1
     */
-    getTagCloud: function(arrayTags,indexCount) {
+    arrayToTagCloud: function(arrayTags,indexCount) {
       var indexQtd = indexCount || 1;
       var cList = arrayTags;
       var count = 0;
       var minCount = 999999;
       var maxCount = 0;
-      var minSize = 9; // px min font size 
-      var maxSize = 29; // px max font size
+      var minSize = 9; // min font size in pixel 
+      var maxSize = 29; // max font size in pixel
       var fontSize =  9;
       /* iterate to get min and max */
       $.each(cList, function(i,v) {
@@ -242,12 +242,12 @@ mlog.base = function() {
       var list = '';
       for (var i=0;i<cList.length;i++) {
         fontSize =  ( ((cList[i][indexQtd]-minCount) * (maxSize-minSize)) / (maxCount-minCount) ) + minSize;
-        list += '<span class="cloudTag" style="font-size: '+fontSize+'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
+        list += '<span class="tagCloud" style="font-size: '+fontSize+'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
       }
       return list;
     },
     toggleTag: function(elem) {
-      $(elem).toggleClass('selectTag');
+      $(elem).toggleClass('tagSelect');
     }
   };
 }();

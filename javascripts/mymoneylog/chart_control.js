@@ -18,8 +18,8 @@ mlog.chartControl = function() {
       var chartTitle = '';
       /* get selected categories */
       var categoriesChecked = [];
-      $.each($('#show_ov_categories input:checked'), function() {
-        categoriesChecked.push($(this).attr('title'));
+      $.each($('#show_ov_categories .tagSelect'), function(i,v) {
+        categoriesChecked.push($(v).html());
       });
 
       /* build x labels */

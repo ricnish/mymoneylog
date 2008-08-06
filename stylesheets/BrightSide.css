@@ -589,9 +589,13 @@ div.overflow {
   padding-right: 20px;
   cursor:pointer;
 }
-.cloudTag {
+.tagCloud {
   cursor:pointer;
+  color: #BBB;
 }
-.selectTag {
+.tagCloud:hover {
+  color: #6297BC;
+}
+.tagSelect {
   color: #9EC630;
 }

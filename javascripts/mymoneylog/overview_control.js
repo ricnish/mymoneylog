@@ -48,15 +48,12 @@ mlog.overviewControl = function() {
       }
     },
     /* show overview */
-    show: function() {
-      mlog.overviewControl.init();
-      mlog.base.activateMenu('overview');
+    updateView: function() {
       /* get selected categories */
       var categoriesList = [];
-      $.each($('#show_ov_categories .selectTag'), function(i,v) {
+      $.each($('#show_ov_categories .tagSelect'), function(i,v) {
         categoriesList.push($(v).html());
       });
-      mlog.overviewControl.updateCategoriesCheckBoxes();
       var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
       var res = [];
@@ -125,15 +122,30 @@ mlog.overviewControl = function() {
       /* display the chart */
       mlog.chartControl.show(theData);
     },
-    updateCategoriesCheckBoxes: function() {
-        $('#show_ov_categories').html(mlog.base.getTagCloud(mlog.categories.getAll(),1));
-    },
-    toggleCategoriesCheckBoxes: function() {
-      var chk = $('#chkbox_ov_all:checked').length>0;
-      $.each($('#show_ov_categories .cloudTag'), function(i,v) {
-        $(v).removeClass("selectTag");
-        if (chk) $(v).addClass("selectTag");
+    updateTagCloud: function() {
+      $('#show_ov_categories').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(),1));
+      $('#show_ov_categories .tagCloud').click(function(v) {
+        mlog.base.toggleTag(v);
+        mlog.overviewControl.updateView();
       });
+    },
+    toggleAllTagCloud: function() {
+      var elem = $('.selectAll');
+      mlog.base.toggleTag(elem);
+      var chk = $(elem).hasClass("tagSelect");
+      $.each($('#show_ov_categories .tagCloud'), function(i,v) {
+        $(v).removeClass("tagSelect");
+        if (chk) $(v).addClass("tagSelect");
+      });
+      mlog.overviewControl.updateView();
+    },
+    show: function() {
+      mlog.overviewControl.init();
+      mlog.base.activateMenu('overview');
+      $('.selectAll').removeClass("tagSelect");
+      mlog.overviewControl.updateTagCloud();
+      mlog.overviewControl.toggleAllTagCloud();
+      mlog.overviewControl.updateView();
     }
   }
 }();
