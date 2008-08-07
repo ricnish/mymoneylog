@@ -9,7 +9,7 @@ mlog.entriesControl = function() {
   var filter_query = '';
   var opt_regex = false;
   var opt_future = false;
-  var max_entries = 50;
+  var entriesPerPage = 50;
   var storedSearches = [];
   return {
     hideSummary: false,
@@ -170,7 +170,7 @@ mlog.entriesControl = function() {
       var strRow = '';
       var tp = htmlTemplate.entries;
       var content = htmlTemplate.main;
-      var nPages = Math.ceil(theData.length/max_entries);
+      var nPages = Math.ceil(theData.length/entriesPerPage);
       var odd = true;
       if (theData.length > 0) {
         mlog.base.arraySort(theData, sortColIndex);
@@ -186,9 +186,10 @@ mlog.entriesControl = function() {
         }
         /* build entries */
         res+=tp.tHead;
-        var i = (nPage-1)*max_entries;
+        var i = (nPage-1)*entriesPerPage;
+        if (i>=theData.length) return;
         var start = i;
-        for (i; i < theData.length && (i-start)<max_entries; i++) {
+        for (i; i < theData.length && (i-start)<entriesPerPage; i++) {
           /* apply template tRow or tRowFuture */
           if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
@@ -278,11 +279,21 @@ mlog.entriesControl = function() {
     getPaginator: function(cPage,max) {
       var currentPg = cPage || 1;
       var maxPg = max || 1;
-      var previousPg = (currentPg-1)>0?(currentPg-1):1;
-      var nextPg = (currentPg+1)<=maxPg?(currentPg+1):maxPg;
       var str = [];
+      var perPageOption = [20,50,100,200,300,400,500]; // entries per page options
       str.push('<div class="pagination">');
-      str.push('<a onclick="mlog.entriesControl.show('+previousPg+')">&laquo;</a>');
+      str.push('<select id="entriesPerPage" onchange="mlog.entriesControl.onPageChange()">');
+      for (var i=0;i<perPageOption.length;i++) {
+        if (perPageOption[i]==entriesPerPage) {
+          str.push('<option value="'+perPageOption[i]+'" selected="selected">'+perPageOption[i]+'</option>');
+        } else {
+          str.push('<option value="'+perPageOption[i]+'">'+perPageOption[i]+'</option>');
+        }
+      }
+        str.push('</select>&nbsp;<span class="msg">'+
+        mlog.translator.get('per page')+'</span>' +
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+      str.push('<a onclick="mlog.entriesControl.onPreviousPage()">&laquo;</a>');
       str.push('&nbsp;'+mlog.translator.get('page')+'&nbsp;');
       str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
       for (var i=1;i<=maxPg;i++) {
@@ -293,12 +304,21 @@ mlog.entriesControl = function() {
         }
       }
       str.push('</select>&nbsp;'+mlog.translator.get('of')+'&nbsp;'+maxPg+'&nbsp;');
-      str.push('<a onclick="mlog.entriesControl.show('+nextPg+')">&raquo;</a>');
+      str.push('<a onclick="mlog.entriesControl.onNextPage()">&raquo;</a>');
       str.push('</div>');
       return str.join('');
     },
     onPageChange: function() {
-        mlog.entriesControl.show(parseInt($('#select_page').val()));
+      entriesPerPage = $('#entriesPerPage').val() || 50;
+      mlog.entriesControl.show(parseInt($('#select_page').val()));
+    },
+    onPreviousPage: function() {
+      var page = parseInt($('#select_page').val())-1;
+      if (page>0) mlog.entriesControl.show(page);
+    },
+    onNextPage: function() {
+      var page = parseInt($('#select_page').val())+1;
+      mlog.entriesControl.show(page);
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id');
@@ -310,7 +330,7 @@ mlog.entriesControl = function() {
       filter_query = $.trim($('#filter_query').val());
       opt_regex = $('#opt_regex:checked').length>0;
       opt_future = $('#opt_future:checked').length>0;
-      max_entries = $('#max_entries').val() || 50;
+      entriesPerPage = $('#entriesPerPage').val() || 50;
       /* update stored searches */
       if (filter_query!='' && $.inArray(filter_query, storedSearches)<0) {
         storedSearches.unshift(filter_query);

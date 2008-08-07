@@ -124,15 +124,6 @@
               </label>
               <input id="opt_future" name="opt_future" class="input_checkbox" type="checkbox" title="future"/>
               <span class="msg">future entries</span>
-              <label class="msg">
-                Show last
-              </label>
-              <select id="max_entries" class="select_num">
-                <option value="50" selected="selected">50</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
-                <option value="400">400</option>
-              </select>&nbsp;<span class="msg">entries</span>
               <p>
                 <button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>
               </p>
@@ -204,7 +195,7 @@
               <label class="msg">
                 from
               </label>
-              <input id="input_export_from_date" class="input_date autocompleteoff" type="text"/>
+              <input id="input_export_from_date" class="input_date autocompleteoff" type="text" READONLY />
               <p>
                 <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
               </p>
