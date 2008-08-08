@@ -129,11 +129,11 @@ mlog.overviewControl = function() {
         mlog.overviewControl.updateView();
       });
     },
-    toggleAllTagCloud: function() {
-      var elem = $('.selectAll');
+    toggleAllTagCloud: function(el) {
+      var elem = $(el);
       mlog.base.toggleTag(elem);
-      var chk = $(elem).hasClass("tagSelect");
-      $.each($('#show_ov_categories .tagCloud'), function(i,v) {
+      var chk = elem.hasClass("tagSelect");
+      $.each(elem.next().children(), function(i,v) {
         $(v).removeClass("tagSelect");
         if (chk) $(v).addClass("tagSelect");
       });
@@ -142,9 +142,9 @@ mlog.overviewControl = function() {
     show: function() {
       mlog.overviewControl.init();
       mlog.base.activateMenu('overview');
-      $('.selectAll').removeClass("tagSelect");
+      $('#panel_overview .selectAll').removeClass("tagSelect");
       mlog.overviewControl.updateTagCloud();
-      mlog.overviewControl.toggleAllTagCloud();
+      mlog.overviewControl.toggleAllTagCloud($('#panel_overview .selectAll'));
       mlog.overviewControl.updateView();
     }
   }

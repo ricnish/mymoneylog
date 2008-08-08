@@ -165,6 +165,18 @@ mlog.entriesControl = function() {
       var nPage = (typeof page == 'number')? page : 1;
       var theTotal = 0;
       var res = '';
+      var options = {
+        query: filter_query,
+        pageNumber:0,
+        entriesPerPage: entriesPerPage,
+        startDate: '',
+        endDate: '',
+        values: '',
+        categories: '',
+        accounts: '',
+        sortColIndex: sortColIndex,
+        sortReverse: sortColRev
+        };
       var theData = mlog.entries.getByFilter(filter_query,opt_regex,opt_future);
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
@@ -230,6 +242,7 @@ mlog.entriesControl = function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         mlog.entriesControl.hideSummary = !mlog.entriesControl.hideSummary;
       });
+      mlog.entriesControl.updateTagCloud();
     },
 
     /* sort table column */
@@ -328,8 +341,7 @@ mlog.entriesControl = function() {
     /* read options panel and set to variables*/
     updateOptions: function() {
       filter_query = $.trim($('#filter_query').val());
-      opt_regex = $('#opt_regex:checked').length>0;
-      opt_future = $('#opt_future:checked').length>0;
+      opt_regex = filter_query.length>0;
       entriesPerPage = $('#entriesPerPage').val() || 50;
       /* update stored searches */
       if (filter_query!='' && $.inArray(filter_query, storedSearches)<0) {
@@ -347,6 +359,20 @@ mlog.entriesControl = function() {
     applyOptions: function() {
       this.updateOptions();
       this.show();
+    },
+    updateTagCloud: function() {
+      $('#entries_category_cloud').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(),1));
+      $('#entries_account_cloud').html(mlog.base.arrayToTagCloud(mlog.accounts.getAll(),2));
+    },
+    toggleAllTagCloud: function(el) {
+      var elem = $(el);
+      mlog.base.toggleTag(elem);
+      var chk = elem.hasClass("tagSelect");
+      $.each(elem.next().children(), function(i,v) {
+        $(v).removeClass("tagSelect");
+        if (chk) $(v).addClass("tagSelect");
+      });
+//      mlog.entriesControl.updateView();
     }
   };
 }();

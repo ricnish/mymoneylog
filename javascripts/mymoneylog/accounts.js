@@ -10,8 +10,10 @@ mlog.accountsClass = function(){
         var value = amount || 0;
         if (accounts[account] === undefined) {
           accounts[account] = value;
+          accounts[account][0] = 1;
         } else {
           accounts[account] += value;
+          accounts[account][0]++;
         }
       }
     },
@@ -25,7 +27,7 @@ mlog.accountsClass = function(){
     getAll: function() {
       var ret = [];
       for (var account in accounts) {
-        ret.push([account,accounts[account]]);
+        ret.push([account,accounts[account],accounts[account][0]]);
       }
       return ret;
     },
@@ -33,7 +35,16 @@ mlog.accountsClass = function(){
       accounts = {};
     },
     remove: function(account,amount) {
-      this.add(account,amount*-1);
+      if (account!="") {
+        var value = amount || 0;
+        if (accounts[account] === undefined) {
+          accounts[account] = value*-1;
+          accounts[account][0] = 1;
+        } else {
+          accounts[account] -= value;
+          if (accounts[account][0]>0) accounts[account][0]--;
+        }
+      }
     }
   };
 };

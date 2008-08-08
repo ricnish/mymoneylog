@@ -108,22 +108,24 @@
               <p>
                 <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
               </p>
-            </form><h1 class="msg">Options</h1>
+            </form><h1 class="msg">filter</h1>
             <form class="options">
               <label class="msg">
-                filter
+                categories
               </label>
-              <input type="text" id="filter_query" class="textbox autocompleteoff"/>
+              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
+              <span id="entries_category_cloud"></span>
+              </span>
+              <label class="msg">
+                accounts
+              </label>
+              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
+              <span id="entries_account_cloud"></span>
+              </span>
               <label class="msg">
                 regular expression
               </label>
-              <input id="opt_regex" class="input_checkbox" type="checkbox" title="regex"/>
-              <span class="msg">regex</span>
-              <label class="msg">
-                show
-              </label>
-              <input id="opt_future" name="opt_future" class="input_checkbox" type="checkbox" title="future"/>
-              <span class="msg">future entries</span>
+              <input type="text" id="filter_query" class="textbox autocompleteoff"/>
               <p>
                 <button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>
               </p>
@@ -158,7 +160,7 @@
               <label class="msg">
                 show
               </label>
-              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.overviewControl.toggleAllTagCloud()">all</span>
+              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.overviewControl.toggleAllTagCloud(this)">all</span>
               <span id="show_ov_categories">
               </span>
               <label class="msg">
