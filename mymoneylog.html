@@ -123,6 +123,14 @@
               <span id="entries_account_cloud"></span>
               </span>
               <label class="msg">
+                from
+              </label>
+              <input id="filter_date_from" class="input_date autocompleteoff" type="text" readonly=true/>
+              <label class="msg">
+                until
+              </label>
+              <input id="filter_date_until" class="input_date autocompleteoff" type="text" readonly=true/>
+              <label class="msg">
                 regular expression
               </label>
               <input type="text" id="filter_query" class="textbox autocompleteoff"/>
@@ -156,7 +164,7 @@
               <label class="msg">
                 Until
               </label>
-              <input id="input_ov_until_date" class="input_date autocompleteoff" type="text" READONLY onChange="mlog.overviewControl.updateView()"/>
+              <input id="input_ov_until_date" class="input_date autocompleteoff" type="text" readonly=true onChange="mlog.overviewControl.updateView()"/>
               <label class="msg">
                 show
               </label>
@@ -197,7 +205,7 @@
               <label class="msg">
                 from
               </label>
-              <input id="input_export_from_date" class="input_date autocompleteoff" type="text" READONLY />
+              <input id="input_export_from_date" class="input_date autocompleteoff" type="text" readonly=true/>
               <p>
                 <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
               </p>

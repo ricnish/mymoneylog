@@ -80,8 +80,22 @@ mlog.entriesControl = function() {
           ifFormat: "%Y-%m-%d",
           weekNumbers: false
         });
+        Calendar.setup({
+          inputField: "filter_date_from",
+          ifFormat: "%Y-%m-%d",
+          weekNumbers: false
+        });
+        Calendar.setup({
+          inputField: "filter_date_until",
+          ifFormat: "%Y-%m-%d",
+          weekNumbers: false
+        });
         /* initial date value */
         $('#input_date').val(mlog.base.getCurrentDate());
+        $('#filter_date_until').val(mlog.base.getCurrentDate());
+        var prevDate = new Date();
+        prevDate.setDate(1);
+        $('#filter_date_from').val(mlog.base.dateToString(mlog.base.addMonths(prevDate,-3)));
         /* attach on blur event for account transfers */
         $('#input_account').focus(this.toggleToAccount);
         /* fill filter autocomplete */
@@ -165,15 +179,19 @@ mlog.entriesControl = function() {
       var nPage = (typeof page == 'number')? page : 1;
       var theTotal = 0;
       var res = '';
+      var selectedCategories = "";
+      $.each( $('#entries_category_cloud .tagSelect'), function(i,v) { selectedCategories+=$(v).html()+","; });
+      var selectedAccounts = "";
+      $.each( $('#entries_account_cloud .tagSelect'), function(i,v) { selectedAccounts+=$(v).html()+","; });
       var options = {
         query: filter_query,
         pageNumber:0,
         entriesPerPage: entriesPerPage,
-        startDate: '',
-        endDate: '',
+        startDate: $('#filter_date_from').val(),
+        endDate: $('#filter_date_until').val(),
         values: '',
-        categories: '',
-        accounts: '',
+        categories: selectedCategories,
+        accounts: selectedAccounts,
         sortColIndex: sortColIndex,
         sortReverse: sortColRev
         };
