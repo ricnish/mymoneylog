@@ -4,13 +4,23 @@
  */
 mlog.entriesControl = function() {
   var htmlTemplate = null;
-  var sortColIndex = 0;
-  var sortColRev = true;
-  var filter_query = '';
-  var opt_regex = false;
-  var opt_future = false;
-  var entriesPerPage = 50;
+//  var opt_regex = false;
+//  var opt_future = false;
+//  var entriesPerPage = 50;
   var storedSearches = [];
+  var filterOptions = {
+    query: '',
+    pageNumber:1,
+    entriesPerPage: 50,
+    startDate: '',
+    endDate: '',
+    values: '',
+    categories: '',
+    accounts: '',
+    sortColIndex: 0,
+    sortReverse: true
+    };
+
   return {
     hideSummary: false,
     /* initialize template, completers, datepicker... */
@@ -176,37 +186,15 @@ mlog.entriesControl = function() {
     show: function(page){
       mlog.entriesControl.init();
       mlog.base.activateMenu('entries');
-      var nPage = (typeof page == 'number')? page : 1;
+      filterOptions.pageNumber = (typeof page == 'number')? page : 1;
       var theTotal = 0;
       var res = '';
-      var selectedCategories = "";
-      $.each( $('#entries_category_cloud .tagSelect'), function(i,v) { selectedCategories+=$(v).html()+","; });
-      var selectedAccounts = "";
-      $.each( $('#entries_account_cloud .tagSelect'), function(i,v) { selectedAccounts+=$(v).html()+","; });
-      var options = {
-        query: filter_query,
-        pageNumber:0,
-        entriesPerPage: entriesPerPage,
-        startDate: $('#filter_date_from').val(),
-        endDate: $('#filter_date_until').val(),
-        values: '',
-        categories: selectedCategories,
-        accounts: selectedAccounts,
-        sortColIndex: sortColIndex,
-        sortReverse: sortColRev
-        };
-      var theData = mlog.entries.getByFilter(filter_query,opt_regex,opt_future);
-      var currentDate = mlog.base.getCurrentDate();
+      var theData = mlog.entries.getByFilter(filterOptions);
       var strRow = '';
       var tp = htmlTemplate.entries;
       var content = htmlTemplate.main;
-      var nPages = Math.ceil(theData.length/entriesPerPage);
       var odd = true;
       if (theData.length > 0) {
-        mlog.base.arraySort(theData, sortColIndex);
-        if (sortColRev) {
-          theData.reverse();
-        }
         /* build summary */
         content = content.replace(/{summaryContent}/, mlog.entriesControl.getSummary());
         if (mlog.entriesControl.hideSummary) {
@@ -216,18 +204,15 @@ mlog.entriesControl = function() {
         }
         /* build entries */
         res+=tp.tHead;
-        var i = (nPage-1)*entriesPerPage;
-        if (i>=theData.length) return;
-        var start = i;
-        for (i; i < theData.length && (i-start)<entriesPerPage; i++) {
+        for (i=0; i < theData.length-1; i++) {
           /* apply template tRow or tRowFuture */
-          if (theData[i][0] <= currentDate) {
+//          if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
             strRow = odd?tp.tRowOdd:tp.tRow;
-          }
-          else {
-            strRow = odd?tp.tRowFutureOdd:tp.tRowFuture;
-          }
+          //}
+          //else {
+          //  strRow = odd?tp.tRowFutureOdd:tp.tRowFuture;
+          //}
           odd = !odd;
           /* the total */
           theTotal += theData[i][1];
@@ -246,11 +231,12 @@ mlog.entriesControl = function() {
         }
         /* end of data, put total */
         strRow = tp.tRowTotal.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
-        strRow = strRow.replace(/{entriescount}/, i - start);
+        strRow = strRow.replace(/{entriescount}/, theData.length);
         res+=strRow;
         /* assemble table */
         content = content.replace(/{entriesContent}/, res);
-        content += mlog.entriesControl.getPaginator(nPage,nPages)+'<br/>';
+        var maxPage = theData.pop().maxPage || 1;
+        content += mlog.entriesControl.getPaginator(filterOptions.pageNumber,maxPage)+'<br/>';
       }
       else {
         content = '<h1>' + mlog.translator.get('no data') + '</h1>';
@@ -265,8 +251,8 @@ mlog.entriesControl = function() {
 
     /* sort table column */
     sortCol: function(index){
-      sortColRev = (sortColIndex != index) ? false : !sortColRev;
-      sortColIndex = index;
+      filterOptions.sortReverse = (filterOptions.sortColIndex != index) ? false : !filterOptions.sortReverse;
+      filterOptions.sortColIndex = index;
       this.show();
     },
 
@@ -315,7 +301,7 @@ mlog.entriesControl = function() {
       str.push('<div class="pagination">');
       str.push('<select id="entriesPerPage" onchange="mlog.entriesControl.onPageChange()">');
       for (var i=0;i<perPageOption.length;i++) {
-        if (perPageOption[i]==entriesPerPage) {
+        if (perPageOption[i]==filterOptions.entriesPerPage) {
           str.push('<option value="'+perPageOption[i]+'" selected="selected">'+perPageOption[i]+'</option>');
         } else {
           str.push('<option value="'+perPageOption[i]+'">'+perPageOption[i]+'</option>');
@@ -358,12 +344,21 @@ mlog.entriesControl = function() {
     },
     /* read options panel and set to variables*/
     updateOptions: function() {
-      filter_query = $.trim($('#filter_query').val());
-      opt_regex = filter_query.length>0;
-      entriesPerPage = $('#entriesPerPage').val() || 50;
+      var selectedCategories = [];
+      $.each( $('#entries_category_cloud .tagSelect'), function(i,v) { selectedCategories.push($(v).html()); });
+      var selectedAccounts = [];
+      $.each( $('#entries_account_cloud .tagSelect'), function(i,v) { selectedAccounts.push($(v).html()); });
+      filterOptions.query = $.trim($('#filter_query').val());
+      filterOptions.entriesPerPage = $('#entriesPerPage').val() || 50;
+      filterOptions.startDate = $('#filter_date_from').val();
+      filterOptions.endDate = $('#filter_date_until').val();
+      filterOptions.values = '';
+      filterOptions.categories = selectedCategories.join('|');;
+      filterOptions.accounts = selectedAccounts.join('|');;
+
       /* update stored searches */
-      if (filter_query!='' && $.inArray(filter_query, storedSearches)<0) {
-        storedSearches.unshift(filter_query);
+      if (filterOptions.query!='' && $.inArray(filterOptions.query, storedSearches)<0) {
+        storedSearches.unshift(filterOptions.query);
         var str = storedSearches.join('~');
         while (str.length>1024) {
           storedSearches.pop();

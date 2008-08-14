@@ -248,35 +248,57 @@ mlog.entries = function(){
       }
       return res;
     },
-    getByFilter: function(filter,isRegex,withFuture){
+    getByFilter: function(options){
+      //options = {
+      //  query: '', // text filter or regular expression
+      //  startDate: '', // initial date
+      //  endDate: '', // final date
+      //  values: '', // debit or credit
+      //  categories: '', // selected categories
+      //  accounts: '', // selected accounts
+      //  sortColIndex: 0, // column to sort
+      //  sortReverse: true, // sort order
+      //  entriesPerPage: 50, // entries per page
+      //  pageNumber:0 // current page
+      //  };
+      //filter,isRegex,withFuture
       var res = [];
-      withFuture = withFuture || false;
-      var dtEnd = mlog.base.getCurrentDate();
       try {
-        if (filter && isRegex) {
-          filter = eval('/' + filter + '/i');
-        }
+        var regex = eval('/' + options.query + '/i');
+        var regexCat = eval('/('+options.categories+')/i');
+        var regexAcc = eval('/('+options.accounts+')/i');
         var str = '';
         for (var i = 0; i < entries.length; i++) {
           str = entries[i].join(mlog.base.dataFieldSeparator);
-          if (filter) {
-            if (isRegex) {
-              if (!filter.test(str))
-                continue;
-            } else {
-              if (str.toLowerCase().indexOf(filter.toLowerCase()) == -1)
-                continue;
-            }
-          }
-          if (!withFuture) {
-            if (entries[i][0] > dtEnd)
-              continue;
-          }
+          // filter regular expression
+          if (regex!==undefined && !regex.test(str)) continue;
+          // filter date range
+          if (entries[i][0] < options.startDate || entries[i][0] > options.endDate)
+            continue;
+          // filter category
+          if (regexCat!==undefined && !regexCat.test(entries[i][3])) continue;
+          // filter account
+          if (regexAcc!==undefined && !regexAcc.test(entries[i][4])) continue;
+          // TODO: filter value
           res.push(entries[i]);
         }
-        return res;
+        // sort column
+        mlog.base.arraySort(res,options.sortColIndex);
+        // sort order
+        if (options.sortReverse) res.reverse();
+        // trim page / entries count
+        var iStart = (options.pageNumber-1) * options.entriesPerPage;
+        var iEnd = iStart+options.entriesPerPage;
+        var data = [];
+        if (iStart<res.length) {
+          for (var i=iStart;i<iEnd && i<res.length; i++) {
+            data.push(res[i]);
+          }
+          data.push({maxPage: Math.ceil(res.length/options.entriesPerPage)});
+        }
+        return data;
       }
-      catch (e) {}
+      catch (e) {return []}
       return res;
     },
     getCount: function() {
