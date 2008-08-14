@@ -294,6 +294,7 @@ mlog.entries = function(){
           for (var i=iStart;i<iEnd && i<res.length; i++) {
             data.push(res[i]);
           }
+          // add the maximum page number at tail
           data.push({maxPage: Math.ceil(res.length/options.entriesPerPage)});
         }
         return data;

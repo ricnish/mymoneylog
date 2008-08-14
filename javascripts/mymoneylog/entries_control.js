@@ -4,9 +4,6 @@
  */
 mlog.entriesControl = function() {
   var htmlTemplate = null;
-//  var opt_regex = false;
-//  var opt_future = false;
-//  var entriesPerPage = 50;
   var storedSearches = [];
   var filterOptions = {
     query: '',
@@ -102,10 +99,8 @@ mlog.entriesControl = function() {
         });
         /* initial date value */
         $('#input_date').val(mlog.base.getCurrentDate());
+        $('#filter_date_from').val('2000-01-01');
         $('#filter_date_until').val(mlog.base.getCurrentDate());
-        var prevDate = new Date();
-        prevDate.setDate(1);
-        $('#filter_date_from').val(mlog.base.dateToString(mlog.base.addMonths(prevDate,-3)));
         /* attach on blur event for account transfers */
         $('#input_account').focus(this.toggleToAccount);
         /* fill filter autocomplete */
@@ -114,6 +109,7 @@ mlog.entriesControl = function() {
           { minChars: 0, max: 50, selectFirst: false })
         /* read options */
         this.updateOptions();
+        mlog.entriesControl.updateTagCloud();
       }
     },
     /* display an entry to input */
@@ -130,9 +126,12 @@ mlog.entriesControl = function() {
     /* remove an entry */
     removeEntry: function(elem){
       var lineId = elem.parentNode.parentNode.getAttribute('id');
-      var lineData = mlog.entries.remove(lineId);
-      this.show();
-      this.updateInputEntry(lineData);
+      if (confirm(mlog.translator.get('delete').toUpperCase()+': '+mlog.translator.get('are you sure?'))) {
+        var lineData = mlog.entries.remove(lineId);
+        this.show();
+        mlog.entriesControl.updateTagCloud();
+        this.updateInputEntry(lineData);
+      }
     },
     /* display on input when clicked */
     onClickEntry: function(elem){
@@ -190,6 +189,7 @@ mlog.entriesControl = function() {
       var theTotal = 0;
       var res = '';
       var theData = mlog.entries.getByFilter(filterOptions);
+      var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
       var tp = htmlTemplate.entries;
       var content = htmlTemplate.main;
@@ -206,13 +206,13 @@ mlog.entriesControl = function() {
         res+=tp.tHead;
         for (i=0; i < theData.length-1; i++) {
           /* apply template tRow or tRowFuture */
-//          if (theData[i][0] <= currentDate) {
+          if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
             strRow = odd?tp.tRowOdd:tp.tRow;
-          //}
-          //else {
-          //  strRow = odd?tp.tRowFutureOdd:tp.tRowFuture;
-          //}
+          }
+          else {
+            strRow = odd?tp.tRowFutureOdd:tp.tRowFuture;
+          }
           odd = !odd;
           /* the total */
           theTotal += theData[i][1];
@@ -231,7 +231,7 @@ mlog.entriesControl = function() {
         }
         /* end of data, put total */
         strRow = tp.tRowTotal.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
-        strRow = strRow.replace(/{entriescount}/, theData.length);
+        strRow = strRow.replace(/{entriescount}/, theData.length-1);
         res+=strRow;
         /* assemble table */
         content = content.replace(/{entriesContent}/, res);
@@ -246,7 +246,6 @@ mlog.entriesControl = function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         mlog.entriesControl.hideSummary = !mlog.entriesControl.hideSummary;
       });
-      mlog.entriesControl.updateTagCloud();
     },
 
     /* sort table column */
@@ -268,6 +267,7 @@ mlog.entriesControl = function() {
       mlog.entries.add(entry);
       /* refresh entries */
       this.show();
+      mlog.entriesControl.updateTagCloud();
       /* blink add button */
       $(elem).fadeOut('fast').fadeIn('fast');
       /* apply style to new entry */
@@ -297,7 +297,7 @@ mlog.entriesControl = function() {
       var currentPg = cPage || 1;
       var maxPg = max || 1;
       var str = [];
-      var perPageOption = [20,50,100,200,300,400,500]; // entries per page options
+      var perPageOption = [20,50,100,200,500,1000]; // entries per page options
       str.push('<div class="pagination">');
       str.push('<select id="entriesPerPage" onchange="mlog.entriesControl.onPageChange()">');
       for (var i=0;i<perPageOption.length;i++) {
@@ -326,7 +326,7 @@ mlog.entriesControl = function() {
       return str.join('');
     },
     onPageChange: function() {
-      entriesPerPage = $('#entriesPerPage').val() || 50;
+      filterOptions.entriesPerPage = parseInt($('#entriesPerPage').val() || 50);
       mlog.entriesControl.show(parseInt($('#select_page').val()));
     },
     onPreviousPage: function() {
@@ -339,8 +339,10 @@ mlog.entriesControl = function() {
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id');
-      mlog.entries.reconcile(id);
-      this.show();
+      if (confirm(mlog.translator.get('reconcile').toUpperCase()+': '+mlog.translator.get('are you sure?'))) {
+        mlog.entries.reconcile(id);
+        this.show();
+      }
     },
     /* read options panel and set to variables*/
     updateOptions: function() {
@@ -376,6 +378,24 @@ mlog.entriesControl = function() {
     updateTagCloud: function() {
       $('#entries_category_cloud').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(),1));
       $('#entries_account_cloud').html(mlog.base.arrayToTagCloud(mlog.accounts.getAll(),2));
+      // mark selected categories
+      if (filterOptions.categories!=='') {
+        var regex = eval('/('+filterOptions.categories+')/i');
+        if (regex!==undefined) {
+          $.each( $('#entries_category_cloud').children(), function(i,v) {
+            if (regex.test($(v).html())) $(v).addClass('tagSelect');
+            });
+        }
+      }
+      // mark selected accounts
+      if (filterOptions.accounts!=='') {
+        var regex = eval('/('+filterOptions.accounts+')/i');
+        if (regex!==undefined) {
+          $.each( $('#entries_account_cloud').children(), function(i,v) {
+            if (regex.test($(v).html())) $(v).addClass('tagSelect');
+            });
+        }
+      }
     },
     toggleAllTagCloud: function(el) {
       var elem = $(el);
@@ -385,7 +405,6 @@ mlog.entriesControl = function() {
         $(v).removeClass("tagSelect");
         if (chk) $(v).addClass("tagSelect");
       });
-//      mlog.entriesControl.updateView();
     }
   };
 }();
