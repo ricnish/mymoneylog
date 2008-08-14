@@ -44,7 +44,7 @@
         </div>
 
         <h1 id="logo">my<span class="green">Money</span>Log</h1>
-        <h2 id="slogan">1.112</h2>
+        <h2 id="slogan">1.113</h2>
         <!-- Menu Tabs -->
         <ul>
           <li id="menu_entries">
@@ -139,11 +139,12 @@
                 <option value="1" class="msg">credit</option>
               </select>
               <label class="msg">
-                regular expression
+                text
               </label>
               <input type="text" id="filter_query" class="textbox autocompleteoff"/>
               <p>
-                <button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>
+                <button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>&nbsp;
+                <button class="button msg" type="button" onclick="mlog.entriesControl.resetFilter()">cancel</button>
               </p>
             </form>
           </div>

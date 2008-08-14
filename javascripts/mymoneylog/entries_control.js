@@ -5,19 +5,28 @@
 mlog.entriesControl = function() {
   var htmlTemplate = null;
   var storedSearches = [];
-  var filterOptions = {
-    query: '',
-    pageNumber:1,
-    entriesPerPage: 50,
-    startDate: '',
-    endDate: '',
-    values: 0,
-    categories: '',
-    accounts: '',
-    sortColIndex: 0,
-    sortReverse: true
-    };
-
+  var filterOptions = {};
+  
+  var resetFilterOptions = function() {
+      filterOptions = {
+        query: '',
+        pageNumber:1,
+        entriesPerPage: 50,
+        startDate: '2000-01-01',
+        endDate: mlog.base.getCurrentDate(),
+        values: 0,
+        categories: '',
+        accounts: '',
+        sortColIndex: 0,
+        sortReverse: true
+        };
+      $('#filter_date_from').val(filterOptions.startDate);
+      $('#filter_date_until').val(filterOptions.endDate);
+      $('#filter_query').val(filterOptions.query);
+      $('#filter_values').val(filterOptions.values);
+      mlog.entriesControl.updateTagCloud();
+  };
+  
   return {
     hideSummary: false,
     /* initialize template, completers, datepicker... */
@@ -97,19 +106,15 @@ mlog.entriesControl = function() {
           ifFormat: "%Y-%m-%d",
           weekNumbers: false
         });
-        /* initial date value */
-        $('#input_date').val(mlog.base.getCurrentDate());
-        $('#filter_date_from').val('2000-01-01');
-        $('#filter_date_until').val(mlog.base.getCurrentDate());
         /* attach on blur event for account transfers */
         $('#input_account').focus(this.toggleToAccount);
         /* fill filter autocomplete */
         storedSearches = mlog.base.getCookie('storedSearches').split('~');
         $('#filter_query').autocomplete(storedSearches,
           { minChars: 0, max: 50, selectFirst: false })
-        /* read options */
-        this.updateOptions();
-        mlog.entriesControl.updateTagCloud();
+        /* initial date value */
+        $('#input_date').val(mlog.base.getCurrentDate());
+        resetFilterOptions();
       }
     },
     /* display an entry to input */
@@ -357,7 +362,6 @@ mlog.entriesControl = function() {
       filterOptions.values = parseInt($('#filter_values').val()) || 0;
       filterOptions.categories = selectedCategories.join('|');;
       filterOptions.accounts = selectedAccounts.join('|');;
-
       /* update stored searches */
       if (filterOptions.query!='' && $.inArray(filterOptions.query, storedSearches)<0) {
         storedSearches.unshift(filterOptions.query);
@@ -405,6 +409,10 @@ mlog.entriesControl = function() {
         $(v).removeClass("tagSelect");
         if (chk) $(v).addClass("tagSelect");
       });
+    },
+    resetFilter: function() {
+      resetFilterOptions();
+      this.show();
     }
   };
 }();
