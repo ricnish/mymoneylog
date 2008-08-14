@@ -44,7 +44,7 @@
         </div>
 
         <h1 id="logo">my<span class="green">Money</span>Log</h1>
-        <h2 id="slogan">1.0</h2>
+        <h2 id="slogan">1.112</h2>
         <!-- Menu Tabs -->
         <ul>
           <li id="menu_entries">
@@ -130,6 +130,14 @@
                 until
               </label>
               <input id="filter_date_until" class="input_date autocompleteoff" type="text" readonly=true/>
+              <label class="msg">
+                value
+              </label>
+              <select id="filter_values">
+                <option value="0" class="msg">all</option>
+                <option value="-1" class="msg">debit</option>
+                <option value="1" class="msg">credit</option>
+              </select>
               <label class="msg">
                 regular expression
               </label>

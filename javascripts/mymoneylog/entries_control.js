@@ -11,7 +11,7 @@ mlog.entriesControl = function() {
     entriesPerPage: 50,
     startDate: '',
     endDate: '',
-    values: '',
+    values: 0,
     categories: '',
     accounts: '',
     sortColIndex: 0,
@@ -354,7 +354,7 @@ mlog.entriesControl = function() {
       filterOptions.entriesPerPage = $('#entriesPerPage').val() || 50;
       filterOptions.startDate = $('#filter_date_from').val();
       filterOptions.endDate = $('#filter_date_until').val();
-      filterOptions.values = '';
+      filterOptions.values = parseInt($('#filter_values').val()) || 0;
       filterOptions.categories = selectedCategories.join('|');;
       filterOptions.accounts = selectedAccounts.join('|');;
 

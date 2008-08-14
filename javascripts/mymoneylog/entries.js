@@ -253,7 +253,7 @@ mlog.entries = function(){
       //  query: '', // text filter or regular expression
       //  startDate: '', // initial date
       //  endDate: '', // final date
-      //  values: '', // debit or credit
+      //  values: '', // all: 0, debit: -1, credit: 1
       //  categories: '', // selected categories
       //  accounts: '', // selected accounts
       //  sortColIndex: 0, // column to sort
@@ -279,7 +279,8 @@ mlog.entries = function(){
           if (regexCat!==undefined && !regexCat.test(entries[i][3])) continue;
           // filter account
           if (regexAcc!==undefined && !regexAcc.test(entries[i][4])) continue;
-          // TODO: filter value
+          // filter value
+          if (entries[i][1]*options.values<0) continue;
           res.push(entries[i]);
         }
         // sort column
