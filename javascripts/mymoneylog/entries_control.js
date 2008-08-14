@@ -315,7 +315,8 @@ mlog.entriesControl = function() {
         str.push('</select>&nbsp;<span class="msg">'+
         mlog.translator.get('per page')+'</span>' +
         '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-      str.push('<a onclick="mlog.entriesControl.onPreviousPage()">&laquo;</a>');
+      var prevPg = (currentPg-1>0)?currentPg-1:currentPg;
+      str.push('<a onclick="mlog.entriesControl.show('+prevPg+')">&laquo;</a>');
       str.push('&nbsp;'+mlog.translator.get('page')+'&nbsp;');
       str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
       for (var i=1;i<=maxPg;i++) {
@@ -326,21 +327,14 @@ mlog.entriesControl = function() {
         }
       }
       str.push('</select>&nbsp;'+mlog.translator.get('of')+'&nbsp;'+maxPg+'&nbsp;');
-      str.push('<a onclick="mlog.entriesControl.onNextPage()">&raquo;</a>');
+      var nextPg = (currentPg+1<=maxPg)?currentPg+1:currentPg;
+      str.push('<a onclick="mlog.entriesControl.show('+nextPg+')">&raquo;</a>');
       str.push('</div>');
       return str.join('');
     },
     onPageChange: function() {
       filterOptions.entriesPerPage = parseInt($('#entriesPerPage').val() || 50);
       mlog.entriesControl.show(parseInt($('#select_page').val()));
-    },
-    onPreviousPage: function() {
-      var page = parseInt($('#select_page').val())-1;
-      if (page>0) mlog.entriesControl.show(page);
-    },
-    onNextPage: function() {
-      var page = parseInt($('#select_page').val())+1;
-      mlog.entriesControl.show(page);
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id');
@@ -356,7 +350,7 @@ mlog.entriesControl = function() {
       var selectedAccounts = [];
       $.each( $('#entries_account_cloud .tagSelect'), function(i,v) { selectedAccounts.push($(v).html()); });
       filterOptions.query = $.trim($('#filter_query').val());
-      filterOptions.entriesPerPage = $('#entriesPerPage').val() || 50;
+      filterOptions.entriesPerPage = parseInt($('#entriesPerPage').val() || 50);
       filterOptions.startDate = $('#filter_date_from').val();
       filterOptions.endDate = $('#filter_date_until').val();
       filterOptions.values = parseInt($('#filter_values').val()) || 0;

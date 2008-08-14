@@ -289,15 +289,14 @@ mlog.entries = function(){
         if (options.sortReverse) res.reverse();
         // trim page / entries count
         var iStart = (options.pageNumber-1) * options.entriesPerPage;
+        iStart = iStart<res.length?iStart:0;
         var iEnd = iStart+options.entriesPerPage;
         var data = [];
-        if (iStart<res.length) {
-          for (var i=iStart;i<iEnd && i<res.length; i++) {
-            data.push(res[i]);
-          }
-          // add the maximum page number at tail
-          data.push({maxPage: Math.ceil(res.length/options.entriesPerPage)});
+        for (var i=iStart;i<iEnd && i<res.length; i++) {
+          data.push(res[i]);
         }
+        // add the maximum page number at tail
+        data.push({maxPage: Math.ceil(res.length/options.entriesPerPage)});
         return data;
       }
       catch (e) {return []}
