@@ -228,12 +228,11 @@ mlog.base = function() {
     arrayToTagCloud: function(arrayTags,indexCount) {
       var indexQtd = indexCount || 1;
       var cList = arrayTags;
-      var count = 0;
       var minCount = 999999;
       var maxCount = 0;
       var minSize = 9; // min font size in pixel 
       var maxSize = 29; // max font size in pixel
-      var fontSize =  9;
+      var fontSize = minSize;
       /* iterate to get min and max */
       $.each(cList, function(i,v) {
         if (v[indexQtd]>maxCount) maxCount = v[indexQtd];
@@ -241,7 +240,10 @@ mlog.base = function() {
       });
       var list = '';
       for (var i=0;i<cList.length;i++) {
-        fontSize =  ( ((cList[i][indexQtd]-minCount) * (maxSize-minSize)) / (maxCount-minCount) ) + minSize;
+        if (maxCount>2)
+          fontSize = (((cList[i][indexQtd]-minCount)*(maxSize-minSize))/(maxCount-minCount)) + minSize;
+        else
+          fontSize = minSize;
         list += '<span class="tagCloud" style="font-size: '+fontSize+'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
       }
       return list;
