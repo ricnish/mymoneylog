@@ -44,7 +44,7 @@
         </div>
 
         <h1 id="logo">my<span class="green">Money</span>Log</h1>
-        <h2 id="slogan">1.114</h2>
+        <h2 id="slogan">1.115</h2>
         <!-- Menu Tabs -->
         <ul>
           <li id="menu_entries">
@@ -113,23 +113,30 @@
               <label class="msg">
                 categories
               </label>
-              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
+              <span class="tagCloud msg selectAll" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
               <span id="entries_category_cloud"></span>
               </span>
               <label class="msg">
                 accounts
               </label>
-              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
+              <span class="tagCloud msg selectAll" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
               <span id="entries_account_cloud"></span>
               </span>
-              <label class="msg">
-                from
-              </label>
-              <input id="filter_date_from" class="input_date autocompleteoff" type="text" readonly=true/>
-              <label class="msg">
-                until
-              </label>
-              <input id="filter_date_until" class="input_date autocompleteoff" type="text" readonly=true/>
+
+              <div style="float:left; margin-right:4px">
+                <label class="msg">
+                    from
+                </label>
+                <input id="filter_date_from" class="input_date autocompleteoff" type="text" readonly=true/>
+              </div>
+              <div style="display:inline; float:left">
+                <label class="msg">
+                    until
+                </label>
+                <input id="filter_date_until" class="input_date autocompleteoff" type="text" readonly=true/>
+              </div>
+              <div style="clear:both;"></div>
+
               <label class="msg">
                 value
               </label>
@@ -177,7 +184,7 @@
               <label class="msg">
                 show
               </label>
-              <span class="tagCloud msg selectAll" style="font-size: 14px; font-weight: bold" onClick="mlog.overviewControl.toggleAllTagCloud(this)">all</span>
+              <span class="tagCloud msg selectAll" onClick="mlog.overviewControl.toggleAllTagCloud(this)">all</span>
               <span id="show_ov_categories">
               </span>
               <label class="msg">

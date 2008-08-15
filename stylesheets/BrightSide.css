@@ -108,7 +108,7 @@ textarea {
     width: 98%;
 }
 input.button, button {
-  margin: 0 0;
+  margin: 1px 0 1px;
   font: bold 1em Arial, Sans-serif;
   border: 1px solid #6297BC;
   background: url(../images/tabright.gif) no-repeat right top;
@@ -125,7 +125,7 @@ input.button:hover, button:hover {
   cursor:pointer;
 }
 input.input_date {
-  width:90px;
+  width:84px;
   background-image: url(../images/calendar.png);
   background-repeat: no-repeat;
   background-position: right;
@@ -598,4 +598,8 @@ div.overflow {
 }
 .tagSelect {
   color: #9EC630;
+}
+.selectAll {
+  font-size: 14px;
+  font-weight: bold;
 }
