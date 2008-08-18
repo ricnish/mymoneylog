@@ -45,14 +45,14 @@ mlog.base = function() {
     try {
       if(document.applets["TiddlySaver"]) {
         var res = document.applets["TiddlySaver"].saveFile(filePath,"UTF-8",content);
-        if (res>0) return true;
+        if (res>0) { return true; }
       }
     } catch(e) {}
     try {
       var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
       s.print(content);
       s.close();
-    } catch(e) {
+    } catch(er) {
       return null;
     }
     return true;
@@ -86,11 +86,13 @@ mlog.base = function() {
         filePath = filePath.replace(/\//g,"\\");
       }
       filePath = decodeURI(filePath);
-      if ($.browser.mozilla)
+      if ($.browser.mozilla) {
         return mozillaSaveFile(filePath, content);
-      else if ($.browser.msie)
+      }
+      else if ($.browser.msie) {
         return ieSaveFile(filePath, content);
-      else return javaSaveFile(filePath, content);
+      }
+      return javaSaveFile(filePath, content);
     },
     // sort array by an index
     arraySort: function(theArray, colIndex){
@@ -112,7 +114,7 @@ mlog.base = function() {
             if (a > b) {
               return 1;
             }
-        } catch(e) {}
+        } catch(er) {}
         return 0;
       };
       theArray.sort(sortFn);
@@ -174,7 +176,7 @@ mlog.base = function() {
     activateMenu: function(menuId){
       var menu = $('#menu_' + menuId);
       // verify if it is already active
-      if (!menu || menu.hasClass('menu_current')) return;
+      if (!menu || menu.hasClass('menu_current')) { return; }
       // deactivate all
       $('#header li').removeClass('menu_current');
       $('#sidebar .panel').hide();
@@ -188,9 +190,8 @@ mlog.base = function() {
     },
     setCookie: function(c_name,value,expiredays) {
       var exdate = new Date();
-      exdate.setDate(exdate.getDate()+expiredays);
-      document.cookie = c_name+"="+escape(value)+
-        ((expiredays == null) ? "" : ";expires="+exdate.toGMTString());
+      exdate.setDate(exdate.getDate()+(expiredays||60));
+      document.cookie = c_name+"="+escape(value)+";expires="+exdate.toGMTString();
     },
     getCookie: function(c_name) {
       if (document.cookie.length > 0) {
@@ -198,7 +199,7 @@ mlog.base = function() {
         if (c_start != -1) {
           c_start = c_start + c_name.length+1;
           var c_end = document.cookie.indexOf(";", c_start);
-          if (c_end == -1) c_end = document.cookie.length;
+          if (c_end == -1) { c_end = document.cookie.length; }
           return unescape(document.cookie.substring(c_start, c_end));
         }
       }
@@ -230,20 +231,22 @@ mlog.base = function() {
       var cList = arrayTags;
       var minCount = 999999;
       var maxCount = 0;
-      var minSize = 9; // min font size in pixel 
+      var minSize = 9; // min font size in pixel
       var maxSize = 29; // max font size in pixel
       var fontSize = minSize;
       /* iterate to get min and max */
       $.each(cList, function(i,v) {
-        if (v[indexQtd]>maxCount) maxCount = v[indexQtd];
-        if (v[indexQtd]<minCount) minCount = v[indexQtd];
+        if (v[indexQtd]>maxCount) { maxCount = v[indexQtd]; }
+        if (v[indexQtd]<minCount) { minCount = v[indexQtd]; }
       });
       var list = '';
       for (var i=0;i<cList.length;i++) {
-        if (maxCount>2)
+        if (maxCount>2) {
           fontSize = (((cList[i][indexQtd]-minCount)*(maxSize-minSize))/(maxCount-minCount)) + minSize;
-        else
+        }
+        else {
           fontSize = minSize;
+        }
         list += '<span class="tagCloud" style="font-size: '+fontSize+'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
       }
       return list;

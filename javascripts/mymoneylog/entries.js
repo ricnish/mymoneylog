@@ -36,14 +36,14 @@ mlog.entries = function(){
         // parse category
         entry[3] = $.trim(entry[3]).toLowerCase();
         // update category list
-        if (entry[3] != '') {
+        if (entry[3] !== '') {
           // deals with multiple categories
           var str = entry[3].split($.trim(mlog.base.categorySeparator));
           var tmp = [];
           var value = '';
           for (var i=0;i<str.length;i++) {
             value = $.trim(str[i]);
-            if (value != '') {
+            if (value !== '') {
               tmp.push(value);
               mlog.categories.add(value);
             }
@@ -56,8 +56,8 @@ mlog.entries = function(){
         entry[5] = entries.length;
         entries.push(entry);
         // update account list
-        if (entry[4] != '') {
-          if ((entry[0] <= currentDate) && !(entry[6])) {
+        if (entry[4] !== '') {
+          if ((entry[0] <= currentDate) && !entry[6]) {
             mlog.accounts.add(entry[4], entry[1]);
           }
           else {
@@ -65,7 +65,7 @@ mlog.entries = function(){
             mlog.accounts.add(entry[4]);
           }
         }
-      } catch(e) {};
+      } catch(e) {}
     }
   };
   /* remove and return an entry */
@@ -83,7 +83,7 @@ mlog.entries = function(){
       mlog.categories.remove(entry[3]);
     }
     return entry;
-  }
+  };
 
   /* public methods */
   return {
@@ -94,7 +94,7 @@ mlog.entries = function(){
       var srcData = null;
       try {
         srcData = document.getElementById('dataframe').contentWindow.document.getElementById('data');
-      } catch(e) {};
+      } catch(e) {}
       var rawData = '';
       if (srcData) {
         rawData = srcData.innerHTML;
@@ -112,7 +112,7 @@ mlog.entries = function(){
         }
         // add as array
         _add( rawData[i].split(mlog.base.dataFieldSeparator) );
-      };
+      }
       if (!srcData) {
         /* if there was no data file, set source to empty */
         $("#dataframe").attr('src', '');
@@ -122,7 +122,7 @@ mlog.entries = function(){
      * Get entries
      */
     getAll: function(){
-      if (entries.length==0) {
+      if (entries.length===0) {
         this.read();
       }
       return entries.slice(0);
@@ -133,7 +133,8 @@ mlog.entries = function(){
       var txt = '';
       var tmp = [];
       var initialAccounts = mlog.accountsClass();
-      for (var i = 0; i < entries.length; i++) {
+      var i;
+      for (i = 0; i < entries.length; i++) {
         if (entries[i][0]<startDate) {
           // set initial accounts values
           initialAccounts.add(entries[i][4],entries[i][1]);
@@ -149,8 +150,8 @@ mlog.entries = function(){
       initialAccounts = initialAccounts.getAll();
       txt = '';
       if (initialAccounts.length>0) {
-        for (var i=0; i<initialAccounts.length;i++) {
-          if (initialAccounts[i][0] != '') {
+        for (i=0; i<initialAccounts.length;i++) {
+          if (initialAccounts[i][0] !== '') {
             txt += startDate + mlog.base.dataFieldSeparator +
               mlog.base.floatToString(initialAccounts[i][1]) + mlog.base.dataFieldSeparator +
               mlog.translator.get('initial value') + mlog.base.dataFieldSeparator +
@@ -193,16 +194,17 @@ mlog.entries = function(){
       /* number of inserts */
       var nTimes = 1;
       /* parse value */
+      var args;
       if (entry[1].indexOf('*')>0) {
         /* if multiply * : insert n times the same value */
-        var args = entry[1].split('*');
+        args = entry[1].split('*');
         entry[1] = mlog.base.toFloat(args[0]);
-        nTimes = parseInt(args[1]) || 1;
+        nTimes = parseInt(args[1],10) || 1;
       } else
         if (entry[1].indexOf('/') > 0) {
           /* if divided / : insert n times the value/nTimes */
-          var args = entry[1].split('/');
-          nTimes = parseInt(args[1]) || 1;
+          args = entry[1].split('/');
+          nTimes = parseInt(args[1],10) || 1;
           entry[1] = Math.round(mlog.base.toFloat(args[0])/nTimes*100)/100;
         }
         else {
@@ -225,7 +227,7 @@ mlog.entries = function(){
         newEntry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + newEntry[0].substring(0,10)):'';
         _add(newEntry);
         /* if category is empty and has toAccount, do a transfer */
-        if (newEntry[3]=='' && toAccount!=='' && newEntry[1] != 0) {
+        if (newEntry[3]==='' && toAccount!=='' && newEntry[1] !== 0) {
           newEntry[1] = entry[1]*-1;
           newEntry[4] = toAccount;
           _add(newEntry);
@@ -264,42 +266,54 @@ mlog.entries = function(){
       //filter,isRegex,withFuture
       var res = [];
       try {
-        var regex = eval('/' + options.query + '/i');
-        var regexCat = eval('/('+options.categories+')/i');
-        var regexAcc = eval('/('+options.accounts+')/i');
+        var regex = new RegExp(options.query,'i');
+        var regexCat = new RegExp('('+options.categories+')','i');
+        var regexAcc = new RegExp('('+options.accounts+')','i');
         var str = '';
-        for (var i = 0; i < entries.length; i++) {
+        var i;
+        for (i = 0; i < entries.length; i++) {
           str = entries[i].join(mlog.base.dataFieldSeparator);
           // filter regular expression
-          if (regex!==undefined && !regex.test(str)) continue;
-          // filter date range
-          if (entries[i][0] < options.startDate || entries[i][0] > options.endDate)
+          if (regex!==undefined && !regex.test(str)) {
             continue;
+          }
+          // filter date range
+          if (entries[i][0] < options.startDate || entries[i][0] > options.endDate) {
+            continue;
+          }
           // filter category
-          if (regexCat!==undefined && !regexCat.test(entries[i][3])) continue;
+          if (regexCat!==undefined && !regexCat.test(entries[i][3])) {
+            continue;
+          }
           // filter account
-          if (regexAcc!==undefined && !regexAcc.test(entries[i][4])) continue;
+          if (regexAcc!==undefined && !regexAcc.test(entries[i][4])) {
+            continue;
+          }
           // filter value
-          if (entries[i][1]*options.values<0) continue;
+          if (entries[i][1]*options.values<0) {
+            continue;
+          }
           res.push(entries[i]);
         }
         // sort column
         mlog.base.arraySort(res,options.sortColIndex);
         // sort order
-        if (options.sortReverse) res.reverse();
+        if (options.sortReverse) {
+          res.reverse();
+        }
         // trim page / entries count
         var iStart = (options.pageNumber-1) * options.entriesPerPage;
         iStart = iStart<res.length?iStart:0;
         var iEnd = iStart+options.entriesPerPage;
         var data = [];
-        for (var i=iStart;i<iEnd && i<res.length; i++) {
+        for (i=iStart;i<iEnd && i<res.length; i++) {
           data.push(res[i]);
         }
         // add the maximum page number at tail
         data.push({maxPage: Math.ceil(res.length/options.entriesPerPage)});
         return data;
       }
-      catch (e) {return []}
+      catch (e) {return [];}
       return res;
     },
     getCount: function() {
@@ -331,14 +345,16 @@ mlog.entries = function(){
       var totalId = mlog.translator.get('accumulated');
       /* initialize months */
       var months = [];
-      for (var i=nMonths;i>=0;i--) {
-        var month = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),i*-1);
+      var month;
+      var i;
+      for (i=nMonths;i>=0;i--) {
+        month = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),i*-1);
         month = mlog.base.dateToString(month);
         month = month.slice(0,7);
         months.push(month);
       }
       // initialize total
-      for (var i=0;i<categoriesIds.length;i++) {
+      for (i=0;i<categoriesIds.length;i++) {
         total.categories[categoriesIds[i]] = {};
       }
       total.summary[debitId] = {};
@@ -350,32 +366,37 @@ mlog.entries = function(){
         total.summary[creditId][months[m]] = 0;
         total.summary[balanceId][months[m]] = 0;
         total.summary[totalId][months[m]] = 0;
-        for (var i=0;i<categoriesIds.length;i++) {
+        for (i=0;i<categoriesIds.length;i++) {
           total.categories[categoriesIds[i]][months[m]] = 0;
         }
       }
       // process entries
       var categories;
-      var month;
       var value;
       var accumulated = 0;
       mlog.base.arraySort(ovEntries,0);
-      for (var i=0;i<ovEntries.length;i++) {
+      for (i=0;i<ovEntries.length;i++) {
         // skip if reconcilable
-        if (ovEntries[i][6]) continue;
-        month = (ovEntries[i][0]).slice(0, 7);
+        if (ovEntries[i][6]) {
+          continue;
+        }
+        month = ovEntries[i][0].slice(0, 7);
         value = ovEntries[i][1];
         categories = ovEntries[i][3];
         categories = categories.split(mlog.base.categorySeparator);
-        if (categories[0] != '') {
+        if (categories[0] !== '') {
           // sum for each category/tag
           for (var ncat=0;ncat<categories.length;ncat++) {
             total.categories[categories[ncat]][month] += value;
           }
           /* sum credit (if has category) */
-          if (value>0) total.summary[creditId][month] += value;
+          if (value>0) {
+            total.summary[creditId][month] += value;
+          }
           /* sum debit (if has category) */
-          if (value<0) total.summary[debitId][month] += value;
+          if (value<0) {
+            total.summary[debitId][month] += value;
+          }
         }
         /* calc balance */
         total.summary[balanceId][month] += value;

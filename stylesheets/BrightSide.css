@@ -594,7 +594,7 @@ div.overflow {
   color: #BBB;
 }
 .tagCloud:hover {
-  color: #6297BC;
+  text-decoration: underline;
 }
 .tagSelect {
   color: #9EC630;
