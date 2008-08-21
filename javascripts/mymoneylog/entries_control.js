@@ -6,29 +6,27 @@ mlog.entriesControl = function() {
   var htmlTemplate = null;
   var storedSearches = [];
   var filterOptions = {};
-  
+  var hideSummary = false;
   var resetFilterOptions = function() {
-      filterOptions = {
-        query: '',
-        pageNumber:1,
-        entriesPerPage: 50,
-        startDate: '2000-01-01',
-        endDate: mlog.base.getCurrentDate(),
-        values: 0,
-        categories: '',
-        accounts: '',
-        sortColIndex: 0,
-        sortReverse: true
-        };
-      $('#filter_date_from').val(filterOptions.startDate);
-      $('#filter_date_until').val(filterOptions.endDate);
-      $('#filter_query').val(filterOptions.query);
-      $('#filter_values').val(filterOptions.values);
-      mlog.entriesControl.updateTagCloud();
+    filterOptions = {
+      query: '',
+      pageNumber:1,
+      entriesPerPage: 50,
+      startDate: '2000-01-01',
+      endDate: mlog.base.getCurrentDate(),
+      values: 0,
+      categories: '',
+      accounts: '',
+      sortColIndex: 0,
+      sortReverse: true
+      };
+    $('#filter_date_from').val(filterOptions.startDate);
+    $('#filter_date_until').val(filterOptions.endDate);
+    $('#filter_query').val(filterOptions.query);
+    $('#filter_values').val(filterOptions.values);
+    mlog.entriesControl.updateTagCloud();
   };
-  
   return {
-    hideSummary: false,
     /* initialize template, completers, datepicker... */
     init: function() {
       if (!htmlTemplate) {
@@ -202,10 +200,10 @@ mlog.entriesControl = function() {
       if (theData.length > 0) {
         /* build summary */
         content = content.replace(/{summaryContent}/, mlog.entriesControl.getSummary());
-        if (mlog.entriesControl.hideSummary) {
+        if (hideSummary) {
           /* apply hide style */
           content = content.replace(/show_next/, 'hide_next');
-          content = content.replace(/display: block/i, 'display: none');
+          content = content.replace(/id="entries_summary"/i, 'id="entries_summary" style="display: none"');
         }
         /* build entries */
         res+=tp.tHead;
@@ -241,7 +239,7 @@ mlog.entriesControl = function() {
         /* assemble table */
         content = content.replace(/{entriesContent}/, res);
         var maxPage = theData.pop().maxPage || 1;
-        content += mlog.entriesControl.getPaginator(filterOptions.pageNumber,maxPage)+'<br/>';
+        content += mlog.base.buildPaginator(filterOptions.pageNumber,maxPage,filterOptions.entriesPerPage)+'<br/>';
       }
       else {
         content = '<h1>' + mlog.translator.get('no data') + '</h1>';
@@ -249,7 +247,7 @@ mlog.entriesControl = function() {
       $('#report').html(content);
       $('#toggle_summary').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
-        mlog.entriesControl.hideSummary = !mlog.entriesControl.hideSummary;
+        hideSummary = !hideSummary;
       });
     },
 
@@ -296,41 +294,6 @@ mlog.entriesControl = function() {
       } else {
         $('#transfer').hide();
       }
-    },
-    /* build paginator */
-    getPaginator: function(cPage,max) {
-      var currentPg = cPage || 1;
-      var maxPg = max || 1;
-      var str = [];
-      var perPageOption = [20,50,100,200,500,1000]; // entries per page options
-      str.push('<div class="pagination">');
-      str.push('<select id="entriesPerPage" onchange="mlog.entriesControl.onPageChange()">');
-      for (var i=0;i<perPageOption.length;i++) {
-        if (perPageOption[i]==filterOptions.entriesPerPage) {
-          str.push('<option value="'+perPageOption[i]+'" selected="selected">'+perPageOption[i]+'</option>');
-        } else {
-          str.push('<option value="'+perPageOption[i]+'">'+perPageOption[i]+'</option>');
-        }
-      }
-        str.push('</select>&nbsp;<span class="msg">'+
-        mlog.translator.get('per page')+'</span>' +
-        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-      var prevPg = (currentPg-1>0)?currentPg-1:currentPg;
-      str.push('<a onclick="mlog.entriesControl.show('+prevPg+')">&laquo;</a>');
-      str.push('&nbsp;'+mlog.translator.get('page')+'&nbsp;');
-      str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
-      for (var i=1;i<=maxPg;i++) {
-        if (i==currentPg) {
-          str.push('<option value="'+i+'" selected="selected">'+i+'</option>');
-        } else {
-          str.push('<option value="'+i+'">'+i+'</option>');
-        }
-      }
-      str.push('</select>&nbsp;'+mlog.translator.get('of')+'&nbsp;'+maxPg+'&nbsp;');
-      var nextPg = (currentPg+1<=maxPg)?currentPg+1:currentPg;
-      str.push('<a onclick="mlog.entriesControl.show('+nextPg+')">&raquo;</a>');
-      str.push('</div>');
-      return str.join('');
     },
     onPageChange: function() {
       filterOptions.entriesPerPage = parseInt($('#entriesPerPage').val() || 50);

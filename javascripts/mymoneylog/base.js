@@ -221,10 +221,9 @@ mlog.base = function() {
           });
       }
     },
-    /*
-     * format array as tag cloud string
+    /* format array as tag cloud string
      * @param: array arrayTags - where index 0 is the tag name
-     * @param: int indexCount - is the index of the quantity for the tag name, default to index 1
+     * @param: int indexCount - index of tag name's count, default: 1
     */
     arrayToTagCloud: function(arrayTags,indexCount) {
       var indexQtd = indexCount || 1;
@@ -247,12 +246,49 @@ mlog.base = function() {
         else {
           fontSize = minSize;
         }
-        list += '<span class="tagCloud" style="font-size: '+fontSize+'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
+        list += '<span class="tagCloud" style="font-size: '+fontSize+
+          'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
       }
       return list;
     },
     toggleTag: function(elem) {
       $(elem).toggleClass('tagSelect');
+    },
+    /* build paginator */
+    buildPaginator: function(currentPage,numberOfPages,itemPerPage) {
+      var currentPg = currentPage || 1;
+      var maxPg = numberOfPages || 1;
+      var entriesPerPage = itemPerPage || 50;
+      var str = [];
+      var perPageOption = [20,50,100,200,500,1000]; // entries per page options
+      str.push('<div class="pagination">');
+      str.push('<select id="entriesPerPage" onchange="mlog.entriesControl.onPageChange()">');
+      for (var i=0;i<perPageOption.length;i++) {
+        if (perPageOption[i]==entriesPerPage) {
+          str.push('<option value="'+perPageOption[i]+'" selected="selected">'+perPageOption[i]+'</option>');
+        } else {
+          str.push('<option value="'+perPageOption[i]+'">'+perPageOption[i]+'</option>');
+        }
+      }
+      str.push('</select>&nbsp;<span class="msg">'+
+        mlog.translator.get('per page')+'</span>' +
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+      var prevPg = (currentPg-1>0)?currentPg-1:currentPg;
+      str.push('<a onclick="mlog.entriesControl.show('+prevPg+')">&laquo;</a>');
+      str.push('&nbsp;'+mlog.translator.get('page')+'&nbsp;');
+      str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
+      for (var i=1;i<=maxPg;i++) {
+        if (i==currentPg) {
+          str.push('<option value="'+i+'" selected="selected">'+i+'</option>');
+        } else {
+          str.push('<option value="'+i+'">'+i+'</option>');
+        }
+      }
+      str.push('</select>&nbsp;'+mlog.translator.get('of')+'&nbsp;'+maxPg+'&nbsp;');
+      var nextPg = (currentPg+1<=maxPg)?currentPg+1:currentPg;
+      str.push('<a onclick="mlog.entriesControl.show('+nextPg+')">&raquo;</a>');
+      str.push('</div>');
+      return str.join('');
     }
   };
 }();

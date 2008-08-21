@@ -5,6 +5,7 @@
 mlog.overviewControl = function() {
   var htmlTemplate = null;
   var listedCategories = [];
+  var hideOverview = false;
   return {
     init: function() {
       /* initialize template... */
@@ -108,7 +109,13 @@ mlog.overviewControl = function() {
             res.push(str.replace(/{value}/,'&nbsp;'));
           res.push('</tr>'); // closing tag
         }
-        str = htmlTemplate.main.replace(/{overviewContent}/,res.join(''));
+        str = htmlTemplate.main;
+        if (hideOverview) {
+          /* apply hide style */
+          str = str.replace(/show_next/, 'hide_next');
+          str = str.replace(/id="overview_summary"/i, 'id="overview_summary" style="display: none"');
+        }
+        str = str.replace(/{overviewContent}/,res.join(''));
       }
       else {
           str = '<h1>' + mlog.translator.get('no data') + '</h1>';
@@ -118,6 +125,7 @@ mlog.overviewControl = function() {
       /* hide/show overview table */
       $('#toggle_overview_table').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
+        hideOverview = !hideOverview;
       });
       /* display the chart */
       mlog.chartControl.show(theData);
