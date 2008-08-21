@@ -42,7 +42,6 @@
             <option value="en-us">en-us</option>
           </select>
         </div>
-
         <h1 id="logo">my<span class="green">Money</span>Log</h1>
         <h2 id="slogan">1.116</h2>
         <!-- Menu Tabs -->
@@ -120,21 +119,19 @@
               </label>
               <span class="tagCloud msg selectAll" onClick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
               <span id="entries_account_cloud"></span>
-
-              <div style="float:left; margin-right:4px">
+              <div class="float-left" style="margin-right:4px">
                 <label class="msg">
                     from
                 </label>
                 <input id="filter_date_from" class="input_date autocompleteoff" type="text" readonly=true/>
               </div>
-              <div style="display:inline; float:left">
+              <div class="float-left">
                 <label class="msg">
                     until
                 </label>
                 <input id="filter_date_until" class="input_date autocompleteoff" type="text" readonly=true/>
               </div>
-              <div style="clear:both;"></div>
-
+              <div class="clear"></div>
               <label class="msg">
                 value
               </label>
@@ -197,15 +194,6 @@
             </form>
           </div>
           <!-- overview panel ends here -->
-          <!-- chart panel starts here -->
-          <!-- To do in near future:
-          <div id="panel_chart" class="panel" style="display:none;">
-            <h1 class="msg">Options</h1>
-            <form>
-            </form>
-          </div>
-          -->
-          <!-- chart panel ends here -->
           <!-- editor panel starts here -->
           <div id="panel_editor" class="panel" style="display:none;">
             <h1 class="msg">Options</h1>
@@ -236,7 +224,7 @@
           <div id="main_entries" style="display:none;">
             <a name="EntriesStart"></a>
             <h1 id="toggle_summary" class="msg show_next">Summary</h1>
-            <div id="entries_summary" style="display: block;">
+            <div id="entries_summary">
             <table class="summary" id="summary_table">
               <tr>
                 <th class="msg">
@@ -310,7 +298,7 @@
                   <span class="opt_reconcile hide" onClick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
                 </td>
               </tr>
-              <tr id="rowId" class="total">
+              <tr class="total">
                 <td class="first col_c msg">
                   This total
                 </td>
@@ -351,13 +339,6 @@
             <br/>
           </div>
           <!-- main_overview ends here -->
-          <!-- main_chart starts here -->
-          <!-- To do in near future:
-          <div id="main_chart" style="display:none;">
-            <h1 class="msg">chart</h1>
-          </div>
-          -->
-          <!-- main_chart ends here -->
           <!-- main_editor starts here -->
           <div id="main_editor" style="display:none;">
             <h1 class="msg">text data source</h1>
