@@ -165,8 +165,7 @@ mlog.entries = function(){
     },
     exportFromStartDate: function(startdate) {
       var filename = mlog.base.getDataPathName().replace(/.html/,'_'+startdate+'.html');
-      var result = mlog.base.saveFile(filename,
-                                      '<pre id="data">\n'+this.toString(startdate)+'</pre>');
+      var result = mlog.base.saveFile(filename,this.toString(startdate));
       if (!result) {
         alert(mlog.translator.get('could not store the data'));
         return;
@@ -174,15 +173,13 @@ mlog.entries = function(){
       alert(mlog.translator.get('data exported to file:')+'\n'+filename);
     },
     save: function(){
-      var result = mlog.base.saveFile(mlog.base.getDataPathName(),
-                                      '<pre id="data">\n'+this.toString()+'</pre>');
+      var result = mlog.base.saveFile(mlog.base.getDataPathName(),this.toString());
       if (!result) {
         alert(mlog.translator.get('could not store the data'));
       }
     },
     backup: function(){
-      var result = mlog.base.saveFile(mlog.base.getDataPathName() + '.old',
-                                      '<pre id="data">\n'+this.toString()+'</pre>');
+      var result = mlog.base.saveFile(mlog.base.getDataPathName() + '.old',this.toString());
       if (!result) {
         alert(mlog.translator.get('could not store the data'));
       }

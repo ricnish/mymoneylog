@@ -86,6 +86,12 @@ mlog.base = function() {
         filePath = filePath.replace(/\//g,"\\");
       }
       filePath = decodeURI(filePath);
+			content = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" " +
+				"\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" +
+				"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">" + 
+				"<head><title>myMoneyLog Data File</title></head><body><pre id=\"data\">\n" +
+				content +
+				"</pre></body></html>";
       if ($.browser.mozilla) {
         return mozillaSaveFile(filePath, content);
       }
@@ -247,7 +253,7 @@ mlog.base = function() {
           fontSize = minSize;
         }
         list += '<span class="tagCloud" style="font-size: '+fontSize+
-          'px" onClick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
+          'px" onclick="mlog.base.toggleTag(this)">'+cList[i][0]+'</span> ';
       }
       return list;
     },
