@@ -1,4 +1,4 @@
-﻿/**
+/**
  * entries_control.js - entries controller
  * @author Ricardo Nishimura - 2008
  */

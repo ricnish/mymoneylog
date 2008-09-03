@@ -1,4 +1,4 @@
-﻿/**
+/**
  * editor_control.js - data editor controller
  * @author Ricardo Nishimura - 2008
  */

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * help_control.js - display the help
  * @author Ricardo Nishimura - 2008
  */

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * myMoneyLog translation messages
  * save as UTF-8 file format
  */

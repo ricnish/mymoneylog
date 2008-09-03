@@ -1,4 +1,4 @@
-﻿/**
+/**
  * entries.js
  * @author Ricardo Nishimura - 2008
  */

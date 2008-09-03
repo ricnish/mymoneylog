@@ -1,4 +1,4 @@
-﻿/**
+/**
  * base.js - provides some base functions
  * @author Ricardo Nishimura - 2008
  */
@@ -10,7 +10,7 @@ mlog.base = function() {
   // Returns null if it can't do it, false if there's an error, true if it saved OK
   var ieSaveFile = function(filePath,content) {
     try {
-      var fso = new ActiveXObject("Scripting.FileSystemObject");
+     var fso = new ActiveXObject("Scripting.FileSystemObject");
       var file = fso.OpenTextFile(filePath,2,true,-1);
       file.Write(content);
       file.Close();
@@ -25,15 +25,19 @@ mlog.base = function() {
   var mozillaSaveFile = function(filePath,content) {
     if(window.Components) {
       try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+  			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			  var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
         var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(filePath);
-        if(!file.exists()) file.create(0,0664);
-        var out = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-        out.init(file,0x20|0x02,00004,null);
-        out.write(content,content.length);
-        out.flush();
-        out.close();
+        if(!file.exists()) { file.create(0,0664); }
+        var fos = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+        fos.init(file,0x20|0x02,00004,null);
+				os.init(fos, 'UTF-8', 0, 0x0000);
+				os.writeString(content);
+				os.close();
+        fos.close();
+				os = null;
+				fos = null;
         return true;
       } catch(e) {
         return false;
@@ -89,6 +93,7 @@ mlog.base = function() {
 			content = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" " +
 				"\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" +
 				"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">" + 
+				"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
 				"<head><title>myMoneyLog Data File</title></head><body><pre id=\"data\">\n" +
 				content +
 				"</pre></body></html>";

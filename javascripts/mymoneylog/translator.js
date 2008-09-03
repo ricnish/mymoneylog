@@ -1,4 +1,4 @@
-﻿/**
+/**
  * translator.js - load and provides the translations
  * @author Ricardo Nishimura - 2008
  */

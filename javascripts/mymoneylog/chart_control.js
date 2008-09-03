@@ -1,4 +1,4 @@
-﻿/**
+/**
  * chart_control.js - chart controller
  * @author Ricardo Nishimura - 2008
  */

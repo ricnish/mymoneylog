@@ -1,4 +1,4 @@
-﻿/**
+/**
  * overview_control.js - overview controller
  * @author Ricardo Nishimura - 2008
  */
