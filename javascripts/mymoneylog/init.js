@@ -11,13 +11,11 @@ mlog.init = function(){
   $('#menu_overview').click( mlog.overviewControl.show );
   $('#menu_editor').click(mlog.editorControl.show);
   $('#menu_help').click(mlog.helpControl.show);
-// to do:
-//  Event.observe('menu_chart', 'click', mlog.chartControl.show);
 
   // disable browser autocomplete
   $('input.autocompleteoff').attr('autocomplete', 'off');
   // disable submit action for sidebar
-  $('#sidebar form').submit( function() { return false; })
+  $('#sidebar form').submit( function() { return false; });
 
   // add tiddlysaver applet if needed
   if (!$.browser.mozilla && !$.browser.msie) {

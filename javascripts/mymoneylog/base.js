@@ -25,19 +25,19 @@ mlog.base = function() {
   var mozillaSaveFile = function(filePath,content) {
     if(window.Components) {
       try {
-  			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			  var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
         var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(filePath);
         if(!file.exists()) { file.create(0,0664); }
         var fos = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
         fos.init(file,0x20|0x02,00004,null);
-				os.init(fos, 'UTF-8', 0, 0x0000);
-				os.writeString(content);
-				os.close();
+        os.init(fos, 'UTF-8', 0, 0x0000);
+        os.writeString(content);
+        os.close();
         fos.close();
-				os = null;
-				fos = null;
+        os = null;
+        fos = null;
         return true;
       } catch(e) {
         return false;
@@ -90,13 +90,13 @@ mlog.base = function() {
         filePath = filePath.replace(/\//g,"\\");
       }
       filePath = decodeURI(filePath);
-			content = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" " +
-				"\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" +
-				"<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">" + 
-				"<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
-				"<title>myMoneyLog Data File</title></head><body><pre id=\"data\">\n" +
-				content +
-				"</pre></body></html>";
+      content = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" " +
+        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">" +
+        "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\">" +
+        "<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
+        "<title>myMoneyLog Data File</title></head><body><pre id=\"data\">\n" +
+        content +
+        "</pre></body></html>";
       if ($.browser.mozilla) {
         return mozillaSaveFile(filePath, content);
       }
@@ -160,13 +160,14 @@ mlog.base = function() {
     },
     /* add n months to a date */
     addMonths: function(dt,nMonth) {
-      var day = dt.getDate();
-      dt.setMonth(dt.getMonth() + nMonth);
-      if (day>28 && dt.getDate() < day) {
-        dt.setDate(1);
-        dt.setDate(dt.getDate() - 1);
+      var res = new Date(dt);
+      res.setHours(7); // avoid daylight saving calc
+      res.setMonth(dt.getMonth() + nMonth);
+      if (res.getDate()<dt.getDate()) {
+        res.setDate(1);
+        res.setDate(res.getDate() - 1);
       }
-      return dt;
+      return res;
     },
     /* parse 'YYYY-mm-dd' to date */
     stringToDate: function(str) {

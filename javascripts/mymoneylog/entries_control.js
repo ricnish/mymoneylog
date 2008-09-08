@@ -128,7 +128,7 @@ mlog.entriesControl = function() {
     },
     /* remove an entry */
     removeEntry: function(elem){
-      var lineId = elem.parentNode.parentNode.getAttribute('id');
+      var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
       if (confirm(mlog.translator.get('delete').toUpperCase()+': '+mlog.translator.get('are you sure?'))) {
         var lineData = mlog.entries.remove(lineId);
         this.show();
@@ -138,7 +138,7 @@ mlog.entriesControl = function() {
     },
     /* display on input when clicked */
     onClickEntry: function(elem){
-      var id = elem.parentNode.getAttribute('id');
+      var id = elem.parentNode.getAttribute('id').substring(2);
       this.updateInputEntry(mlog.entries.get(id));
       $('#input_date').focus();
       $('#transfer').hide();
@@ -220,7 +220,7 @@ mlog.entriesControl = function() {
           /* the total */
           theTotal += theData[i][1];
           /* apply values to detail row */
-          strRow = strRow.replace(/rowId/, theData[i][5]);
+          strRow = strRow.replace(/rowId/, 'n_'+theData[i][5]);
           strRow = strRow.replace(/{date}/, theData[i][0]);
           strRow = strRow.replace(/{value}/, mlog.base.formatFloat(theData[i][1]));
           strRow = strRow.replace(/{description}/, theData[i][2]);
@@ -278,7 +278,7 @@ mlog.entriesControl = function() {
       addCount = newCount - addCount;
       for (var i=1; i<=addCount; i++) {
         /* stylise new entries */
-        $('#'+(newCount-i)).addClass('new_entry');
+        $('#n_'+(newCount-i)).addClass('new_entry');
       }
       /* initial state and update autocompleters */
       $('#transfer').hide();
@@ -300,10 +300,11 @@ mlog.entriesControl = function() {
       mlog.entriesControl.show(parseInt($('#select_page').val()));
     },
     reconcileEntry: function(elem){
-      var id = elem.parentNode.parentNode.getAttribute('id');
+      var id = elem.parentNode.parentNode.getAttribute('id').substring(2);
       if (confirm(mlog.translator.get('reconcile').toUpperCase()+': '+mlog.translator.get('are you sure?'))) {
         mlog.entries.reconcile(id);
         this.show();
+        $('#n_'+(mlog.entries.getCount()-1)).addClass('new_entry');
       }
     },
     /* read options panel and set to variables*/
