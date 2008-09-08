@@ -162,7 +162,7 @@ mlog.base = function() {
     addMonths: function(dt,nMonth) {
       var day = dt.getDate();
       dt.setMonth(dt.getMonth() + nMonth);
-      if (dt.getDate() < day) {
+      if (day>28 && dt.getDate() < day) {
         dt.setDate(1);
         dt.setDate(dt.getDate() - 1);
       }
