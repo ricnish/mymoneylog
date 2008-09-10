@@ -47,8 +47,8 @@ mlog.base = function() {
   };
   var javaSaveFile = function(filePath,content) {
     try {
-      if(document.applets["TiddlySaver"]) {
-        var res = document.applets["TiddlySaver"].saveFile(filePath,"UTF-8",content);
+      if(document.applets["DataWriter"]) {
+        var res = document.applets["DataWriter"].saveFile(filePath,"UTF-8",content);
         if (res>0) { return true; }
       }
     } catch(e) {}

@@ -19,7 +19,7 @@ mlog.init = function(){
 
   // add tiddlysaver applet if needed
   if (!$.browser.mozilla && !$.browser.msie) {
-    $('#applet').html('<applet name="TiddlySaver" code="TiddlySaver.class" archive="applets/TiddlySaver.jar" width="0" height="0"></applet>');
+    $('#applet').html('<applet name="DataWriter" code="DataWriter.class" archive="applets/DataWriter.jar" width="0" height="0"></applet>');
   }
   $('#logo').click( function() { open('http://code.google.com/p/mymoneylog/'); });
 
