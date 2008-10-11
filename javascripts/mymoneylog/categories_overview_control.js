@@ -2,9 +2,8 @@
  * overview_control.js - overview controller
  * @author Ricardo Nishimura - 2008
  */
-mlog.overviewControl = function() {
+mlog.categoriesControl = function() {
   var htmlTemplate = null;
-  var listedCategories = [];
   var hideOverview = false;
   return {
     init: function() {
@@ -13,7 +12,7 @@ mlog.overviewControl = function() {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
-        rows = $('#overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
+        rows = $('#categories_overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.replace(/  /gi,'');
         rows = rows.split('!*!');
         for (var i=0;i<rows.length;i++) {
@@ -22,9 +21,9 @@ mlog.overviewControl = function() {
           rows[i] = rows[i].split('!*!');
         }
         /* remove nodes inside entries table */
-        $("#overview_table tbody").remove();
+        $("#categories_overview_table tbody").remove();
         /* entries table: append a template hook */
-        $('#overview_table').append(document.createTextNode("{overviewContent}"));
+        $('#categories_overview_table').append(document.createTextNode("{overviewContent}"));
         overviewTemplate = {
           tHeadLabel: rows[0][0],
           tHeadColumn: (rows[0][1]).replace(/<\/tr>/i,''),
@@ -35,9 +34,9 @@ mlog.overviewControl = function() {
         };
         htmlTemplate = {
           overview: overviewTemplate,
-          main: $('#main_overview').html()
+          main: $('#main_categories_overview').html()
         };
-        $('#main_overview').html('');
+        $('#main_categories_overview').html('');
         /* initialize datepicker */
         Calendar.setup({
           inputField: "input_ov_until_date",
@@ -113,7 +112,7 @@ mlog.overviewControl = function() {
         if (hideOverview) {
           /* apply hide style */
           str = str.replace(/show_next/, 'hide_next');
-          str = str.replace(/id="overview_summary"/i, 'id="overview_summary" style="display: none"');
+          str = str.replace(/id="categories_overview_summary"/i, 'id="categories_overview_summary" style="display: none"');
         }
         str = str.replace(/{overviewContent}/,res.join(''));
       }
@@ -123,18 +122,18 @@ mlog.overviewControl = function() {
       $('#report').html(str);
       res = null;
       /* hide/show overview table */
-      $('#toggle_overview_table').click( function() {
+      $('#toggle_categories_overview_table').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         hideOverview = !hideOverview;
       });
       /* display the chart */
-      mlog.chartControl.show(theData);
+      mlog.categoriesControl.drawChart(theData);
     },
     updateTagCloud: function() {
       $('#show_ov_categories').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(),1));
       $('#show_ov_categories .tagCloud').click(function(v) {
         mlog.base.toggleTag(v);
-        mlog.overviewControl.updateView();
+        mlog.categoriesControl.updateView();
       });
     },
     toggleAllTagCloud: function(el) {
@@ -145,15 +144,119 @@ mlog.overviewControl = function() {
         $(v).removeClass("tagSelect");
         if (chk) $(v).addClass("tagSelect");
       });
-      mlog.overviewControl.updateView();
+      mlog.categoriesControl.updateView();
     },
     show: function() {
-      mlog.overviewControl.init();
-      mlog.base.activateMenu('overview');
-      $('#panel_overview .selectAll').removeClass("tagSelect");
-      mlog.overviewControl.updateTagCloud();
-      mlog.overviewControl.toggleAllTagCloud($('#panel_overview .selectAll'));
-      mlog.overviewControl.updateView();
+      mlog.categoriesControl.init();
+      mlog.base.activateMenu('categories_overview');
+      $('#panel_categories_overview .selectAll').removeClass("tagSelect");
+      mlog.categoriesControl.updateTagCloud();
+      mlog.categoriesControl.toggleAllTagCloud($('#panel_categories_overview .selectAll'));
+    },
+    drawChart: function(data) {
+      if (!data) {
+        return;
+      }
+      var chartSelection = $('#chartSelection').val();
+      var showDebits = true;
+      var xTicks = []; // x labels
+      var i = 0;
+      var list;
+      var strDataset = '[';
+      var count = 0;
+      var chartTitle = '';
+      /* get selected categories */
+      var categoriesChecked = [];
+      $.each($('#show_ov_categories .tagSelect'), function(i,v) {
+        categoriesChecked.push($(v).html());
+      });
+
+      /* build x labels */
+      /* as: [[0, '2008-01'],[1, '2008-02']]... */
+      var str = '[';
+      for (var month in data.summary[mlog.translator.get('balance')]) {
+        str += '['+count+', "'+month+'"],';
+        count++;
+      }
+      str = str.slice(0,str.length-1) + ']';
+      xTicks = eval(str);
+
+      // if any category selected: draw line category chart
+      if (categoriesChecked.length>0 &&
+          (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
+        showDebits = (chartSelection == 'line_debit');
+        list = data.categories;
+        chartTitle = chartSelection?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
+        for (var category in list) {
+          /* if not checked skip */
+          if ($.inArray(category,categoriesChecked)<0) continue;
+          i++;
+          strDataset += '{label: "'+category+'", data: [';
+          count = 0;
+          str = '';
+          /* build category month's values */
+          /* eg: [[0,100],[1,95]], ... */
+          var tmpValue=0;
+          for (var month in list[category]) {
+            tmpValue = Math.round(list[category][month]);
+            tmpValue = tmpValue * (showDebits?-1:1)
+            // just display debits
+            tmpValue = (tmpValue>0)?tmpValue:0;
+            str += '['+count+', '+tmpValue+'],';
+            count++;
+          }
+          strDataset += str.slice(0,str.length-1) + ']},';
+        }
+      } else {
+        // chart line (total)
+        // draw summary chart
+        list = data.summary;
+        chartTitle = mlog.translator.get('overview chart');
+        for (var description in list) {
+          i++;
+          strDataset += '{label: "'+description+'", data: [';
+          count = 0;
+          str = '';
+          /* build category month's values */
+          /* eg: [[0,100],[1,95]], ... */
+          var tmpValue=0;
+          // if debit show value as positive
+          if (description == mlog.translator.get('debit')) {
+            showDebits=true;
+          } else {
+            showDebits=false;
+          }
+          for (var month in list[description]) {
+            tmpValue = Math.round(list[description][month]);
+            tmpValue = tmpValue * (showDebits?-1:1)
+            // just display debits
+            //tmpValue = (tmpValue>0)?tmpValue:0;
+            str += '['+count+', '+tmpValue+'],';
+            count++;
+          }
+          strDataset += str.slice(0,str.length-1) + ']},';
+        }
+      }
+      strDataset = strDataset.slice(0,strDataset.length-1) + ']';
+      // Define a dataset.
+      var dataset = [];
+      eval('dataset = '+strDataset+';');
+
+      // chart container
+      var size = $('#categories_chart').width()-25;
+      $('#categories_chart').html('<h1>'+ chartTitle +
+        '</h1><div id="chart_canvas" style="height:'+
+        (size/1.75)+'px; width:'+(size)+'px;"></div>');
+
+      // draw
+      $.plot($('#chart_canvas'),
+              dataset,
+              {
+                xaxis: {ticks: xTicks},
+                legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
+                colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080','#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF','#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E','#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B','#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
+              }
+            );
     }
   }
 }();

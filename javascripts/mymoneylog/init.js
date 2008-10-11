@@ -8,7 +8,8 @@ mlog.init = function(){
   mlog.entriesControl.show();
   /* initialize menus */
   $('#menu_entries').click(mlog.entriesControl.show);
-  $('#menu_overview').click( mlog.overviewControl.show );
+  $('#menu_categories_overview').click( mlog.categoriesControl.show );
+  $('#menu_accounts_overview').click( mlog.accountsControl.show );
   $('#menu_editor').click(mlog.editorControl.show);
   $('#menu_help').click(mlog.helpControl.show);
 
