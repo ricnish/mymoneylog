@@ -247,20 +247,19 @@ mlog.entries = function(){
       }
       return res;
     },
-    getByFilter: function(options){
-      //options = {
-      //  query: '', // text filter or regular expression
-      //  startDate: '', // initial date
-      //  endDate: '', // final date
-      //  values: '', // all: 0, debit: -1, credit: 1
-      //  categories: '', // selected categories
-      //  accounts: '', // selected accounts
-      //  sortColIndex: 0, // column to sort
-      //  sortReverse: true, // sort order
-      //  entriesPerPage: 50, // entries per page
-      //  pageNumber:0 // current page
-      //  };
-      //filter,isRegex,withFuture
+    getByFilter: function(opt){
+      var options = opt || { // default options
+        query: '', // text filter or regular expression
+        startDate: '2000-01-01', // initial date
+        endDate: mlog.base.getCurrentDate(), // final date
+        values: 0, // all: 0, debit: -1, credit: 1
+        categories: '', // selected categories
+        accounts: '', // selected accounts
+        sortColIndex: 0, // column to sort
+        sortReverse: true, // sort order
+        entriesPerPage: 50, // entries per page
+        pageNumber:1 // current page
+      };
       var res = [];
       try {
         var regex = new RegExp(options.query,'i');
@@ -324,7 +323,7 @@ mlog.entries = function(){
       this.save();
     },
     /* summarize last n months */
-    getOverview: function(numberOfMonths, untilDate) {
+    getCategoriesOverview: function(numberOfMonths, untilDate) {
       var nMonths = numberOfMonths || 6;
       var dtEnd = untilDate || mlog.base.getCurrentDate();
       var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),nMonths*-1);
@@ -402,6 +401,57 @@ mlog.entries = function(){
         total.summary[totalId][month] = accumulated;
       }
       return total;
+    },
+    getAccountsOverview: function(numberOfMonths, untilDate) {
+      var nMonths = numberOfMonths || 2;
+      var dtEnd = untilDate || mlog.base.getCurrentDate();
+      var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),nMonths*-1);
+      dtStart.setDate(1);
+      dtStart = mlog.base.dateToString(dtStart);
+      var ovEntries = mlog.entries.getAll();
+      mlog.base.arraySort(ovEntries,0);
+      var accounts = mlog.accountsClass();
+      var i;
+      for (i=0;i<ovEntries.length;i++) {
+        if (ovEntries[i][0]<=dtStart) {
+          if (ovEntries[i][4]!=='') {
+            accounts.add(ovEntries[i][4],ovEntries[i][1]);
+          }
+          continue;
+        }
+        else {
+          break;
+        }
+      }
+      var data = [];
+      data.push([dtStart,accounts.getAll()]);
+      var tmpDate = mlog.base.stringToDate(dtStart);
+      var nextDate = mlog.base.dateToString(tmpDate.setDate(tmpDate.getDate()+1));
+      for (i;i<ovEntries.length;i++){
+        if (ovEntries[i][0]>dtEnd) {
+          // stop if out of range
+          break;
+        }
+// todo: if current == nextDate: sum current date
+// else increment nextDate
+        while ((ovEntries[i][0]>nextDate) && (nextDate<=dtEnd)) {
+          data.push([nextDate,accounts.getAll()]);
+          // increment the nextDate
+          tmpDate = mlog.base.stringToDate(nextStart);
+          nextDate = mlog.base.dateToString(tmpDate.setDate(tmpDate.getDate()+1));
+        }
+      }
+      /*
+        data: array
+        n - data record:
+          0 - date '2000-01-01'
+          1 - array:
+            n - account record
+              0 - account name
+              1 - value
+              2 - number of elements
+      */
+      return data;
     }
   };
 }();

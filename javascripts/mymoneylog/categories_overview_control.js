@@ -54,7 +54,7 @@ mlog.categoriesControl = function() {
       $.each($('#show_ov_categories .tagSelect'), function(i,v) {
         categoriesList.push($(v).html());
       });
-      var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
+      var theData = mlog.entries.getCategoriesOverview( parseInt($('#overviewNumberMonths').val())-1,
         $('#input_ov_until_date').val());
       var res = [];
       var str = '';
