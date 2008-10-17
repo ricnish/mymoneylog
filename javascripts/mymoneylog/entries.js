@@ -164,7 +164,7 @@ mlog.entries = function(){
       return txt;
     },
     exportFromStartDate: function(startdate) {
-      var filename = mlog.base.getDataPathName().replace(/.html/,'_'+startdate+'.html');
+      var filename = mlog.base.getDataPathName().replace(/data.html/,startdate+'_data.html');
       var result = mlog.base.saveFile(filename,this.toString(startdate));
       if (!result) {
         alert(mlog.translator.get('could not store the data'));
