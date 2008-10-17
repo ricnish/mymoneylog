@@ -103,7 +103,7 @@ mlog.accountsControl = function() {
         hideOverview = !hideOverview;
       });
       /* display the chart */
-//      mlog.accountsControl.drawChart(theData);
+      mlog.accountsControl.drawChart(theData);
     },
     updateTagCloud: function() {
       var acc = mlog.accounts.getAll();
@@ -132,88 +132,35 @@ mlog.accountsControl = function() {
       mlog.accountsControl.toggleAllTagCloud($('#panel_accounts_overview .selectAll'));
     },
     drawChart: function(data) {
-      if (data==null) {
+      if (data===null) {
         return;
       }
-      var chartSelection = $('#chartSelection').val();
-      var showDebits = true;
       var xTicks = []; // x labels
       var i = 0;
-      var list;
       var strDataset = '[';
-      var count = 0;
-      var chartTitle = '';
-      /* get selected accounts */
-      var accountsChecked = [];
-      $.each($('#show_ov_accounts .tagSelect'), function(i,v) {
-        accountsChecked.push($(v).html());
-      });
+      var chartTitle = mlog.translator.get('balance chart');
 
       /* build x labels */
-      /* as: [[0, '2008-01'],[1, '2008-02']]... */
+      /* as: [[0, '10-01'],[1, '10-02']]... month-day */
       var str = '[';
-      for (var month in data.summary[mlog.translator.get('balance')]) {
-        str += '['+count+', "'+month+'"],';
-        count++;
+      var nTicks = Math.round(data.length/12);
+      for (i=0;i<data.length;i+=nTicks) {
+        str += '['+i+', "'+data[i][0].slice(5,10)+'"],';
       }
       str = str.slice(0,str.length-1) + ']';
       xTicks = eval(str);
 
       // if any category selected: draw line category chart
-      if (accountsChecked.length>0 &&
-          (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
-        showDebits = (chartSelection == 'line_debit');
-        list = data.accounts;
-        chartTitle = chartSelection?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
-        for (var category in list) {
-          /* if not checked skip */
-          if ($.inArray(category,accountsChecked)<0) continue;
-          i++;
-          strDataset += '{label: "'+category+'", data: [';
-          count = 0;
-          str = '';
-          /* build category month's values */
-          /* eg: [[0,100],[1,95]], ... */
-          var tmpValue=0;
-          for (var month in list[category]) {
-            tmpValue = Math.round(list[category][month]);
-            tmpValue = tmpValue * (showDebits?-1:1)
-            // just display debits
-            tmpValue = (tmpValue>0)?tmpValue:0;
-            str += '['+count+', '+tmpValue+'],';
-            count++;
-          }
-          strDataset += str.slice(0,str.length-1) + ']},';
+      for (i=0;i<data[0][1].length;i++) {
+        /* if not checked skip */
+        strDataset += '{label: "'+data[0][1][i][0]+'", data: [';
+        str = '';
+        /* build account's day values */
+        /* eg: [[0,100],[1,95]], ... */
+        for (var n=0;n<data.length;n++) {
+          str += '['+n+', '+data[n][1][i][1]+'],';
         }
-      } else {
-        // chart line (total)
-        // draw summary chart
-        list = data.summary;
-        chartTitle = mlog.translator.get('overview chart');
-        for (var description in list) {
-          i++;
-          strDataset += '{label: "'+description+'", data: [';
-          count = 0;
-          str = '';
-          /* build category month's values */
-          /* eg: [[0,100],[1,95]], ... */
-          var tmpValue=0;
-          // if debit show value as positive
-          if (description == mlog.translator.get('debit')) {
-            showDebits=true;
-          } else {
-            showDebits=false;
-          }
-          for (var month in list[description]) {
-            tmpValue = Math.round(list[description][month]);
-            tmpValue = tmpValue * (showDebits?-1:1)
-            // just display debits
-            //tmpValue = (tmpValue>0)?tmpValue:0;
-            str += '['+count+', '+tmpValue+'],';
-            count++;
-          }
-          strDataset += str.slice(0,str.length-1) + ']},';
-        }
+        strDataset += str.slice(0,str.length-1) + ']},';
       }
       strDataset = strDataset.slice(0,strDataset.length-1) + ']';
       // Define a dataset.
