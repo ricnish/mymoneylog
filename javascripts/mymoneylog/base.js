@@ -245,6 +245,7 @@ mlog.base = function() {
       var minSize = 9; // min font size in pixel
       var maxSize = 29; // max font size in pixel
       var fontSize = minSize;
+      mlog.base.arraySort(cList,0);
       /* iterate to get min and max */
       $.each(cList, function(i,v) {
         if (v[indexQtd]>maxCount) { maxCount = v[indexQtd]; }
@@ -265,6 +266,15 @@ mlog.base = function() {
     },
     toggleTag: function(elem) {
       $(elem).toggleClass('tagSelect');
+    },
+    toggleAllTagCloud: function(el) {
+      var elem = $(el);
+      mlog.base.toggleTag(elem);
+      var chk = elem.hasClass("tagSelect");
+      $.each(elem.next().children(), function(i,v) {
+        $(v).removeClass("tagSelect");
+        if (chk) $(v).addClass("tagSelect");
+      });
     },
     /* build paginator */
     buildPaginator: function(currentPage,numberOfPages,itemPerPage) {

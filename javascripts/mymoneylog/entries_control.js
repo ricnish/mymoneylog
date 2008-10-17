@@ -149,7 +149,7 @@ mlog.entriesControl = function() {
       var tpSum = htmlTemplate.summary;
       /* build summary */
       res.push(tpSum.tHead);
-      var accounts = mlog.accounts.getAll();
+      var accounts = mlog.accounts.getAllwithTotal();
       mlog.base.arraySort(accounts,0);
       var maxValue = 0;
       // find maxValue
@@ -334,9 +334,7 @@ mlog.entriesControl = function() {
     },
     updateTagCloud: function() {
       $('#entries_category_cloud').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(),1));
-      var acc = mlog.accounts.getAll();
-      acc.pop(); // remove total
-      $('#entries_account_cloud').html(mlog.base.arrayToTagCloud(acc,2));
+      $('#entries_account_cloud').html(mlog.base.arrayToTagCloud(mlog.accounts.getAll(),2));
       // mark selected categories
       if (filterOptions.categories.length>0) {
         var regex = eval('/('+filterOptions.categories.join('|')+')/i');
@@ -347,23 +345,14 @@ mlog.entriesControl = function() {
         }
       }
       // mark selected accounts
-      if (filterOptions.accounts!=='') {
-        var regex = eval('/('+filterOptions.accounts+')/i');
+      if (filterOptions.accounts.length>0) {
+        var regex = eval('/('+filterOptions.accounts.join('|')+')/i');
         if (regex!==undefined) {
           $.each( $('#entries_account_cloud').children(), function(i,v) {
             if (regex.test($(v).html())) $(v).addClass('tagSelect');
             });
         }
       }
-    },
-    toggleAllTagCloud: function(el) {
-      var elem = $(el);
-      mlog.base.toggleTag(elem);
-      var chk = elem.hasClass("tagSelect");
-      $.each(elem.next().children(), function(i,v) {
-        $(v).removeClass("tagSelect");
-        if (chk) $(v).addClass("tagSelect");
-      });
     },
     resetFilter: function() {
       resetFilterOptions();

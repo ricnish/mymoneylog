@@ -25,6 +25,13 @@ mlog.accountsClass = function(){
     },
     getAll: function() {
       var ret = [];
+      for (var account in accounts) {
+        ret.push([account,accounts[account].value,accounts[account].qtd]);
+      }
+      return ret;
+    },
+    getAllwithTotal: function() {
+      var ret = [];
       var sum = 0;
       for (var account in accounts) {
         ret.push([account,accounts[account].value,accounts[account].qtd]);

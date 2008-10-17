@@ -403,23 +403,18 @@ mlog.entries = function(){
       return total;
     },
     getAccountsOverview: function(numberOfMonths, untilDate, accountsParam) {
-      /*
-        return data: array
-        n - data record:
-          0 - date '2000-01-01'
-          1 - array:
-            n - account record
-              0 - account name
-              1 - value
-              2 - number of elements
-      */
+      //return data: array [['2000-01-01',[['account name',value,nElements],...]],...]
+      //n - data record:
+      //  0 - date '2000-01-01'
+      //  1 - array:
+      //    n - account record
+      //      0 - account name
+      //      1 - value
+      //      2 - number of elements
       var data = [];
       var nMonths = numberOfMonths;
       var dtEnd = untilDate || mlog.base.getCurrentDate();
       accountsParam = accountsParam || [];
-      if (accountsParam.length<1) {
-        return null;
-      }
       accountsParam.sort();
       // calculate start date
       var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),nMonths*-1);
@@ -430,10 +425,20 @@ mlog.entries = function(){
       var acc = mlog.accountsClass();
       var i;
       // initialize accounts
+      var regexAcc = new RegExp('('+mlog.accounts.getNames().join('|')+')','i');
       for (i=0;i<accountsParam.length;i++) {
-        acc.add(accountsParam[i],0);
+        if (regexAcc!==undefined && regexAcc.test(accountsParam[i])) {
+          acc.add(accountsParam[i],0);
+        }
       }
-      var regexAcc = new RegExp('('+accountsParam.join('|')+')','i');
+      if (acc.getNames().length<1) {
+        return null;
+      }
+      regexAcc = new RegExp('('+accountsParam.join('|')+')','i');
+      var withTotal = true;
+      if (regexAcc!==undefined) {
+        withTotal = regexAcc.test(mlog.translator.get('total'));
+      }
       // add loop until start date
       for (i=0;i<ovEntries.length;i++) {
         if (ovEntries[i][0]<=dtStart) {
@@ -448,7 +453,7 @@ mlog.entries = function(){
           break;
         }
       }
-      data.push([dtStart,acc.getAll()]);
+      data.push([dtStart,withTotal?acc.getAllwithTotal():acc.getAll()]);
       var tmpDate = mlog.base.stringToDate(dtStart);
       tmpDate.setDate(tmpDate.getDate()+1); // add a day
       var nextDate = mlog.base.dateToString(tmpDate);
@@ -456,7 +461,7 @@ mlog.entries = function(){
       for (i;i<ovEntries.length;i++){
         // stop if out of range
         if (ovEntries[i][0]>dtEnd) {
-          data.push([nextDate,acc.getAll()]);
+          data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
           break;
         }
         // filter account
@@ -465,7 +470,7 @@ mlog.entries = function(){
         }
         // loop to build accounts row
         while ((ovEntries[i][0]>nextDate) && (nextDate<=dtEnd)) {
-          data.push([nextDate,acc.getAll()]);
+          data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
           // increment the nextDate
           tmpDate = mlog.base.stringToDate(nextDate);
           tmpDate.setDate(tmpDate.getDate()+1); // add a day

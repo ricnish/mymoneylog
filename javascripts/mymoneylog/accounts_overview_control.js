@@ -62,7 +62,6 @@ mlog.accountsControl = function() {
       var odd = true;
       if (theData!==null) {
 //        theData.reverse();
-        //var list = theData.accounts;
         /* build header */
         res.push(htmlTemplate.overview.tHeadLabel);
         for (var i=0;i<theData[0][1].length;i++) {
@@ -70,7 +69,6 @@ mlog.accountsControl = function() {
           res.push(str);
         }
         res.push('</tr>'); // closing tag
-
         /* build accounts rows */
         for (var i=0;i<theData.length;i++) {
           str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
@@ -86,42 +84,28 @@ mlog.accountsControl = function() {
           }
           res.push('</tr>'); // closing tag
         }
-
         str = htmlTemplate.main;
-        if (hideOverview) {
-          /* apply hide style */
-          str = str.replace(/show_next/, 'hide_next');
-          str = str.replace(/id="accounts_overview_summary"/i, 'id="accounts_overview_summary" style="display: none"');
-        }
         str = str.replace(/{overviewContent}/,res.join(''));
       }
       $('#report').html(str);
       res = null;
-      /* hide/show overview table */
-      $('#toggle_accounts_overview_table').click( function() {
+      /* display the chart */
+      mlog.accountsControl.drawChart(theData);
+      /* hide/show function */
+      $('#accounts_chart_title').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         hideOverview = !hideOverview;
       });
-      /* display the chart */
-      mlog.accountsControl.drawChart(theData);
     },
     updateTagCloud: function() {
-      var acc = mlog.accounts.getAll();
-      acc.pop(); // remove total
-      $('#show_ov_accounts').html(mlog.base.arrayToTagCloud(acc,2));
+      $('#show_ov_accounts').html(mlog.base.arrayToTagCloud(mlog.accounts.getAllwithTotal(),2));
       $('#show_ov_accounts .tagCloud').click(function(v) {
         mlog.base.toggleTag(v);
         mlog.accountsControl.updateView();
       });
     },
     toggleAllTagCloud: function(el) {
-      var elem = $(el);
-      mlog.base.toggleTag(elem);
-      var chk = elem.hasClass("tagSelect");
-      $.each(elem.next().children(), function(i,v) {
-        $(v).removeClass("tagSelect");
-        if (chk) $(v).addClass("tagSelect");
-      });
+      mlog.base.toggleAllTagCloud(el);
       mlog.accountsControl.updateView();
     },
     show: function() {
@@ -138,7 +122,7 @@ mlog.accountsControl = function() {
       var xTicks = []; // x labels
       var i = 0;
       var strDataset = '[';
-      var chartTitle = mlog.translator.get('balance chart');
+      var chartTitle = mlog.translator.get('diary balance');
 
       /* build x labels */
       /* as: [[0, '10-01'],[1, '10-02']]... month-day */
@@ -168,8 +152,9 @@ mlog.accountsControl = function() {
       eval('dataset = '+strDataset+';');
 
       // chart container
+      chartTitle = mlog.translator.get('chart')+': '+chartTitle;
       var size = $('#accounts_chart').width()-25;
-      $('#accounts_chart').html('<h1>'+ chartTitle +
+      $('#accounts_chart').html('<h1 id="accounts_chart_title" class="msg show_next">'+ chartTitle +
         '</h1><div id="chart_canvas" style="height:'+
         (size/1.75)+'px; width:'+(size)+'px;"></div>');
 
@@ -178,8 +163,7 @@ mlog.accountsControl = function() {
               dataset,
               {
                 xaxis: {ticks: xTicks},
-                legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
-                colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080','#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF','#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E','#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B','#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
+                legend: {margin:10,noColumns:2,backgroundOpacity:0.4}
               }
             );
     }

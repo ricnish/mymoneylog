@@ -109,11 +109,6 @@ mlog.categoriesControl = function() {
           res.push('</tr>'); // closing tag
         }
         str = htmlTemplate.main;
-        if (hideOverview) {
-          /* apply hide style */
-          str = str.replace(/show_next/, 'hide_next');
-          str = str.replace(/id="categories_overview_summary"/i, 'id="categories_overview_summary" style="display: none"');
-        }
         str = str.replace(/{overviewContent}/,res.join(''));
       }
       else {
@@ -121,13 +116,13 @@ mlog.categoriesControl = function() {
       }
       $('#report').html(str);
       res = null;
-      /* hide/show overview table */
-      $('#toggle_categories_overview_table').click( function() {
+      /* display the chart */
+      mlog.categoriesControl.drawChart(theData);
+      /* hide/show function */
+      $('#categories_chart_title').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         hideOverview = !hideOverview;
       });
-      /* display the chart */
-      mlog.categoriesControl.drawChart(theData);
     },
     updateTagCloud: function() {
       $('#show_ov_categories').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(),1));
@@ -137,13 +132,7 @@ mlog.categoriesControl = function() {
       });
     },
     toggleAllTagCloud: function(el) {
-      var elem = $(el);
-      mlog.base.toggleTag(elem);
-      var chk = elem.hasClass("tagSelect");
-      $.each(elem.next().children(), function(i,v) {
-        $(v).removeClass("tagSelect");
-        if (chk) $(v).addClass("tagSelect");
-      });
+      mlog.base.toggleAllTagCloud(el);
       mlog.categoriesControl.updateView();
     },
     show: function() {
@@ -184,9 +173,9 @@ mlog.categoriesControl = function() {
       // if any category selected: draw line category chart
       if (categoriesChecked.length>0 &&
           (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
-        showDebits = (chartSelection == 'line_debit');
+        showDebits = (chartSelection === 'line_debit');
         list = data.categories;
-        chartTitle = chartSelection?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
+        chartTitle = showDebits?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
         for (var category in list) {
           /* if not checked skip */
           if ($.inArray(category,categoriesChecked)<0) continue;
@@ -211,7 +200,7 @@ mlog.categoriesControl = function() {
         // chart line (total)
         // draw summary chart
         list = data.summary;
-        chartTitle = mlog.translator.get('overview chart');
+        chartTitle = mlog.translator.get('overview');
         for (var description in list) {
           i++;
           strDataset += '{label: "'+description+'", data: [';
@@ -243,8 +232,9 @@ mlog.categoriesControl = function() {
       eval('dataset = '+strDataset+';');
 
       // chart container
+      chartTitle = mlog.translator.get('chart')+': '+chartTitle;
       var size = $('#categories_chart').width()-25;
-      $('#categories_chart').html('<h1>'+ chartTitle +
+      $('#categories_chart').html('<h1 id="categories_chart_title" class="show_next">'+ chartTitle +
         '</h1><div id="chart_canvas" style="height:'+
         (size/1.75)+'px; width:'+(size)+'px;"></div>');
 

@@ -44,7 +44,7 @@ $(window).load(function(){ mlog.init(); });
 </select>
 </div>
 <h1 id="logo">my<span class="green">Money</span>Log</h1>
-<h2 id="slogan">1.129</h2>
+<h2 id="slogan">1.134</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -118,14 +118,14 @@ To Account
 <label class="msg">
 categories
 </label>
-<span class="tagCloud msg selectAll" onclick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
+<span class="tagCloud msg selectAll" onclick="mlog.base.toggleAllTagCloud(this)">all</span>
 <span id="entries_category_cloud"></span>
 </div>
 <div>
 <label class="msg">
 accounts
 </label>
-<span class="tagCloud msg selectAll" onclick="mlog.entriesControl.toggleAllTagCloud(this)">all</span>
+<span class="tagCloud msg selectAll" onclick="mlog.base.toggleAllTagCloud(this)">all</span>
 <span id="entries_account_cloud"></span>
 </div>
 <div class="float-left" style="margin-right:4px">
@@ -377,7 +377,7 @@ This total
 <!-- main_categories_overview starts here -->
 <div id="main_categories_overview" style="display:none;">
 <div id="categories_chart"></div>
-<h1 id="toggle_categories_overview_table" class="msg show_next">Category by month</h1>
+<h1 id="toggle_categories_overview_table" class="msg">Category by month</h1>
 <div id="categories_overview_summary" class="overflow">
 <table id="categories_overview_table">
 <tr>
@@ -404,7 +404,7 @@ description
 <!-- main_accounts_overview starts here -->
 <div id="main_accounts_overview" style="display:none;">
 <div id="accounts_chart"></div>
-<h1 id="toggle_accounts_overview_table" class="msg show_next">Accounts balance</h1>
+<h1 id="toggle_accounts_overview_table" class="msg">diary balance</h1>
 <div id="accounts_overview_summary" class="overflow">
 <table id="accounts_overview_table">
 <tr>
