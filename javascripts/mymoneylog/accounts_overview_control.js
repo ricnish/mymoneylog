@@ -54,62 +54,39 @@ mlog.accountsControl = function() {
         accountsList.push($(v).html());
       });
       var theData = null;
-/*
-      var theData = mlog.entries.getOverview( parseInt($('#overviewNumberMonths').val())-1,
-        $('#input_ov_until_date').val());
-*/
+      theData = mlog.entries.getAccountsOverview( parseInt($('#accountsNumberMonths').val())-1,
+        $('#input_accounts_until_date').val(),
+        accountsList);
       var res = [];
       var str = '<h1>' + mlog.translator.get('no data') + '</h1>';
       var odd = true;
-      if (theData) {
-        var list = theData.accounts;
+      if (theData!==null) {
+//        theData.reverse();
+        //var list = theData.accounts;
         /* build header */
         res.push(htmlTemplate.overview.tHeadLabel);
-        for (var month in list[mlog.accounts.getNames()[0]]) {
-          str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,month);
+        for (var i=0;i<theData[0][1].length;i++) {
+          str = htmlTemplate.overview.tHeadColumn.replace(/{account}/,theData[0][1][i][0]);
           res.push(str);
         }
-        str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,mlog.translator.get('average'));
-        res.push(str + '</tr>'); // closing tag
+        res.push('</tr>'); // closing tag
+
         /* build accounts rows */
-        var avgSum = 0;
-        var avgCount = 0;
-        for (var i=0;i<accountsList.length;i++) {
+        for (var i=0;i<theData.length;i++) {
           str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
           odd = !odd;
-          str = str.replace(/{title}/,accountsList[i]);
+          str = str.replace(/{date}/,theData[i][0]);
           res.push(str);
           /* build values */
           str = htmlTemplate.overview.tRowColumn;
           avgSum = 0;
           avgCount = 0;
-          for (var month in list[accountsList[i]]) {
-            res.push(str.replace(/{value}/,mlog.base.formatFloat(list[accountsList[i]][month])));
-            avgSum += list[accountsList[i]][month];
-            avgCount++;
+          for (var y=0;y< theData[i][1].length;y++) {
+            res.push(str.replace(/{value}/,mlog.base.formatFloat(theData[i][1][y][1])));
           }
-          res.push(str.replace(/{value}/,mlog.base.formatFloat(avgSum/avgCount)));
           res.push('</tr>'); // closing tag
         }
-        /* build summary */
-        list = theData.summary;
-        for (var total in list) {
-          str = htmlTemplate.overview.tRowTotalLabel;
-          str = str.replace(/{title}/,total);
-          res.push(str);
-          /* build values */
-          str = htmlTemplate.overview.tRowColumn;
-          avgSum = 0;
-          for (var month in list[total]) {
-            res.push(str.replace(/{value}/,mlog.base.formatFloat(list[total][month])));
-            avgSum += list[total][month];
-          }
-          if (total != mlog.translator.get('accumulated'))
-            res.push(str.replace(/{value}/,mlog.base.formatFloat(avgSum/avgCount)));
-          else
-            res.push(str.replace(/{value}/,'&nbsp;'));
-          res.push('</tr>'); // closing tag
-        }
+
         str = htmlTemplate.main;
         if (hideOverview) {
           /* apply hide style */
@@ -126,10 +103,12 @@ mlog.accountsControl = function() {
         hideOverview = !hideOverview;
       });
       /* display the chart */
-      mlog.accountsControl.drawChart(theData);
+//      mlog.accountsControl.drawChart(theData);
     },
     updateTagCloud: function() {
-      $('#show_ov_accounts').html(mlog.base.arrayToTagCloud(mlog.accounts.getAll(),0));
+      var acc = mlog.accounts.getAll();
+      acc.pop(); // remove total
+      $('#show_ov_accounts').html(mlog.base.arrayToTagCloud(acc,2));
       $('#show_ov_accounts .tagCloud').click(function(v) {
         mlog.base.toggleTag(v);
         mlog.accountsControl.updateView();
@@ -153,7 +132,7 @@ mlog.accountsControl = function() {
       mlog.accountsControl.toggleAllTagCloud($('#panel_accounts_overview .selectAll'));
     },
     drawChart: function(data) {
-      if (!data) {
+      if (data==null) {
         return;
       }
       var chartSelection = $('#chartSelection').val();
