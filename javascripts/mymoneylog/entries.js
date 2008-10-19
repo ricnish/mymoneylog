@@ -402,7 +402,7 @@ mlog.entries = function(){
       }
       return total;
     },
-    getAccountsOverview: function(numberOfMonths, untilDate, accountsParam) {
+    getAccountsOverview: function(numberOfMonths, untilDate, selectedAccounts) {
       //return data: array [['2000-01-01',[['account name',value,nElements],...]],...]
       //n - data record:
       //  0 - date '2000-01-01'
@@ -414,7 +414,7 @@ mlog.entries = function(){
       var data = [];
       var nMonths = numberOfMonths;
       var dtEnd = untilDate || mlog.base.getCurrentDate();
-      accountsParam = accountsParam || [];
+      var accountsParam = selectedAccounts || [];
       accountsParam.sort();
       // calculate start date
       var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),nMonths*-1);
@@ -447,7 +447,6 @@ mlog.entries = function(){
             continue;
           }
           acc.add(ovEntries[i][4],ovEntries[i][1]);
-          continue;
         }
         else {
           break;
@@ -472,7 +471,6 @@ mlog.entries = function(){
         while ((ovEntries[i][0]>nextDate) && (nextDate<=dtEnd)) {
           data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
           // increment the nextDate
-          tmpDate = mlog.base.stringToDate(nextDate);
           tmpDate.setDate(tmpDate.getDate()+1); // add a day
           nextDate = mlog.base.dateToString(tmpDate);
         }

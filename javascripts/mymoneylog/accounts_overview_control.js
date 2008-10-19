@@ -120,36 +120,26 @@ mlog.accountsControl = function() {
         return;
       }
       var xTicks = []; // x labels
-      var i = 0;
-      var strDataset = '[';
+      var dataset = [];
       var chartTitle = mlog.translator.get('diary balance');
-
+      var values = [];
       /* build x labels */
       /* as: [[0, '10-01'],[1, '10-02']]... month-day */
       var str = '[';
       var nTicks = Math.round(data.length/12);
-      for (i=0;i<data.length;i+=nTicks) {
-        str += '['+i+', "'+data[i][0].slice(5,10)+'"],';
+      for (var i=0;i<data.length;i+=nTicks) {
+        xTicks.push([i,data[i][0].slice(5,10)]);
       }
-      str = str.slice(0,str.length-1) + ']';
-      xTicks = eval(str);
 
-      // if any category selected: draw line category chart
-      for (i=0;i<data[0][1].length;i++) {
-        /* if not checked skip */
-        strDataset += '{label: "'+data[0][1][i][0]+'", data: [';
-        str = '';
+      for (var i=0;i<data[0][1].length;i++) {
+        values = [];
         /* build account's day values */
         /* eg: [[0,100],[1,95]], ... */
         for (var n=0;n<data.length;n++) {
-          str += '['+n+', '+data[n][1][i][1]+'],';
+          values.push([n, data[n][1][i][1]]);
         }
-        strDataset += str.slice(0,str.length-1) + ']},';
+        dataset.push({label: data[0][1][i][0], data: values});
       }
-      strDataset = strDataset.slice(0,strDataset.length-1) + ']';
-      // Define a dataset.
-      var dataset = [];
-      eval('dataset = '+strDataset+';');
 
       // chart container
       chartTitle = mlog.translator.get('chart')+': '+chartTitle;

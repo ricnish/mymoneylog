@@ -151,9 +151,12 @@ mlog.categoriesControl = function() {
       var xTicks = []; // x labels
       var i = 0;
       var list;
-      var strDataset = '[';
       var count = 0;
       var chartTitle = '';
+      var dataset = [];
+      var values = [];
+      var tmpValue=0;
+
       /* get selected categories */
       var categoriesChecked = [];
       $.each($('#show_ov_categories .tagSelect'), function(i,v) {
@@ -162,13 +165,10 @@ mlog.categoriesControl = function() {
 
       /* build x labels */
       /* as: [[0, '2008-01'],[1, '2008-02']]... */
-      var str = '[';
       for (var month in data.summary[mlog.translator.get('balance')]) {
-        str += '['+count+', "'+month+'"],';
+        xTicks.push([count, month]);
         count++;
       }
-      str = str.slice(0,str.length-1) + ']';
-      xTicks = eval(str);
 
       // if any category selected: draw line category chart
       if (categoriesChecked.length>0 &&
@@ -180,21 +180,20 @@ mlog.categoriesControl = function() {
           /* if not checked skip */
           if ($.inArray(category,categoriesChecked)<0) continue;
           i++;
-          strDataset += '{label: "'+category+'", data: [';
           count = 0;
-          str = '';
+          values = [];
           /* build category month's values */
           /* eg: [[0,100],[1,95]], ... */
-          var tmpValue=0;
+          tmpValue=0;
           for (var month in list[category]) {
             tmpValue = Math.round(list[category][month]);
             tmpValue = tmpValue * (showDebits?-1:1)
             // just display debits
             tmpValue = (tmpValue>0)?tmpValue:0;
-            str += '['+count+', '+tmpValue+'],';
+            values.push([count, tmpValue]);
             count++;
           }
-          strDataset += str.slice(0,str.length-1) + ']},';
+          dataset.push({label: category, data: values});
         }
       } else {
         // chart line (total)
@@ -203,12 +202,11 @@ mlog.categoriesControl = function() {
         chartTitle = mlog.translator.get('overview');
         for (var description in list) {
           i++;
-          strDataset += '{label: "'+description+'", data: [';
           count = 0;
-          str = '';
+          values = [];
           /* build category month's values */
           /* eg: [[0,100],[1,95]], ... */
-          var tmpValue=0;
+          tmpValue=0;
           // if debit show value as positive
           if (description == mlog.translator.get('debit')) {
             showDebits=true;
@@ -219,17 +217,12 @@ mlog.categoriesControl = function() {
             tmpValue = Math.round(list[description][month]);
             tmpValue = tmpValue * (showDebits?-1:1)
             // just display debits
-            //tmpValue = (tmpValue>0)?tmpValue:0;
-            str += '['+count+', '+tmpValue+'],';
+            values.push([count, tmpValue]);
             count++;
           }
-          strDataset += str.slice(0,str.length-1) + ']},';
+          dataset.push({label: category, data: values});
         }
       }
-      strDataset = strDataset.slice(0,strDataset.length-1) + ']';
-      // Define a dataset.
-      var dataset = [];
-      eval('dataset = '+strDataset+';');
 
       // chart container
       chartTitle = mlog.translator.get('chart')+': '+chartTitle;
