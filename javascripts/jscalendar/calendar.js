@@ -1079,6 +1079,7 @@ Calendar._keyEvent = function(ev) {
  *  (RE)Initializes the calendar to the given date and firstDayOfWeek
  */
 Calendar.prototype._init = function (firstDayOfWeek, date) {
+	date.setHours(1); // avoid daylight saving calc
 	var today = new Date(),
 		TY = today.getFullYear(),
 		TM = today.getMonth(),

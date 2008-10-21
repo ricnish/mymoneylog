@@ -161,7 +161,7 @@ mlog.base = function() {
     /* add n months to a date */
     addMonths: function(dt,nMonth) {
       var res = new Date(dt);
-      res.setHours(7); // avoid daylight saving calc
+      res.setHours(1); // avoid daylight saving calc
       res.setMonth(dt.getMonth() + nMonth);
       if (res.getDate()<dt.getDate()) {
         res.setDate(1);
