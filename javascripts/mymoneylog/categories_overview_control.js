@@ -149,27 +149,23 @@ mlog.categoriesControl = function() {
       var chartSelection = $('#chartSelection').val();
       var showDebits = true;
       var xTicks = []; // x labels
-      var i = 0;
       var list;
       var count = 0;
       var chartTitle = '';
       var dataset = [];
       var values = [];
       var tmpValue=0;
-
       /* get selected categories */
       var categoriesChecked = [];
       $.each($('#show_ov_categories .tagSelect'), function(i,v) {
         categoriesChecked.push($(v).html());
       });
-
       /* build x labels */
       /* as: [[0, '2008-01'],[1, '2008-02']]... */
       for (var month in data.summary[mlog.translator.get('balance')]) {
         xTicks.push([count, month]);
         count++;
       }
-
       // if any category selected: draw line category chart
       if (categoriesChecked.length>0 &&
           (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
@@ -179,16 +175,12 @@ mlog.categoriesControl = function() {
         for (var category in list) {
           /* if not checked skip */
           if ($.inArray(category,categoriesChecked)<0) continue;
-          i++;
           count = 0;
           values = [];
           /* build category month's values */
           /* eg: [[0,100],[1,95]], ... */
-          tmpValue=0;
           for (var month in list[category]) {
-            tmpValue = Math.round(list[category][month]);
-            tmpValue = tmpValue * (showDebits?-1:1)
-            // just display debits
+            tmpValue = Math.round(list[category][month]) * (showDebits?-1:1);
             tmpValue = (tmpValue>0)?tmpValue:0;
             values.push([count, tmpValue]);
             count++;
@@ -201,12 +193,8 @@ mlog.categoriesControl = function() {
         list = data.summary;
         chartTitle = mlog.translator.get('overview');
         for (var description in list) {
-          i++;
           count = 0;
           values = [];
-          /* build category month's values */
-          /* eg: [[0,100],[1,95]], ... */
-          tmpValue=0;
           // if debit show value as positive
           if (description == mlog.translator.get('debit')) {
             showDebits=true;
@@ -214,30 +202,29 @@ mlog.categoriesControl = function() {
             showDebits=false;
           }
           for (var month in list[description]) {
-            tmpValue = Math.round(list[description][month]);
-            tmpValue = tmpValue * (showDebits?-1:1)
-            // just display debits
+            tmpValue = Math.round(list[description][month]) * (showDebits?-1:1)
             values.push([count, tmpValue]);
             count++;
           }
           dataset.push({label: category, data: values});
         }
       }
-
       // chart container
       chartTitle = mlog.translator.get('chart')+': '+chartTitle;
       var size = $('#categories_chart').width()-25;
       $('#categories_chart').html('<h1 id="categories_chart_title" class="show_next">'+ chartTitle +
-        '</h1><div id="chart_canvas" style="height:'+
-        (size/1.75)+'px; width:'+(size)+'px;"></div>');
-
+        '</h1><div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>');
       // draw
       $.plot($('#chart_canvas'),
         dataset,
         {
           xaxis: {ticks: xTicks},
           legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
-          colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080','#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF','#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E','#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B','#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
+          colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080',
+                   '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
+                   '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
+                   '#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B',
+                   '#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
         }
       );
     }

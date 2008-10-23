@@ -119,18 +119,16 @@ mlog.accountsControl = function() {
       if (data===null) {
         return;
       }
-      var xTicks = []; // x labels
+      var chartTitle = mlog.translator.get('chart')+': '+mlog.translator.get('diary balance');
+      var xTicks = [];
       var dataset = [];
-      var chartTitle = mlog.translator.get('diary balance');
       var values = [];
       /* build x labels */
       /* as: [[0, '10-01'],[1, '10-02']]... month-day */
-      var str = '[';
       var nTicks = Math.round(data.length/12);
       for (var i=0;i<data.length;i+=nTicks) {
         xTicks.push([i,data[i][0].slice(5,10)]);
       }
-
       for (var i=0;i<data[0][1].length;i++) {
         values = [];
         /* build account's day values */
@@ -140,21 +138,21 @@ mlog.accountsControl = function() {
         }
         dataset.push({label: data[0][1][i][0], data: values});
       }
-
       // chart container
-      chartTitle = mlog.translator.get('chart')+': '+chartTitle;
       var size = $('#accounts_chart').width()-25;
       $('#accounts_chart').html('<h1 id="accounts_chart_title" class="msg show_next">'+ chartTitle +
-        '</h1><div id="chart_canvas" style="height:'+
-        (size/1.75)+'px; width:'+(size)+'px;"></div>');
-
+        '</h1><div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>');
       // draw
       $.plot($('#chart_canvas'),
         dataset,
         {
           xaxis: {ticks: xTicks},
           legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
-          colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080','#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF','#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E','#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B','#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
+          colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080',
+                   '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
+                   '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
+                   '#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B',
+                   '#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0']
         }
       );
     }
