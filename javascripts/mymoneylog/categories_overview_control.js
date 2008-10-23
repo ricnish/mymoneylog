@@ -206,7 +206,7 @@ mlog.categoriesControl = function() {
             values.push([count, tmpValue]);
             count++;
           }
-          dataset.push({label: category, data: values});
+          dataset.push({label: description, data: values});
         }
       }
       // chart container
