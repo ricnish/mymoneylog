@@ -424,9 +424,9 @@ mlog.entries = function(){
       mlog.base.arraySort(ovEntries,0);
       var acc = mlog.accountsClass();
       var i;
-      // initialize accounts
       try {
         var regexAcc = new RegExp('('+mlog.accounts.getNames().join('|')+')','i');
+        // initialize accounts
         for (i=0;i<accountsParam.length;i++) {
           if (regexAcc.test(accountsParam[i])) {
             acc.add(accountsParam[i],0);
@@ -458,27 +458,41 @@ mlog.entries = function(){
         tmpDate.setHours(1); // avoid daylight saving calc
         tmpDate.setDate(tmpDate.getDate()+1); // add a day
         var nextDate = mlog.base.dateToString(tmpDate);
-        // build account's transactions, starting from previous loop i
-        for (i;i<ovEntries.length;i++){
-          // stop if out of range
-          if (ovEntries[i][0]>dtEnd) {
-            data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
-            break;
-          }
-          // filter account
-          if (!regexAcc.test(ovEntries[i][4])) {
-            continue;
-          }
+        // build accounts balance
+        if (i==ovEntries.length && nextDate<dtEnd) {
           // loop to build accounts row
-          while ((ovEntries[i][0]>nextDate) && (nextDate<=dtEnd)) {
+          while (nextDate<=dtEnd) {
             data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
             // increment the nextDate
             tmpDate.setDate(tmpDate.getDate()+1); // add a day
             nextDate = mlog.base.dateToString(tmpDate);
           }
-          // add entry to account's date
-          if (ovEntries[i][0]==nextDate) {
-            acc.add(ovEntries[i][4],ovEntries[i][1])
+        } else {
+          // build account's transactions, starting from previous loop i
+          for (i;i<ovEntries.length;i++){
+            // stop if out of range
+            if (ovEntries[i][0]>dtEnd) {
+              data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+              break;
+            }
+            // filter account
+            if (!regexAcc.test(ovEntries[i][4])) {
+              continue;
+            }
+            // loop to build accounts row
+            while ((ovEntries[i][0]>nextDate) && (nextDate<=dtEnd)) {
+              data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+              // increment the nextDate
+              tmpDate.setDate(tmpDate.getDate()+1); // add a day
+              nextDate = mlog.base.dateToString(tmpDate);
+            }
+            // add entry to account's date
+            if (ovEntries[i][0]==nextDate) {
+              acc.add(ovEntries[i][4],ovEntries[i][1])
+              if (i==ovEntries.length-1) {
+                data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+              }
+            }
           }
         }
         return data;

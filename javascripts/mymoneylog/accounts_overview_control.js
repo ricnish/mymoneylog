@@ -125,7 +125,7 @@ mlog.accountsControl = function() {
       var values = [];
       /* build x labels */
       /* as: [[0, '10-01'],[1, '10-02']]... month-day */
-      var nTicks = Math.round(data.length/12);
+      var nTicks = Math.round(data.length/12)||7;
       for (var i=0;i<data.length;i+=nTicks) {
         xTicks.push([i,data[i][0].slice(5,10)]);
       }
