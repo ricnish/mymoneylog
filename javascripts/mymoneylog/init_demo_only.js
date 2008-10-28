@@ -42,10 +42,6 @@ mlog.init = function(){
 var dataSample = [
 [1,-10,'almoco','alimentacao','conta'],
 [2,-10,'almoco','alimentacao','conta'],
-[2,-300,'saldo inicial','outros','cartao credito'],
-[2,1000,'saldo inicial','outros','poupanca'],
-[2,200,'saldo inicial','outros','conta'],
-[2,50,'saldo inicial','outros','bolso'],
 [3,-10,'almoco','alimentacao','conta'],
 [4,-10,'almoco','alimentacao','conta'],
 [5,3500,'salario','creditos','conta'],
@@ -91,11 +87,14 @@ var dataSample = [
 [28,-20,'taxa','banco','conta'],
 [28,-500,'transferencia','','conta'],
 [28,-90,'telefone','moradia','conta'],
-[28,500,'transferencia - conta','','poupanca']
+[28,500,'transferencia - conta','','investimento']
 ];
 
 function getDataSample() {
-  var res = [];
+  var res = ['2007-01-01\t-300\tsaldo inicial\toutros\tcartao credito',
+            '2007-01-01\t1000\tsaldo inicial\toutros\tinvestimento',
+            '2007-01-01\t200\tsaldo inicial\toutros\tconta',
+            '2007-01-01\t50\tsaldo inicial\toutros\tbolso'];
   var initDate = new Date();
   initDate.setDate(1);
   initDate = mlog.base.addMonths(initDate,-2);
