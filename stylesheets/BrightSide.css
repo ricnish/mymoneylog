@@ -30,12 +30,12 @@ p, h1, h2, h3 { margin: 10px 0px 0; }
 ul, ol { margin: 10px 30px; padding: 0 15px; color: #4284B0; }
 ul span, ol span { color: #666666; }
 
-code { margin: 5px 0; padding: 10px; text-align: left; display: block; overflow: auto; font: 500 1em/1.5em 'Lucida Console', 'courier new', monospace; /* white-space: pre; */ background: #FAFAFA; border: 1px solid #f2f2f2; border-left: 4px solid #4284B0; }
+code { margin: 5px 0; padding: 10px; text-align: left; display: block; overflow: auto; font: 500 1em/1.5em 'Lucida Console', 'courier new', monospace; /* white-space: pre; */ background: #fbfcff; border: 1px solid #EFF5FF; border-left: 4px solid #4284B0; }
 acronym { cursor: help; border-bottom: 1px solid #777; }
-blockquote { margin: 15px; padding: 0 0 0 20px; background: #FAFAFA; border: 1px solid #f2f2f2; border-left: 4px solid #4284B0; color: #4284B0; font: bold 1.2em/1.5em Georgia, 'Bookman Old Style', Serif; }
+blockquote { margin: 15px; padding: 0 0 0 20px; background: #fbfcff; border: 1px solid #EFF5FF; border-left: 4px solid #4284B0; color: #4284B0; font: bold 1.2em/1.5em Georgia, 'Bookman Old Style', Serif; }
 
 /* form elements */
-form { padding: 0px 10px 10px; border: 1px solid #f2f2f2; background-color: #FAFAFA; }
+form { padding: 0px 10px 10px; border: 1px solid #EFF5FF; background-color: #fbfcff; }
 label { color:#999; display:block; font-weight:bold; margin-top:3px; }
 input,select { padding: 2px; border:1px solid #D3EF86; font: normal 1em Verdana, sans-serif; color:#333; width: 97%; }
 textarea { padding:2px; font: normal 1em Verdana, sans-serif; border:1px solid #D3EF86; color:#333; width: 98%; }
@@ -123,9 +123,9 @@ LAYOUT
 #main th.sort:hover { cursor: pointer; background: #9EC630; border-right: 1px solid #B6D59A; }
 #main th.date_col { width:6em; }
 #main tr { height: 26px; }
-#main td { padding-left: 5px; padding-right: 5px; border-right: 1px solid #FFF; border-bottom: solid 1px #FFF; }
-#main tr.row-a { background-color: #FAFAFA; }
-#main tr.row-b { background-color: #EFEFEF; }
+#main td { padding-left: 5px; padding-right: 5px; border-right: 1px solid #FFF; }
+#main tr.row-a { background-color: #FFF; }
+#main tr.row-b { background-color: #EFF5FF; }
 #main tr.new_entry { background-image: url(../images/new.png); background-repeat: no-repeat; background-position: left; background-color: #ffffcf; }
 #main td.col_r { text-align: right; }
 #main td.col_c { text-align: center; }
@@ -151,7 +151,7 @@ div.overflow { overflow: auto; }
 /* summary table */
 table.summary { background: #fff url(../images/toolbar-bg.png) repeat-x ; }
 table.summary tr { background:none; }
-table.summary td.first { background: #EFEFEF; width: 30%; }
+table.summary td.first { width: 25%; }
 #main table.summary td.value { padding-left: 0px; background-image: url(../images/vert-bg.gif); background-repeat: repeat-x; border-bottom: solid 0px #FFF; }
 
 /* http://blog.leetsoft.com/2006/8/22/super-simple-css-bars */
