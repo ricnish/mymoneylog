@@ -131,7 +131,7 @@ LAYOUT
 #main td.col_c { text-align: center; }
 #main tr.row_future { opacity: .60; font-style:italic; }
 #main tr:hover { background-color: #D1E3EF; }
-#main tr.total { background-color: #D1E3EF; font-weight: bold; }
+#main tr.total { background-color: #D1E3EF; font-weight: bold; border-top: 1px solid #FFF;}
 #main tr.total td { border-right: 1px solid #EFF9FF; }
 #main .opt_delete { background: url(../images/delete.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .opt_reconcile { background: url(../images/accept.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
