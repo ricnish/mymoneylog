@@ -53,11 +53,13 @@ mlog.editorControl = function() {
       return true;
     },
     show: function() {
+      // opera doesn't return correct height, put fixed
+      var tHeight = $.browser.opera?430: ($(window).height()-160);
       mlog.editorControl.init();
       mlog.base.activateMenu('editor');
       $('#report').html(htmlTemplate.main);
       $('#text_data').val(mlog.entries.toString());
-      $('#text_data').height($(window).height()-130); // default height
+      $('#text_data').height(tHeight);
       $('#text_data').keydown( mlog.editorControl.onKeyPress );
     },
     applyChanges: function() {

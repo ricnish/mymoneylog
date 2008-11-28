@@ -150,7 +150,6 @@ mlog.entriesControl = function() {
       /* build summary */
       res.push(tpSum.tHead);
       var accounts = mlog.accounts.getAllwithTotal();
-      mlog.base.arraySort(accounts,0);
       var maxValue = 0;
       // find maxValue
       for (var i=0;i<accounts.length-1;i++) {

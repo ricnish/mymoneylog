@@ -37,6 +37,7 @@ mlog.accountsClass = function(){
         ret.push([account,accounts[account].value,accounts[account].qtd]);
         sum += accounts[account].value;
       }
+      mlog.base.arraySort(ret,0);
       ret.push([mlog.translator.get('total'),sum,0]);
       return ret;
     },

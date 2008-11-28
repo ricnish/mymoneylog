@@ -45,9 +45,9 @@ $(window).load(function(){ mlog.init(); });
 </select>
 </div>
 <h1 id="logo">
-<img src="images/mymoneylog.png" alt="myMoneyLog" width="256" height="47" />
+<img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.145</h2>
+<h2 id="slogan">1.146</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -303,6 +303,7 @@ from
 <a name="EntriesStart"></a>
 <h1 id="toggle_summary" class="msg show_next">Summary</h1>
 <div id="entries_summary">
+<b class="rc1t"></b><b class="rc2t"></b>
 <table class="summary" id="summary_table">
 <tr>
 <th class="msg">
@@ -332,9 +333,11 @@ total
 </td>
 </tr>
 </table>
+<b class="rc3t"></b><b class="rc4t"></b>
 </div>
 <h1 class="msg">Entries</h1>
 <table id="entries_table">
+<b class="rc1t"></b><b class="rc2t"></b>
 <tr id="entries_row_head">
 <th class="first msg sort date_col" onclick="mlog.entriesControl.sortCol(0)">
 date
@@ -388,6 +391,7 @@ This total
 </td>
 </tr>
 </table>
+<b class="rc3t"></b><b class="rc4t"></b>
 </div>
 <!-- main_entries ends here -->
 <!-- main_categories_overview starts here -->
@@ -395,6 +399,7 @@ This total
 <div id="categories_chart"></div>
 <h1 id="toggle_categories_overview_table" class="msg">Category by month</h1>
 <div id="categories_overview_summary" class="overflow">
+<b class="rc1t"></b><b class="rc2t"></b>
 <table id="categories_overview_table">
 <tr>
 <th class="first msg">
@@ -413,6 +418,7 @@ description
 </td>
 </tr>
 </table>
+<b class="rc3t"></b><b class="rc4t"></b>
 </div>
 <br />
 </div>
@@ -422,6 +428,7 @@ description
 <div id="accounts_chart"></div>
 <h1 id="toggle_accounts_overview_table" class="msg">diary balance</h1>
 <div id="accounts_overview_summary" class="overflow">
+<b class="rc1t"></b><b class="rc2t"></b>
 <table id="accounts_overview_table">
 <tr>
 <th class="first msg date_col">
@@ -440,6 +447,7 @@ date
 </td>
 </tr>
 </table>
+<b class="rc2g"></b><b class="rc1g"></b>
 </div>
 <br />
 </div>
@@ -447,7 +455,11 @@ date
 <!-- main_editor starts here -->
 <div id="main_editor" style="display:none;">
 <h1 class="msg">text data source</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
+<form><br />
 <textarea class="textarea_data" name="text_data" id="text_data" rows="1" cols="1"></textarea>
+</form>
+<b class="rc2f"></b><b class="rc1f"></b>
 <br /><br />
 </div>
 <!-- main_editor ends here -->
@@ -469,6 +481,7 @@ date
 </p>
 </div>
 </div>
+<b class="rc2g"></b><b class="rc1g"></b>
 <!-- footer ends here -->
 <!-- wrap ends here -->
 </div>
