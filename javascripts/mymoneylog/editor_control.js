@@ -57,7 +57,7 @@ mlog.editorControl = function() {
       mlog.base.activateMenu('editor');
       $('#report').html(htmlTemplate.main);
       $('#text_data').val(mlog.entries.toString());
-      $('#text_data').height(470); // default height
+      $('#text_data').height($(window).height()-130); // default height
       $('#text_data').keydown( mlog.editorControl.onKeyPress );
     },
     applyChanges: function() {

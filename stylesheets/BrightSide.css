@@ -4,7 +4,7 @@ WEBSITE: http://www.styleshout.com/
 TEMPLATE NAME: Bright Side of Life
 TEMPLATE CODE: S-0005
 VERSION: 1.0
-adapted by Ricardo Nishimura: 2007/11
+adapted by Ricardo Nishimura since: 2007/11
 *******************************************/
 
 /********************************************
@@ -14,7 +14,7 @@ HTML ELEMENTS
 /* top elements */
 * { padding: 0; margin: 0; }
 
-body { margin: 0; padding: 0; font: .70em/1.5em Verdana, Tahoma, Helvetica, sans-serif; color: #666666; background: #A9BAC3 url(../images/bg.gif) repeat-x; }
+body { margin: 0; padding: 0; font: .70em/1.5em Verdana, Tahoma, Helvetica, sans-serif; color: #666666; background: #A9BAC3 url(../images/bg.jpg) repeat-x }
 
 /* links */
 a { color: #4284B0; background-color: inherit; text-decoration: none; }
@@ -31,11 +31,9 @@ ul, ol { margin: 10px 30px; padding: 0 15px; color: #4284B0; }
 ul span, ol span { color: #666666; }
 
 code { margin: 5px 0; padding: 10px; text-align: left; display: block; overflow: auto; font: 500 1em/1.5em 'Lucida Console', 'courier new', monospace; /* white-space: pre; */ background: #fbfcff; border: 1px solid #EFF5FF; border-left: 4px solid #4284B0; }
-acronym { cursor: help; border-bottom: 1px solid #777; }
-blockquote { margin: 15px; padding: 0 0 0 20px; background: #fbfcff; border: 1px solid #EFF5FF; border-left: 4px solid #4284B0; color: #4284B0; font: bold 1.2em/1.5em Georgia, 'Bookman Old Style', Serif; }
 
 /* form elements */
-form { padding: 0px 10px 10px; border: 1px solid #EFF5FF; background-color: #fbfcff; }
+form { padding: 0px 10px 10px; border: 1px solid #fbfcff; background-color: #fbfcff; }
 label { color:#999; display:block; font-weight:bold; margin-top:3px; }
 input,select { padding: 2px; border:1px solid #D3EF86; font: normal 1em Verdana, sans-serif; color:#333; width: 97%; }
 textarea { padding:2px; font: normal 1em Verdana, sans-serif; border:1px solid #D3EF86; color:#333; width: 98%; }
@@ -47,44 +45,27 @@ input:focus { background-color: #ffffcf; }
 select.select_num { border:1px solid #D3EF86; width: 70px; }
 input.input_checkbox { width: 20px; border: 0px; }
 
-/* search form */
-form.searchform { background: transparent; border: none; margin: 0; padding: 0; }
-form.searchform input.textbox { margin: 0; width: 120px; border: 1px solid #9EC630; background: #FFF; color: #333; height: 14px; vertical-align: top; }
-form.searchform input.button { margin: 0; padding: 2px 3px; font: bold 12px Arial, Sans-serif; background: #FAFAFA; border: 1px solid #f2f2f2; color: #777; width: 60px; vertical-align: top; }
-
 /***********************
 LAYOUT
 ************************/
-#wrap { background: #FFF; width: 90%; height: 100%; margin: 0 auto; text-align: left; }
-#content-wrap { clear: both; margin: 0; padding: 0; background: #FFF; }
-#toolbar { height: 120px; background: #fff url(../images/toolbar-bg.png) repeat-x 0% 100%; }
-#toolbar fieldset label { display: inline; }
+#body-bg { width: 100%; height: 100%; background: url(../bg.jpg) repeat; }
+#wrap { width: 90%; height: 100%; margin: 0 auto; text-align: left; background: url(../images/bg_20white.png) repeat; }
+#content-wrap { clear: both; margin: 0; padding: 0; }
 
 /* header */
-#header { position: relative; height: 85px; background: #fff url(../images/headerbg.gif) repeat-x 0% 100%; }
-#header h1#logo { position: absolute; margin: 0; padding: 0; font: bolder 4em 'Trebuchet MS', Arial, Sans-serif; letter-spacing: -2px; top: 5px; left: 5px; cursor:pointer; }
-#header h2#slogan { position: absolute; top:43px; left: 8px; color: #888; text-indent: 0px; font: bold 11px Tahoma, 'trebuchet MS', Sans-serif; text-transform: none; }
+#header { position: relative; height: 85px; background: url(../images/headerbg.gif) repeat-x 0% 100%; }
+#header h1#logo { position: absolute; margin: 0; padding: 0; font: bolder 4em 'Trebuchet MS', Arial, Sans-serif; letter-spacing: -2px; top: 10px; left: 5px; cursor:pointer; }
+#header h2#slogan { position: absolute; top:48px; left: 8px; color: #888; text-indent: 0px; font: bold 11px Tahoma, 'trebuchet MS', Sans-serif; text-transform: none; }
 #header #locale { float: right; margin-top: 10px; }
 
 /* main */
 #main { float: right; margin-right: 10px; width: 72%; }
-.post-footer { background-color: #FAFAFA; padding: 5px; margin: 20px 15px 0 15px; border: 1px solid #f2f2f2; font-size: 95%; }
-.post-footer .date { background: url(clock.gif) no-repeat left center; padding-left: 20px; margin: 0 10px 0 5px; }
-.post-footer .comments { background: url(comment.gif) no-repeat left center; padding-left: 20px; margin: 0 10px 0 5px; }
-.post-footer .readmore { background: url(page.gif) no-repeat left center; padding-left: 20px; margin: 0 10px 0 5px; }
 
 /* sidebar */
 #sidebar { float: left; width: 23%; margin: 0; padding: 0; display: inline; padding: 0 10px; }
-#sidebar ul.sidemenu { list-style:none; margin:10px 0 10px 15px; padding:0; }
-#sidebar ul.sidemenu li { margin-bottom:1px; border: 1px solid #f2f2f2; }
-#sidebar ul.sidemenu a { display:block; font-weight:bold; color: #333; text-decoration:none; padding:2px 5px 2px 10px; background: #f2f2f2; border-left:4px solid #CCC;
- min-height:18px; }
-* html body #sidebar ul.sidemenu a { height: 18px; }
-
-#sidebar ul.sidemenu a:hover { padding:2px 5px 2px 10px; background: #f2f2f2; color: #339900; border-left:4px solid #9EC630; }
 /* Footer */
-#footer { clear: both; color: #FFF; background: #A9BAC3; border-top: 5px solid #568EB6; margin: 0; padding: 0; height: 50px; font-size: 95%; }
-#footer a { text-decoration: none; font-weight: bold; color: #FFF; }
+#footer { clear: both; background: url(../images/bg_75white.png) repeat; border-top: 5px solid #568EB6; margin: 0; padding: 0; height: 36px; font-size: 95%; }
+#footer a { text-decoration: none; font-weight: bold; }
 #footer .footer-left{ float: left; width: 65%; }
 #footer .footer-right{ float: right; width: 30%; }
 
@@ -138,6 +119,7 @@ LAYOUT
 #main .hide { display: none; }
 #main .neg { color: #F66; }
 #main tr.total .neg { }
+#help { background: url(../images/bg_75white.png) repeat; padding: 12px; }
 div.overflow { overflow: auto; }
 
 /* start - suggest list */
@@ -168,6 +150,7 @@ div.pagination a:hover { padding: 2px 5px 2px 5px; margin-right: 2px; font-weigh
 /* chart */
 #main table.plotr-legend { width: auto; }
 #chart tr { height: 14px; }
+.tickLabel { color: #000 }
 
 .show_next { background: url(../images/bullet_arrow_up.png) no-repeat right; padding-right: 20px; cursor:pointer; }
 .hide_next { background: url(../images/bullet_arrow_down.png) no-repeat right; padding-right: 20px; cursor:pointer; }
@@ -175,3 +158,8 @@ div.pagination a:hover { padding: 2px 5px 2px 5px; margin-right: 2px; font-weigh
 .tagCloud:hover { text-decoration: underline; }
 .tagSelect { color: #9EC630; }
 .selectAll { font-size: 14px; font-weight: bold; }
+
+/* rounded corner - form*/
+.rc1f, .rc2f {font-size:1px; overflow:hidden; display:block;}
+.rc1f {height:1px; background:#fbfcff; margin:0 2px;}
+.rc2f {height:1px; background:#fbfcff; margin:0 1px;}

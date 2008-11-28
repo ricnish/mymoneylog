@@ -35,6 +35,7 @@ $(window).load(function(){ mlog.init(); });
 <link rel="icon" type="image/png" href="images/money.png" />
 </head>
 <body>
+<div id="body-bg">
 <!-- wrap starts here -->
 <div id="wrap">
 <div id="header">
@@ -43,8 +44,10 @@ $(window).load(function(){ mlog.init(); });
 <option value="en-us">en-us</option>
 </select>
 </div>
-<h1 id="logo">my<span class="green">Money</span>Log</h1>
-<h2 id="slogan">1.140</h2>
+<h1 id="logo">
+<img src="images/mymoneylog.png" alt="myMoneyLog" width="256" height="47" />
+</h1>
+<h2 id="slogan">1.145</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -70,6 +73,7 @@ $(window).load(function(){ mlog.init(); });
 <!-- entries panel starts here -->
 <div id="panel_entries" class="panel" style="display:none;">
 <h1 class="msg">Entry</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
 <form id="form_entry" action="">
 <div>
 <label class="msg">Date</label>
@@ -112,7 +116,10 @@ To Account
 <p>
 <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
 </p>
-</form><h1 class="msg">filter</h1>
+</form>
+<b class="rc2f"></b><b class="rc1f"></b>
+<h1 class="msg">filter</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
 <form class="options" action="">
 <div>
 <label class="msg">
@@ -162,11 +169,13 @@ text
 <button class="button msg" type="button" onclick="mlog.entriesControl.resetFilter()">cancel</button>
 </p>
 </form>
+<b class="rc2f"></b><b class="rc1f"></b>
 </div>
 <!-- entries panel ends here -->
 <!-- categories overview panel starts here -->
 <div id="panel_categories_overview" class="panel" style="display:none;">
 <h1 class="msg">Options</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
 <form action="">
 <div>
 <label class="msg">
@@ -211,11 +220,13 @@ chart
 </select>
 </div>
 </form>
+<b class="rc2f"></b><b class="rc1f"></b>
 </div>
 <!-- categories overview panel ends here -->
 <!-- accounts overview panel starts here -->
 <div id="panel_accounts_overview" class="panel" style="display:none;">
 <h1 class="msg">Options</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
 <form action="">
 <div>
 <label class="msg">
@@ -251,18 +262,22 @@ show
 </span>
 </div>
 </form>
+<b class="rc2f"></b><b class="rc1f"></b>
 <br />
 </div>
 <!-- accounts overview panel ends here -->
 <!-- editor panel starts here -->
 <div id="panel_editor" class="panel" style="display:none;">
 <h1 class="msg">Options</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
 <form action="">
 <p>
 <button class="button msg" type="button" onclick="mlog.editorControl.applyChanges()">Apply</button>
 </p>
 </form>
+<b class="rc2f"></b><b class="rc1f"></b>
 <h1 class="msg">Export</h1>
+<b class="rc1f"></b><b class="rc2f"></b>
 <form action="">
 <div>
 <label class="msg">
@@ -274,6 +289,7 @@ from
 <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
 </p>
 </form>
+<b class="rc2f"></b><b class="rc1f"></b>
 </div><!-- editor panel ends here -->
 <!-- help panel starts here -->
 <div id="panel_help" class="panel" style="display:none;">
@@ -416,7 +432,7 @@ date
 </th>
 </tr>
 <tr class="row-a">
-<td class="first">
+<td class="first col_c">
 {date}
 </td>
 <td class="col_r">
@@ -447,8 +463,8 @@ date
 <div id="footer">
 <div class="footer-left">
 <p class="align-left">
-&copy; 2007 <a href="http://nishimura.eti.br">Ricardo Nishimura</a>
-| Design by <a href="http://www.styleshout.com/">styleshout</a> with adaptations
+&nbsp;&copy;2007 <a href="http://nishimura.eti.br">Ricardo Nishimura</a>
+| Adapted design from <a href="http://www.styleshout.com/">styleshout</a>
 | Icons by <a href="http://www.famfamfam.com/lab/icons/silk/">famfamfam</a>
 </p>
 </div>
@@ -456,12 +472,12 @@ date
 <!-- footer ends here -->
 <!-- wrap ends here -->
 </div>
-<div>
 <iframe id="dataframe" src="data.html" style="visibility:hidden;width:0px;height:0px">
 <!-- the source file name is also defined in javascripts/mymoneylog/base.js -->
 </iframe>
-</div>
 <div id="applet">
+</div>
+<!-- body-bg ends here -->
 </div>
 </body>
 </html>

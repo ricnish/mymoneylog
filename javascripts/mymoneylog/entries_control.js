@@ -234,7 +234,7 @@ mlog.entriesControl = function() {
         /* assemble table */
         content = content.replace(/{entriesContent}/, res);
         var maxPage = theData.pop().maxPage || 1;
-        content += mlog.base.buildPaginator(filterOptions.pageNumber,maxPage,filterOptions.entriesPerPage)+'<br/>';
+        content += mlog.base.buildPaginator(filterOptions.pageNumber,maxPage,filterOptions.entriesPerPage)+'<br />';
       }
       else {
         content = '<h1>' + mlog.translator.get('no data') + '</h1>';
