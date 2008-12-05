@@ -110,7 +110,7 @@ LAYOUT
 #main tr.new_entry { background-image: url(../images/new.png); background-repeat: no-repeat; background-position: left; background-color: #ffffcf; }
 #main td.col_r { text-align: right; }
 #main td.col_c { text-align: center; }
-#main tr.row_future { opacity: .60; font-style:italic; }
+#main tr.row_future { opacity: .8; font-style:italic; }
 #main tr:hover { background-color: #D1E3EF; }
 #main tr.total { background-color: #D1E3EF; font-weight: bold; border-top: 1px solid #FFF;}
 #main tr.total td { border-right: 1px solid #EFF9FF; }
