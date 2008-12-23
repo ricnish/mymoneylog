@@ -73,7 +73,7 @@ $(window).load(function(){ mlog.init(); });
 <!-- entries panel starts here -->
 <div id="panel_entries" class="panel" style="display:none;">
 <h1 class="msg">Entry</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form id="form_entry" action="">
 <div>
 <label class="msg">Date</label>
@@ -117,9 +117,9 @@ To Account
 <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
 </p>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 <h1 class="msg">filter</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form class="options" action="">
 <div>
 <label class="msg">
@@ -169,13 +169,13 @@ text
 <button class="button msg" type="button" onclick="mlog.entriesControl.resetFilter()">cancel</button>
 </p>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 </div>
 <!-- entries panel ends here -->
 <!-- categories overview panel starts here -->
 <div id="panel_categories_overview" class="panel" style="display:none;">
 <h1 class="msg">Options</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
 <div>
 <label class="msg">
@@ -222,13 +222,13 @@ chart
 </select>
 </div>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 </div>
 <!-- categories overview panel ends here -->
 <!-- accounts overview panel starts here -->
 <div id="panel_accounts_overview" class="panel" style="display:none;">
 <h1 class="msg">Options</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
 <div>
 <label class="msg">
@@ -266,22 +266,22 @@ show
 </span>
 </div>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 <br />
 </div>
 <!-- accounts overview panel ends here -->
 <!-- editor panel starts here -->
 <div id="panel_editor" class="panel" style="display:none;">
 <h1 class="msg">Options</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
 <p>
 <button class="button msg" type="button" onclick="mlog.editorControl.applyChanges()">Apply</button>
 </p>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 <h1 class="msg">Export</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
 <div>
 <label class="msg">
@@ -293,7 +293,7 @@ from
 <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
 </p>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 </div><!-- editor panel ends here -->
 <!-- help panel starts here -->
 <div id="panel_help" class="panel" style="display:none;">
@@ -307,7 +307,7 @@ from
 <a name="EntriesStart"></a>
 <h1 id="toggle_summary" class="msg show_next">Summary</h1>
 <div id="entries_summary">
-<b class="rc1t"></b><b class="rc2t"></b>
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
 <table class="summary" id="summary_table">
 <tr>
 <th class="msg">
@@ -337,11 +337,11 @@ total
 </td>
 </tr>
 </table>
-<b class="rc3t"></b><b class="rc4t"></b>
+<b class="rc3t">&nbsp;</b><b class="rc4t">&nbsp;</b>
 </div>
 <h1 class="msg">Entries</h1>
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
 <table id="entries_table">
-<b class="rc1t"></b><b class="rc2t"></b>
 <tr id="entries_row_head">
 <th class="first msg sort date_col" onclick="mlog.entriesControl.sortCol(0)">
 date
@@ -395,7 +395,7 @@ This total
 </td>
 </tr>
 </table>
-<b class="rc3t"></b><b class="rc4t"></b>
+<b class="rc3t">&nbsp;</b><b class="rc4t">&nbsp;</b>
 </div>
 <!-- main_entries ends here -->
 <!-- main_categories_overview starts here -->
@@ -403,7 +403,7 @@ This total
 <div id="categories_chart"></div>
 <h1 id="toggle_categories_overview_table" class="msg">Category by month</h1>
 <div id="categories_overview_summary" class="overflow">
-<b class="rc1t"></b><b class="rc2t"></b>
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
 <table id="categories_overview_table">
 <tr>
 <th class="first msg">
@@ -431,7 +431,7 @@ description
 <div id="accounts_chart"></div>
 <h1 id="toggle_accounts_overview_table" class="msg">diary balance</h1>
 <div id="accounts_overview_summary" class="overflow">
-<b class="rc1t"></b><b class="rc2t"></b>
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
 <table id="accounts_overview_table">
 <tr>
 <th class="first msg date_col">
@@ -457,11 +457,11 @@ date
 <!-- main_editor starts here -->
 <div id="main_editor" style="display:none;">
 <h1 class="msg">text data source</h1>
-<b class="rc1f"></b><b class="rc2f"></b>
-<form><br />
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form action=""><br />
 <textarea class="textarea_data" name="text_data" id="text_data" rows="1" cols="1"></textarea>
 </form>
-<b class="rc2f"></b><b class="rc1f"></b>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 <br /><br />
 </div>
 <!-- main_editor ends here -->
@@ -483,7 +483,7 @@ date
 </p>
 </div>
 </div>
-<b class="rc2g"></b><b class="rc1g"></b>
+<b class="rc2g">&nbsp;</b><b class="rc1g">&nbsp;</b>
 <!-- footer ends here -->
 <!-- wrap ends here -->
 </div>
