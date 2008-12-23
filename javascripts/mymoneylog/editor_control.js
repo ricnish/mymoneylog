@@ -58,8 +58,8 @@ mlog.editorControl = function() {
       mlog.editorControl.init();
       mlog.base.activateMenu('editor');
       $('#report').html(htmlTemplate.main);
-      $('#text_data').val(mlog.entries.toString());
       $('#text_data').height(tHeight);
+      $('#text_data').val(mlog.entries.toString());
       $('#text_data').keydown( mlog.editorControl.onKeyPress );
     },
     applyChanges: function() {

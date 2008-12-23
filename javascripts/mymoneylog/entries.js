@@ -160,8 +160,7 @@ mlog.entries = function(){
           }
         }
       }
-      txt += tmp.join('\n') + '\n';
-      return txt;
+      return txt + tmp.join('\n') + '\n';
     },
     exportFromStartDate: function(startdate) {
       var filename = mlog.base.getDataPathName().replace(/data.html/,startdate+'_data.html');
