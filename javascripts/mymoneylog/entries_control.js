@@ -7,12 +7,18 @@ mlog.entriesControl = function() {
   var storedSearches = [];
   var filterOptions = {};
   var hideSummary = false;
+
+  // calculate start date
+  var dtStart = mlog.base.addMonths(new Date,-1);
+  dtStart.setDate(1);
+  dtStart = mlog.base.dateToString(dtStart);
+
   var resetFilterOptions = function() {
     filterOptions = {
       query: '',
       pageNumber:1,
       entriesPerPage: 50,
-      startDate: '2000-01-01',
+      startDate: dtStart,
       endDate: mlog.base.getCurrentDate(),
       values: 0,
       categories: [],
