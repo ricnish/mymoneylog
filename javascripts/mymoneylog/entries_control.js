@@ -307,6 +307,16 @@ mlog.entriesControl = function() {
         $('#n_'+(mlog.entries.getCount()-1)).addClass('new_entry');
       }
     },
+    /* clean add entry form */
+    cleanEntry: function(elem){
+      $('#input_date').val(mlog.base.getCurrentDate());
+      $('#input_value').val(''),
+      $('#input_description').val(''),
+      $('#input_category').val(''),
+      $('#input_account').val(''),
+      $('#input_account_to').val('');
+      $('#input_date').focus();
+    },
     /* read options panel and set to variables*/
     updateOptions: function() {
       var selectedCategories = [];
