@@ -20,9 +20,10 @@ mlog.entries = function(){
          6: is reconcilable: bool
         */
         // is reconcilable
-        entry[6] = (entry[0].charAt(10)=='?')||false;
+        entry[6] = entry[0].indexOf('?')>-1;
         // parse date
-        entry[0] = entry[0].replace(/[^0-9-]/, '') || '-';
+        entry[0] = (entry[0].replace(/[^0-9-]/g, '')).slice(0,10);
+        entry[0] = entry[0].length>9? entry[0]: currentDate;
         if (entry[6]) {
           // if is reconcilable, set past date to current date
           entry[0]=(entry[0]<currentDate)?currentDate:entry[0];
@@ -206,16 +207,17 @@ mlog.entries = function(){
         else {
           entry[1] = mlog.base.toFloat(entry[1]);
         }
-      var reconcilable = (entry[0].charAt(10)=='?')||false;
+      var reconcilable = entry[0].indexOf('?')>-1;
+      entry[0] = (entry[0].replace(/[^0-9-]/g, '')).slice(0,10) || mlog.base.getCurrentDate();
       var toAccount = entry[5];
       for (var i=0; i<nTimes; i++) {
         var newEntry = entry.slice(0);
         if (i>0) {
           /* add month to date */
-          var dt = mlog.base.addMonths(mlog.base.stringToDate(entry[0].substring(0,10)),i);
+          var dt = mlog.base.addMonths(mlog.base.stringToDate(entry[0]),i);
           newEntry[0] = mlog.base.dateToString(dt);
-          newEntry[0] += reconcilable?'?':'';
         }
+        newEntry[0] += reconcilable?'?':'';
         if (nTimes>1) {
           newEntry[2] = entry[2] + ' ' + (i+1) + '/' + nTimes;
         }

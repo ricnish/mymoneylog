@@ -8,10 +8,14 @@ mlog.entriesControl = function() {
   var filterOptions = {};
   var hideSummary = false;
 
-  // calculate start date
+  /* default start date: begin prev month */
   var dtStart = mlog.base.addMonths(new Date,-1);
   dtStart.setDate(1);
   dtStart = mlog.base.dateToString(dtStart);
+  /* default end date: next week */
+  dtEnd = new Date();
+  dtEnd.setDate(dtEnd.getDate()+7);
+  dtEnd =  mlog.base.dateToString(dtEnd);
 
   var resetFilterOptions = function() {
     filterOptions = {
@@ -19,7 +23,7 @@ mlog.entriesControl = function() {
       pageNumber:1,
       entriesPerPage: 50,
       startDate: dtStart,
-      endDate: mlog.base.getCurrentDate(),
+      endDate: dtEnd,
       values: 0,
       categories: [],
       accounts: [],
@@ -118,9 +122,24 @@ mlog.entriesControl = function() {
           { minChars: 0, max: 50, selectFirst: false })
         /* initial date value */
         $('#input_date').val(mlog.base.getCurrentDate());
+        /* auto clear form configuration */
+        if (mlog.base.getCookie('entryFormAutoClear')=='true') {
+          $('#input_auto_clear').attr('checked','true');
+        } else {
+          $('#input_auto_clear').attr('checked','');
+        }
+        $('#input_auto_clear').click( function() {
+          if ($('#input_auto_clear').attr('checked')==true) {
+            mlog.base.setCookie('entryFormAutoClear','true');
+          } else {
+            mlog.base.setCookie('entryFormAutoClear','false');
+          }
+        });
         resetFilterOptions();
+        this.clearEntry();
       }
     },
+    
     /* display an entry to input */
     updateInputEntry: function(lineData){
       if (!lineData) {
@@ -131,6 +150,11 @@ mlog.entriesControl = function() {
       $('#input_description').val(lineData[2]);
       $('#input_category').val(lineData[3] || '');
       $('#input_account').val(lineData[4] || '');
+      if(lineData[6]) {
+        $('#input_to_reconcile').attr('checked', 'true');
+      } else {
+        $('#input_to_reconcile').attr('checked', '');
+      }
     },
     /* remove an entry */
     removeEntry: function(elem){
@@ -217,6 +241,11 @@ mlog.entriesControl = function() {
             strRow = odd?tp.tRowFutureOdd:tp.tRowFuture;
           }
           odd = !odd;
+          /* is reconcilable? */
+          if (theData[i][6]) {
+            strRow = strRow.replace(/opt_reconcile hide/,'opt_reconcile');
+            strRow = strRow.replace(/(row-a|row-b)/,'row_reconcilable');
+          }
           /* the total */
           theTotal += theData[i][1];
           /* apply values to detail row */
@@ -226,10 +255,6 @@ mlog.entriesControl = function() {
           strRow = strRow.replace(/{description}/, theData[i][2]);
           strRow = strRow.replace(/{category}/, theData[i][3]);
           strRow = strRow.replace(/{account}/, theData[i][4]);
-          /* is reconcilable? */
-          if (theData[i][6]) {
-            strRow = strRow.replace(/opt_reconcile hide/,'opt_reconcile');
-          }
           res+=strRow;
         }
         /* end of data, put total */
@@ -258,6 +283,18 @@ mlog.entriesControl = function() {
       this.show();
     },
 
+    /* clear entry form */
+    clearEntry: function() {
+      $('#input_date').val(mlog.base.getCurrentDate());
+      $('#input_value').val('');
+      $('#input_to_reconcile').attr('checked', '');
+      $('#input_description').val('');
+      $('#input_category').val('');
+      $('#input_account').val('');
+      $('#input_account_to').val('');
+      $('#input_date').focus();
+    },
+
     /* add an entry from input */
     addEntry: function(elem){
       var entry = [ $('#input_date').val(),
@@ -266,6 +303,8 @@ mlog.entriesControl = function() {
                     $('#input_category').val(),
                     $('#input_account').val(),
                     $('#input_account_to').val()];
+      /* is it reconcilable */
+      entry[0] += $('#input_to_reconcile').attr('checked')? '?': '';
       var addCount = mlog.entries.getCount();
       mlog.entries.add(entry);
       /* refresh entries */
@@ -286,6 +325,9 @@ mlog.entriesControl = function() {
       $('#input_category').setOptions({data: mlog.categories.getNames()});
       $('#input_account').setOptions({data: mlog.accounts.getNames()});
       $('#input_account_to').val('').setOptions({data: mlog.accounts.getNames()});
+      if ($('#input_auto_clear').attr('checked')) {
+        this.clearEntry();
+      }
     },
     /* toggle 'to account' */
     toggleToAccount: function() {
@@ -306,16 +348,6 @@ mlog.entriesControl = function() {
         this.show();
         $('#n_'+(mlog.entries.getCount()-1)).addClass('new_entry');
       }
-    },
-    /* clean add entry form */
-    cleanEntry: function(elem){
-      $('#input_date').val(mlog.base.getCurrentDate());
-      $('#input_value').val(''),
-      $('#input_description').val(''),
-      $('#input_category').val(''),
-      $('#input_account').val(''),
-      $('#input_account_to').val('');
-      $('#input_date').focus();
     },
     /* read options panel and set to variables*/
     updateOptions: function() {

@@ -32,4 +32,5 @@ mlog.init = function(){
         '>'+ this +'</option>';
   })
   $('#select_locales').html(selLocales);
+  $('#input_date').focus();
 }

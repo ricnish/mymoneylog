@@ -47,7 +47,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.149</h2>
+<h2 id="slogan">1.152</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -78,6 +78,9 @@ $(window).load(function(){ mlog.init(); });
 <div>
 <label class="msg">Date</label>
 <input id="input_date" class="input_date autocompleteoff" type="text" />
+&nbsp;&nbsp;
+<input type="checkbox" id="input_to_reconcile" class="input_checkbox" />
+<span class="msg">pending</span>
 </div>
 <div>
 <label class="msg">Value</label>
@@ -115,8 +118,11 @@ To Account
 </div>
 <p>
 <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
-<button class="button msg" type="button" onclick="mlog.entriesControl.cleanEntry(this)">Clean</button>
+<button class="button msg" type="button" onclick="mlog.entriesControl.clearEntry()">Clear</button>
 </p>
+<br />
+<input type="checkbox" id="input_auto_clear" class="input_checkbox"/>
+<span class="msg">clear on add</span>
 </form>
 <b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 <h1 class="msg">filter</h1>

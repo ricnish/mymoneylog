@@ -107,6 +107,7 @@ LAYOUT
 #main td { padding-left: 5px; padding-right: 5px; border-right: 1px solid #FFF; }
 #main tr.row-a { background-color: #FFF; }
 #main tr.row-b { background-color: #EFF5FF; }
+#main tr.row_reconcilable { background-color: #FFDABF; font-style:italic; border-bottom: solid 1px #FFF;}
 #main tr.new_entry { background-image: url(../images/new.png); background-repeat: no-repeat; background-position: left; background-color: #ffffcf; }
 #main td.col_r { text-align: right; }
 #main td.col_c { text-align: center; }
@@ -117,6 +118,7 @@ LAYOUT
 #main .opt_delete { background: url(../images/delete.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .opt_reconcile { background: url(../images/accept.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .hide { display: none; }
+#main .isrec { background-color: #000000; }
 #main .neg { color: #F66; }
 #main tr.total .neg { }
 #help { background: url(../images/bg_75white.png) repeat; padding: 12px; }
