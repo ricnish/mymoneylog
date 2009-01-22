@@ -43,8 +43,8 @@ input.input_date { width:84px; background-image: url(../images/calendar.png); ba
 input.input_num { width:90px; text-align: right; }
 input:focus { background-color: #ffffcf; }
 select.select_num { border:1px solid #D3EF86; width: 70px; }
-input.input_checkbox { width: 20px; border: 0px; }
-
+input.input_checkbox { width: 16px; border: 0px; }
+.input_inline { display:inline-block; margin-left: 4px; margin-top:1px; }
 /***********************
 LAYOUT
 ************************/
@@ -116,7 +116,7 @@ LAYOUT
 #main tr.total { background-color: #D1E3EF; font-weight: bold; border-top: 1px solid #FFF;}
 #main tr.total td { border-right: 1px solid #EFF9FF; }
 #main .opt_delete { background: url(../images/delete.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
-#main .opt_reconcile { background: url(../images/accept.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
+#main .opt_conciliate { background: url(../images/accept.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .hide { display: none; }
 #main .isrec { background-color: #000000; }
 #main .neg { color: #F66; }
