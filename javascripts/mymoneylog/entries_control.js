@@ -151,9 +151,9 @@ mlog.entriesControl = function() {
       $('#input_category').val(lineData[3] || '');
       $('#input_account').val(lineData[4] || '');
       if(lineData[6]) {
-        $('#input_to_reconcile').attr('checked', 'true');
+        $('#input_pending').attr('checked', 'true');
       } else {
-        $('#input_to_reconcile').attr('checked', '');
+        $('#input_pending').attr('checked', '');
       }
     },
     /* remove an entry */
@@ -243,7 +243,7 @@ mlog.entriesControl = function() {
           odd = !odd;
           /* is reconcilable? */
           if (theData[i][6]) {
-            strRow = strRow.replace(/opt_reconcile hide/,'opt_reconcile');
+            strRow = strRow.replace(/opt_conciliate hide/,'opt_conciliate');
             strRow = strRow.replace(/(row-a|row-b)/,'row_reconcilable');
           }
           /* the total */
@@ -264,7 +264,7 @@ mlog.entriesControl = function() {
         /* assemble table */
         content = content.replace(/{entriesContent}/, res);
         var maxPage = theData.pop().maxPage || 1;
-        content += mlog.base.buildPaginator(filterOptions.pageNumber,maxPage,filterOptions.entriesPerPage)+'<br />';
+        content += mlog.entriesControl.buildPaginator(maxPage)+'<br />';
       }
       else {
         content = '<h1>' + mlog.translator.get('no data') + '</h1>';
@@ -287,7 +287,7 @@ mlog.entriesControl = function() {
     clearEntry: function() {
       $('#input_date').val(mlog.base.getCurrentDate());
       $('#input_value').val('');
-      $('#input_to_reconcile').attr('checked', '');
+      $('#input_pending').attr('checked', '');
       $('#input_description').val('');
       $('#input_category').val('');
       $('#input_account').val('');
@@ -304,7 +304,7 @@ mlog.entriesControl = function() {
                     $('#input_account').val(),
                     $('#input_account_to').val()];
       /* is it reconcilable */
-      entry[0] += $('#input_to_reconcile').attr('checked')? '?': '';
+      entry[0] += $('#input_pending').attr('checked')? '?': '';
       var addCount = mlog.entries.getCount();
       mlog.entries.add(entry);
       /* refresh entries */
@@ -343,7 +343,7 @@ mlog.entriesControl = function() {
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id').substring(2);
-      if (confirm(mlog.translator.get('reconcile').toUpperCase()+': '+mlog.translator.get('are you sure?'))) {
+      if (confirm(mlog.translator.get('conciliate').toUpperCase()+': '+mlog.translator.get('are you sure?'))) {
         mlog.entries.reconcile(id);
         this.show();
         $('#n_'+(mlog.entries.getCount()-1)).addClass('new_entry');
@@ -404,6 +404,42 @@ mlog.entriesControl = function() {
     resetFilter: function() {
       resetFilterOptions();
       this.show();
+    },
+    /* build paginator */
+    buildPaginator: function(numberOfPages) {
+      var currentPg = filterOptions.pageNumber;
+      var maxPg = numberOfPages || 1;
+      var entriesPerPage = filterOptions.entriesPerPage;
+      var str = [];
+      var perPageOption = [20,50,100,200,500,1000]; // entries per page options
+      str.push('<div class="pagination">');
+      str.push('<select id="entriesPerPage" onchange="mlog.entriesControl.onPageChange()">');
+      for (var i=0;i<perPageOption.length;i++) {
+        if (perPageOption[i]==entriesPerPage) {
+          str.push('<option value="'+perPageOption[i]+'" selected="selected">'+perPageOption[i]+'</option>');
+        } else {
+          str.push('<option value="'+perPageOption[i]+'">'+perPageOption[i]+'</option>');
+        }
+      }
+      str.push('</select>&nbsp;<span class="msg">'+
+        mlog.translator.get('per page')+'</span>' +
+        '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+      var prevPg = (currentPg-1>0)?currentPg-1:currentPg;
+      str.push('<a onclick="mlog.entriesControl.show('+prevPg+')">&laquo;</a>');
+      str.push('&nbsp;'+mlog.translator.get('page')+'&nbsp;');
+      str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
+      for (var i=1;i<=maxPg;i++) {
+        if (i==currentPg) {
+          str.push('<option value="'+i+'" selected="selected">'+i+'</option>');
+        } else {
+          str.push('<option value="'+i+'">'+i+'</option>');
+        }
+      }
+      str.push('</select>&nbsp;'+mlog.translator.get('of')+'&nbsp;'+maxPg+'&nbsp;');
+      var nextPg = (currentPg+1<=maxPg)?currentPg+1:currentPg;
+      str.push('<a onclick="mlog.entriesControl.show('+nextPg+')">&raquo;</a>');
+      str.push('</div>');
+      return str.join('');
     }
   };
 }();

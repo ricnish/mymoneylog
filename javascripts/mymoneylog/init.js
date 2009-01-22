@@ -18,19 +18,11 @@ mlog.init = function(){
   // disable submit action for sidebar
   $('#sidebar form').submit( function() { return false; });
 
-  // add tiddlysaver applet if needed
+  // add DataWriter java applet if needed
   if (!$.browser.mozilla && !$.browser.msie) {
     $('#applet').html('<applet name="DataWriter" code="DataWriter.class" archive="applets/DataWriter.jar" width="0" height="0"></applet>');
   }
   $('#logo').click( function() { open('http://code.google.com/p/mymoneylog/'); });
 
-  // init locales selection
-  var selLocales = '';
-  $.each(mlog.translator.getLocales(), function() {
-    selLocales += '<option value="'+ this +'" '+
-        (mlog.translator.getLocaleId()==this?'selected="selected"':'')+
-        '>'+ this +'</option>';
-  })
-  $('#select_locales').html(selLocales);
   $('#input_date').focus();
 }
