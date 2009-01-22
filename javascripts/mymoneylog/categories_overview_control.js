@@ -54,7 +54,7 @@ mlog.categoriesControl = function() {
       $.each($('#show_ov_categories .tagSelect'), function(i,v) {
         categoriesList.push($(v).html());
       });
-      var theData = mlog.entries.getCategoriesOverview( parseInt($('#overviewNumberMonths').val())-1,
+      var theData = mlog.entries.getCategoriesOverview( parseInt($('#overviewNumberMonths option:selected').attr('value'))-1,
         $('#input_ov_until_date').val());
       var res = [];
       var str = '';
@@ -146,7 +146,7 @@ mlog.categoriesControl = function() {
       if (!data) {
         return;
       }
-      var chartSelection = $('#chartSelection').val();
+      var chartSelection = $('#chartSelection option:selected').attr('value');
       var showDebits = true;
       var xTicks = []; // x labels
       var list;

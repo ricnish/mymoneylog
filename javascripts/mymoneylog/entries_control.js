@@ -139,7 +139,7 @@ mlog.entriesControl = function() {
         this.clearEntry();
       }
     },
-    
+
     /* display an entry to input */
     updateInputEntry: function(lineData){
       if (!lineData) {
@@ -338,8 +338,8 @@ mlog.entriesControl = function() {
       }
     },
     onPageChange: function() {
-      filterOptions.entriesPerPage = parseInt($('#entriesPerPage').val() || 50);
-      mlog.entriesControl.show(parseInt($('#select_page').val()));
+      filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
+      mlog.entriesControl.show(parseInt($('#select_page option:selected').attr('value')));
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id').substring(2);
@@ -356,10 +356,10 @@ mlog.entriesControl = function() {
       var selectedAccounts = [];
       $.each( $('#entries_account_cloud .tagSelect'), function(i,v) { selectedAccounts.push($(v).html()); });
       filterOptions.query = $.trim($('#filter_query').val());
-      filterOptions.entriesPerPage = parseInt($('#entriesPerPage').val() || 50);
+      filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
       filterOptions.startDate = $('#filter_date_from').val();
       filterOptions.endDate = $('#filter_date_until').val();
-      filterOptions.values = parseInt($('#filter_values').val()) || 0;
+      filterOptions.values = parseInt($('#filter_values option:selected').attr('value')) || 0;
       filterOptions.categories = selectedCategories;
       filterOptions.accounts = selectedAccounts;
       /* update stored searches */

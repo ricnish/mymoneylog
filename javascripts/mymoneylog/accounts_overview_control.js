@@ -54,7 +54,7 @@ mlog.accountsControl = function() {
         accountsList.push($(v).html());
       });
       var theData = null;
-      theData = mlog.entries.getAccountsOverview( parseInt($('#accountsNumberMonths').val())-1,
+      theData = mlog.entries.getAccountsOverview( parseInt($('#accountsNumberMonths option:selected').attr('value'))-1,
         $('#input_accounts_until_date').val(),
         accountsList);
       var res = [];
