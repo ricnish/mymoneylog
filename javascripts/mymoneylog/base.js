@@ -108,17 +108,15 @@ mlog.base = function() {
     // sort array by an index
     arraySort: function(theArray, colIndex){
       var i = colIndex || 0;
-      // sort function
-      var sortFn = function(a, b){
-        a = a[i];
-        b = b[i];
+      /* sort one index */
+      var sortOne = function(va, vb, vi){
+        var a = va[vi];
+        var b = vb[vi];
         try {
-          if (typeof a[i] == 'string') {
+          if (typeof a == 'string') {
             a = a.toLowerCase();
             b = b.toLowerCase();
           }
-        } catch(e) {}
-        try { // IE6...
           if (a < b) {
             return -1;
           } else
@@ -128,7 +126,15 @@ mlog.base = function() {
         } catch(er) {}
         return 0;
       };
-      theArray.sort(sortFn);
+      /* sort two index: if first is equal, try next index */
+      var sortTwo = function(va,vb) {
+        var res = sortOne(va,vb,i);
+        if  ((res===0) && (va.length>i+1)) {
+          return sortOne(va,vb,i+1);
+        }
+        return res;
+      };
+      theArray.sort(sortTwo);
     },
     /* format float as localized currency string*/
     floatToString: function(num) {
