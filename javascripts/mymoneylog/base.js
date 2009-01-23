@@ -251,7 +251,7 @@ mlog.base = function() {
       var minSize = 9; // min font size in pixel
       var maxSize = 29; // max font size in pixel
       var fontSize = minSize;
-      mlog.base.arraySort(cList,0);
+      cList.sort();
       /* iterate to get min and max */
       $.each(cList, function(i,v) {
         if (v[indexQtd]>maxCount) { maxCount = v[indexQtd]; }

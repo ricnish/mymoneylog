@@ -371,7 +371,7 @@ mlog.entries = function(){
       var categories;
       var value;
       var accumulated = 0;
-      mlog.base.arraySort(ovEntries,0);
+      ovEntries.sort();
       for (i=0;i<ovEntries.length;i++) {
         // skip if reconcilable
         if (ovEntries[i][6]) {
@@ -422,7 +422,7 @@ mlog.entries = function(){
       dtStart.setDate(1);
       dtStart = mlog.base.dateToString(dtStart);
       var ovEntries = mlog.entries.getAll();
-      mlog.base.arraySort(ovEntries,0);
+      ovEntries.sort();
       var acc = mlog.accountsClass();
       var i;
       try {
