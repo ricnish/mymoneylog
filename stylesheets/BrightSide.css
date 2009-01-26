@@ -89,6 +89,7 @@ LAYOUT
 .float-right { float: right; }
 .align-left { text-align: left; }
 .align-right { text-align: right; }
+.align-center { text-align: center; }
 
 /* additional classes */
 .clear { clear: both; }
@@ -156,10 +157,10 @@ div.pagination a:hover { padding: 2px 5px 2px 5px; margin-right: 2px; font-weigh
 
 .show_next { background: url(../images/bullet_arrow_up.png) no-repeat right; padding-right: 20px; cursor:pointer; }
 .hide_next { background: url(../images/bullet_arrow_down.png) no-repeat right; padding-right: 20px; cursor:pointer; }
-.tagCloud { cursor:pointer; color: #BBB; }
+.tagCloud { cursor:pointer; color: #A7B5BF; }
 .tagCloud:hover { text-decoration: underline; }
 .tagSelect { color: #9EC630; }
-.selectAll { font-size: 14px; font-weight: bold; }
+.selectAll { font-size: 14px; font-weight: bold; display: block }
 
 /* rounded corner: f = form, t = table, g = glass */
 .rc1f, .rc2f, .rc1t, .rc2t, .rc3t, .rc4t, .rc1g, .rc2g {font-size:1px; overflow:hidden; display:block;}
