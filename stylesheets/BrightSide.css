@@ -123,6 +123,7 @@ LAYOUT
 #main .neg { color: #F66; }
 #main tr.total .neg { }
 #help { background: url(../images/bg_75white.png) repeat; padding: 12px; }
+.glass { background: url(../images/bg_75white.png) repeat; padding: 10px; }
 div.overflow { overflow: auto; }
 
 /* start - suggest list */

@@ -13,7 +13,7 @@ mlog.entriesControl = function() {
   dtStart.setDate(1);
   dtStart = mlog.base.dateToString(dtStart);
   /* default end date: next week */
-  dtEnd = new Date();
+  var dtEnd = new Date();
   dtEnd.setDate(dtEnd.getDate()+7);
   dtEnd =  mlog.base.dateToString(dtEnd);
 
@@ -29,7 +29,7 @@ mlog.entriesControl = function() {
       accounts: [],
       sortColIndex: 0,
       sortReverse: true
-      };
+    };
     $('#filter_date_from').val(filterOptions.startDate);
     $('#filter_date_until').val(filterOptions.endDate);
     $('#filter_query').val(filterOptions.query);
@@ -41,7 +41,6 @@ mlog.entriesControl = function() {
     init: function() {
       if (!htmlTemplate) {
         /* trying to not generate any new markup, just get from html */
-        var summaryTemplate;
         /* break table rows */
         var rows = $('#summary_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.split('!*!');
@@ -78,26 +77,38 @@ mlog.entriesControl = function() {
 
         mlog.entries.getAll(); /* initialize data */
         /* autocomplete options */
-        var acOptions = { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: '  ' };
+        var acOptions = {
+          minChars: 0,
+          max: 50,
+          selectFirst: false,
+          multiple: true,
+          multipleSeparator: '  '
+        };
         /* category autocomplete */
         $('#input_category').autocomplete(mlog.categories.getNames(),
-            { minChars: 0, max: 50, selectFirst: false, multiple: true, multipleSeparator: mlog.base.categorySeparator });
+        {
+          minChars: 0,
+          max: 50,
+          selectFirst: false,
+          multiple: true,
+          multipleSeparator: mlog.base.categorySeparator
+        });
         /* from account autocomplete */
         $('#input_account').autocomplete(mlog.accounts.getNames(),acOptions);
         $('#input_account').result( function() {
-            /* on accept jump to: */
-            if ($('#input_category').val()!='') {
-              if (!$.browser.opera) $('#form_entry button')[0].focus();
-            } else {
-              $('#input_account_to').focus().select();
-            }
-          });
+          /* on accept jump to: */
+          if ($('#input_category').val()!='') {
+            if (!$.browser.opera) $('#form_entry button')[0].focus();
+          } else {
+            $('#input_account_to').focus().select();
+          }
+        });
         /* to account autocomplete */
         $('#input_account_to').autocomplete(mlog.accounts.getNames(),acOptions);
         $('#input_account_to').result( function() {
-            /* on accept jump to: */
-            if (!$.browser.opera) $('#form_entry button')[0].focus();
-          });
+          /* on accept jump to: */
+          if (!$.browser.opera) $('#form_entry button')[0].focus();
+        });
         /* initialize datepicker */
         Calendar.setup({
           inputField: "input_date",
@@ -119,7 +130,11 @@ mlog.entriesControl = function() {
         /* fill filter autocomplete */
         storedSearches = mlog.base.getCookie('storedSearches').split('~');
         $('#filter_query').autocomplete(storedSearches,
-          { minChars: 0, max: 50, selectFirst: false })
+        {
+          minChars: 0,
+          max: 50,
+          selectFirst: false
+        })
         /* initial date value */
         $('#input_date').val(mlog.base.getCurrentDate());
         /* auto clear form configuration */
@@ -188,8 +203,8 @@ mlog.entriesControl = function() {
         }
       }
       maxValue = maxValue>=100?maxValue:100; /* at least more then 100 */
-      for (var i=0;i<accounts.length;i++) {
-        strRow = (i<accounts.length-1)?tpSum.tRow:tpSum.tRowTotal;
+      for (i=0;i<accounts.length;i++) {
+        var strRow = (i<accounts.length-1)?tpSum.tRow:tpSum.tRowTotal;
         if (accounts[i][0] != '') {
           strRow = strRow.replace(/{account_id}/,accounts[i][0]);
         } else {
@@ -231,7 +246,7 @@ mlog.entriesControl = function() {
         }
         /* build entries */
         res+=tp.tHead;
-        for (i=0; i < theData.length-1; i++) {
+        for (var i=0; i < theData.length-1; i++) {
           /* apply template tRow or tRowFuture */
           if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
@@ -298,11 +313,11 @@ mlog.entriesControl = function() {
     /* add an entry from input */
     addEntry: function(elem){
       var entry = [ $('#input_date').val(),
-                    $('#input_value').val(),
-                    $('#input_description').val(),
-                    $('#input_category').val(),
-                    $('#input_account').val(),
-                    $('#input_account_to').val()];
+      $('#input_value').val(),
+      $('#input_description').val(),
+      $('#input_category').val(),
+      $('#input_account').val(),
+      $('#input_account_to').val()];
       /* is it reconcilable */
       entry[0] += $('#input_pending').attr('checked')? '?': '';
       var addCount = mlog.entries.getCount();
@@ -322,9 +337,15 @@ mlog.entriesControl = function() {
       /* initial state and update autocompleters */
       $('#transfer').hide();
       $('#input_date').focus();
-      $('#input_category').setOptions({data: mlog.categories.getNames()});
-      $('#input_account').setOptions({data: mlog.accounts.getNames()});
-      $('#input_account_to').val('').setOptions({data: mlog.accounts.getNames()});
+      $('#input_category').setOptions({
+        data: mlog.categories.getNames()
+      });
+      $('#input_account').setOptions({
+        data: mlog.accounts.getNames()
+      });
+      $('#input_account_to').val('').setOptions({
+        data: mlog.accounts.getNames()
+      });
       if ($('#input_auto_clear').attr('checked')) {
         this.clearEntry();
       }
@@ -352,9 +373,13 @@ mlog.entriesControl = function() {
     /* read options panel and set to variables*/
     updateOptions: function() {
       var selectedCategories = [];
-      $.each( $('#entries_category_cloud .tagSelect'), function(i,v) { selectedCategories.push($(v).html()); });
+      $.each( $('#entries_category_cloud .tagSelect'), function(i,v) {
+        selectedCategories.push($(v).html());
+      });
       var selectedAccounts = [];
-      $.each( $('#entries_account_cloud .tagSelect'), function(i,v) { selectedAccounts.push($(v).html()); });
+      $.each( $('#entries_account_cloud .tagSelect'), function(i,v) {
+        selectedAccounts.push($(v).html());
+      });
       filterOptions.query = $.trim($('#filter_query').val());
       filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
       filterOptions.startDate = $('#filter_date_from').val();
@@ -372,7 +397,9 @@ mlog.entriesControl = function() {
         }
         mlog.base.setCookie('storedSearches',str,120);
         /* refresh filter autocomplete */
-        $('#filter_query').setOptions({data: storedSearches});
+        $('#filter_query').setOptions({
+          data: storedSearches
+        });
       }
     },
     applyOptions: function() {
@@ -388,16 +415,16 @@ mlog.entriesControl = function() {
         if (regex!==undefined) {
           $.each( $('#entries_category_cloud').children(), function(i,v) {
             if (regex.test($(v).html())) $(v).addClass('tagSelect');
-            });
+          });
         }
       }
       // mark selected accounts
       if (filterOptions.accounts.length>0) {
-        var regex = eval('/('+filterOptions.accounts.join('|')+')/i');
+        regex = eval('/('+filterOptions.accounts.join('|')+')/i');
         if (regex!==undefined) {
           $.each( $('#entries_account_cloud').children(), function(i,v) {
             if (regex.test($(v).html())) $(v).addClass('tagSelect');
-            });
+          });
         }
       }
     },
@@ -428,7 +455,7 @@ mlog.entriesControl = function() {
       str.push('<a onclick="mlog.entriesControl.show('+prevPg+')">&laquo;</a>');
       str.push('&nbsp;'+mlog.translator.get('page')+'&nbsp;');
       str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
-      for (var i=1;i<=maxPg;i++) {
+      for (i=1;i<=maxPg;i++) {
         if (i==currentPg) {
           str.push('<option value="'+i+'" selected="selected">'+i+'</option>');
         } else {

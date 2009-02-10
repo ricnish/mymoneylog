@@ -12,7 +12,7 @@ mlog.categoriesControl = function() {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
-        rows = $('#categories_overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
+        var rows = $('#categories_overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.replace(/  /gi,'');
         rows = rows.split('!*!');
         for (var i=0;i<rows.length;i++) {
@@ -112,7 +112,7 @@ mlog.categoriesControl = function() {
         str = str.replace(/{overviewContent}/,res.join(''));
       }
       else {
-          str = '<h1>' + mlog.translator.get('no data') + '</h1>';
+        str = '<h1>' + mlog.translator.get('no data') + '</h1>';
       }
       $('#report').html(str);
       res = null;
@@ -168,7 +168,7 @@ mlog.categoriesControl = function() {
       }
       // if any category selected: draw line category chart
       if (categoriesChecked.length>0 &&
-          (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
+        (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
         showDebits = (chartSelection === 'line_debit');
         list = data.categories;
         chartTitle = showDebits?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
@@ -185,7 +185,10 @@ mlog.categoriesControl = function() {
             values.push([count, tmpValue]);
             count++;
           }
-          dataset.push({label: category, data: values});
+          dataset.push({
+            label: category,
+            data: values
+          });
         }
       } else {
         // chart line (total)
@@ -206,28 +209,41 @@ mlog.categoriesControl = function() {
             values.push([count, tmpValue]);
             count++;
           }
-          dataset.push({label: description, data: values});
+          dataset.push({
+            label: description,
+            data: values
+          });
         }
       }
       // chart container
       chartTitle = mlog.translator.get('chart')+': '+chartTitle;
-      var size = $('#categories_chart').width()-25;
-      $('#categories_chart').html('<h1 id="categories_chart_title" class="show_next">'+ chartTitle +
-        '</h1><div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>');
+      var size = $('#categories_chart').width()-35;
+      $('#categories_chart').html('<h1 id="categories_chart_title" class="show_next">'+ chartTitle + '</h1>' +
+        '<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">' +
+        '<div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>' +
+        '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
       // draw
       $.plot($('#chart_canvas'),
         dataset,
         {
-          xaxis: {ticks: xTicks},
-          legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
+          xaxis: {
+            ticks: xTicks
+          },
+          legend: {
+            margin:10,
+            noColumns:2,
+            backgroundOpacity:0.4
+          },
           colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080',
-                   '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
-                   '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
-                   '#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B',
-                   '#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0'],
-          grid: { backgroundColor: '#FFF' }
+          '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
+          '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
+          '#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B',
+          '#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0'],
+          grid: { 
+            backgroundColor: '#FFF'
+          }
         }
-      );
+        );
     }
   }
 }();

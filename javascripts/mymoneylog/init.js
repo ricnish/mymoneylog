@@ -16,13 +16,17 @@ mlog.init = function(){
   // disable browser autocomplete
   $('input.autocompleteoff').attr('autocomplete', 'off');
   // disable submit action for sidebar
-  $('#sidebar form').submit( function() { return false; });
+  $('#sidebar form').submit( function() { 
+    return false;
+  });
 
   // add DataWriter java applet if needed
   if (!$.browser.mozilla && !$.browser.msie) {
     $('#applet').html('<applet name="DataWriter" code="DataWriter.class" archive="applets/DataWriter.jar" width="0" height="0"></applet>');
   }
-  $('#logo').click( function() { open('http://code.google.com/p/mymoneylog/'); });
+  $('#logo').click( function() { 
+    open('http://code.google.com/p/mymoneylog/');
+  });
 
   $('#input_date').focus();
 }

@@ -9,7 +9,10 @@ mlog.accountsClass = function(){
       if (account!="") {
         var value = amount || 0;
         if (accounts[account] === undefined) {
-          accounts[account] = { 'value': value, 'qtd': 1 };
+          accounts[account] = {
+            'value': value,
+            'qtd': 1
+          };
         } else {
           accounts[account].value += value;
           accounts[account].qtd ++;
@@ -48,7 +51,10 @@ mlog.accountsClass = function(){
       if (account!="") {
         var value = amount || 0;
         if (accounts[account] === undefined) {
-          accounts[account]  = { 'value': value*-1, 'qtd': 1 };
+          accounts[account]  = {
+            'value': value*-1,
+            'qtd': 1
+          };
         } else {
           accounts[account].value -= value;
           if (accounts[account].qtd>0) accounts[account].qtd--;

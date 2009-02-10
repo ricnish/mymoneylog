@@ -37,17 +37,19 @@ mlog.editorControl = function() {
           var s = obj.selectionStart;
           var e = obj.selectionEnd;
           obj.value = obj.value.substring(0, s) +
-              "\t" + obj.value.substr(e);
+          "\t" + obj.value.substr(e);
           obj.setSelectionRange(s + 1, s + 1);
           obj.focus();
           obj.scrollTop = pos; // avoid scroll top
         } else if (obj.createTextRange) {
           // ie
           document.selection.createRange().text="\t"
-          obj.onblur = function() { this.focus(); this.onblur = null; };
+          obj.onblur = function() { 
+            this.focus(); this.onblur = null;
+          };
         } else {
-            // unsupported browsers
-          }
+        // unsupported browsers
+        }
         return false;
       }
       return true;
@@ -66,7 +68,9 @@ mlog.editorControl = function() {
       // if data.html doesn't exists, create and load it
       if (!$("#dataframe").attr('src')) {
         mlog.entries.save();
-        $("#dataframe").load( function() {mlog.editorControl.applyChanges();} );
+        $("#dataframe").load( function() {
+          mlog.editorControl.applyChanges();
+        } );
         $("#dataframe").attr('src', mlog.base.dataFileName);
         return;
       }

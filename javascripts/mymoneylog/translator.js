@@ -4,10 +4,10 @@
  */
 mlog.translator = function() {
   var localeId = mlog.base.getCookie('localeId') ||
-        (navigator.systemLanguage ||
-        navigator.language ||
-        navigator.browserLanguage || 'en-us'
-      );
+  (navigator.systemLanguage ||
+    navigator.language ||
+    navigator.browserLanguage || 'en-us'
+    );
   localeId = localeId.toLowerCase();
 
   // load default locale
@@ -35,14 +35,14 @@ mlog.translator = function() {
       var selLocales = '';
       $.each(mlog.translator.getLocales(), function() {
         selLocales += '<option value="'+ this +'" '+
-            (mlog.translator.getLocaleId()==this?'selected="selected"':'')+
-            '>'+ this +'</option>';
+        (mlog.translator.getLocaleId()==this?'selected="selected"':'')+
+        '>'+ this +'</option>';
       })
       $('#select_locales').html(selLocales);
       
       $('.msg').each( function(){
-          $(this).html(mlog.translator.get($(this).html()));
-        }
+        $(this).html(mlog.translator.get($(this).html()));
+      }
       );
     },
     /* return the available locales */

@@ -12,7 +12,7 @@ mlog.accountsControl = function() {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
-        rows = $('#accounts_overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
+        var rows = $('#accounts_overview_table').html().replace(/<\/tr>/gi, '</tr>!*!');
         rows = rows.replace(/  /gi,'');
         rows = rows.split('!*!');
         for (var i=0;i<rows.length;i++) {
@@ -70,15 +70,13 @@ mlog.accountsControl = function() {
         }
         res.push('</tr>'); // closing tag
         /* build accounts rows */
-        for (var i=0;i<theData.length;i++) {
+        for (i=0;i<theData.length;i++) {
           str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
           odd = !odd;
           str = str.replace(/{date}/,theData[i][0]);
           res.push(str);
           /* build values */
           str = htmlTemplate.overview.tRowColumn;
-          avgSum = 0;
-          avgCount = 0;
           for (var y=0;y< theData[i][1].length;y++) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(theData[i][1][y][1])));
           }
@@ -139,9 +137,11 @@ mlog.accountsControl = function() {
         dataset.push({label: data[0][1][i][0], data: values});
       }
       // chart container
-      var size = $('#accounts_chart').width()-25;
-      $('#accounts_chart').html('<h1 id="accounts_chart_title" class="msg show_next">'+ chartTitle +
-        '</h1><div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>');
+      var size = $('#accounts_chart').width()-35;
+      $('#accounts_chart').html('<h1 id="accounts_chart_title" class="msg show_next">'+ chartTitle + '</h1>' +
+        '<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">' +
+        '<div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>' +
+        '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
       // draw
       $.plot($('#chart_canvas'),
         dataset,
