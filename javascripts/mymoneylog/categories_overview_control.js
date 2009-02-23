@@ -59,11 +59,12 @@ mlog.categoriesControl = function() {
       var res = [];
       var str = '';
       var odd = true;
+      var month = null;
       if (theData) {
         var list = theData.categories;
         /* build header */
         res.push(htmlTemplate.overview.tHeadLabel);
-        for (var month in list[mlog.categories.getNames()[0]]) {
+        for (month in list[mlog.categories.getNames()[0]]) {
           str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,month);
           res.push(str);
         }
@@ -81,7 +82,7 @@ mlog.categoriesControl = function() {
           str = htmlTemplate.overview.tRowColumn;
           avgSum = 0;
           avgCount = 0;
-          for (var month in list[categoriesList[i]]) {
+          for (month in list[categoriesList[i]]) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(list[categoriesList[i]][month])));
             avgSum += list[categoriesList[i]][month];
             avgCount++;
@@ -98,7 +99,7 @@ mlog.categoriesControl = function() {
           /* build values */
           str = htmlTemplate.overview.tRowColumn;
           avgSum = 0;
-          for (var month in list[total]) {
+          for (month in list[total]) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(list[total][month])));
             avgSum += list[total][month];
           }
@@ -155,6 +156,7 @@ mlog.categoriesControl = function() {
       var dataset = [];
       var values = [];
       var tmpValue=0;
+      var month = null;
       /* get selected categories */
       var categoriesChecked = [];
       $.each($('#show_ov_categories .tagSelect'), function(i,v) {
@@ -162,7 +164,7 @@ mlog.categoriesControl = function() {
       });
       /* build x labels */
       /* as: [[0, '2008-01'],[1, '2008-02']]... */
-      for (var month in data.summary[mlog.translator.get('balance')]) {
+      for (month in data.summary[mlog.translator.get('balance')]) {
         xTicks.push([count, month]);
         count++;
       }
@@ -179,7 +181,7 @@ mlog.categoriesControl = function() {
           values = [];
           /* build category month's values */
           /* eg: [[0,100],[1,95]], ... */
-          for (var month in list[category]) {
+          for (month in list[category]) {
             tmpValue = Math.round(list[category][month]) * (showDebits?-1:1);
             tmpValue = (tmpValue>0)?tmpValue:0;
             values.push([count, tmpValue]);
@@ -204,7 +206,7 @@ mlog.categoriesControl = function() {
           } else {
             showDebits=false;
           }
-          for (var month in list[description]) {
+          for (month in list[description]) {
             tmpValue = Math.round(list[description][month]) * (showDebits?-1:1)
             values.push([count, tmpValue]);
             count++;
