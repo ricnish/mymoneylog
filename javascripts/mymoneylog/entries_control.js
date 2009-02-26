@@ -181,16 +181,41 @@ mlog.entriesControl = function() {
         this.updateInputEntry(lineData);
       }
     },
-    startEdit: function(elem) {
+    startRowEdit: function(elem) {
       var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
       var row = $(elem.parentNode.parentNode).children();
       var col, pval;
-      for (var i=0; i<5; i++) {
-        col = $(row[i]);
-        col.unbind();
-        pval = (i!=1)?col.html():$(col.children()).html();
-        col.html('<input type="text" value="'+pval+'" />')
-      }
+
+      col = $(row[0]);
+      col.unbind();
+      pval = col.html();
+      col.html('<input  id="input_date_row" class="input_date" type="text" value="'+pval+'" />');
+/*
+<input type="checkbox" id="input_pending" class="input_checkbox" />
+*/
+      col = $(row[1]);
+      col.unbind();
+      pval = $(col.children()).html();
+      col.html('<input  id="input_value_row" class="" type="text" value="'+pval+'" />');
+
+      col = $(row[2]);
+      col.unbind();
+      pval = col.html();
+      col.html('<input  id="input_description_row" class="" type="text" value="'+pval+'" />');
+
+      col = $(row[3]);
+      col.unbind();
+      pval = col.html();
+      col.html('<input  id="input_category_row" class="" type="text" value="'+
+               pval+
+               '" /><div class="suggest_list" id="category_list_row" style="display:none"></div>');
+
+      col = $(row[4]);
+      col.unbind();
+      pval = col.html();
+      col.html('<input  id="input_account_row" class="" type="text" value="'+
+               pval+
+               '" /><div class="suggest_list" id="account_list_row" style="display:none"></div>');
     },
     /* display on input when clicked */
     onClickEntry: function(elem){
