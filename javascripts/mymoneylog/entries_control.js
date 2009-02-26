@@ -181,6 +181,17 @@ mlog.entriesControl = function() {
         this.updateInputEntry(lineData);
       }
     },
+    startEdit: function(elem) {
+      var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
+      var row = $(elem.parentNode.parentNode).children();
+      var col, pval;
+      for (var i=0; i<5; i++) {
+        col = $(row[i]);
+        col.unbind();
+        pval = (i!=1)?col.html():$(col.children()).html();
+        col.html('<input type="text" value="'+pval+'" />')
+      }
+    },
     /* display on input when clicked */
     onClickEntry: function(elem){
       var id = elem.parentNode.getAttribute('id').substring(2);
@@ -289,6 +300,8 @@ mlog.entriesControl = function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         hideSummary = !hideSummary;
       });
+      /* bind click event on each column */
+      $('td.entry').click(function() { mlog.entriesControl.onClickEntry(this);});
     },
 
     /* sort table column */
