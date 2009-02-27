@@ -39,12 +39,13 @@ input,select { padding: 2px; border:1px solid #D3EF86; font: normal 1em Verdana,
 textarea { padding:2px; font: normal 1em Verdana, sans-serif; border:1px solid #D3EF86; color:#333; width: 99%; background-color: #fff; }
 input.button, button { margin: 1px 0 1px; font: bold 1em Arial, Sans-serif; border: 1px solid #6297BC; background: #6297BC url(../images/tabright.gif) no-repeat right top; background-position:0% -45px; padding: 2px 3px; color: #fff; width: 70px; height: 22px; }
 input.button:hover, button:hover { background: #9EC630 url(../images/tabright.gif) no-repeat right top; background-position:0% -3px; border: 1px #9EC630; cursor:pointer; }
-input.input_date { width:84px; background-image: url(../images/calendar.png); background-repeat: no-repeat; background-position: right; }
+input.input_date { width:88px; background-image: url(../images/calendar.png); background-repeat: no-repeat; background-position: right; }
 input.input_num { width:90px; text-align: right; }
 input:focus { background-color: #ffffcf; }
 select.select_num { border:1px solid #D3EF86; width: 70px; }
 input.input_checkbox { width: 16px; border: 0px; background-color: #fbfcff;}
 .input_inline { display:inline-block; margin-left: 4px; margin-top:1px; }
+input.input_row { width: 98%;}
 /***********************
 LAYOUT
 ************************/
@@ -104,6 +105,11 @@ LAYOUT
 #main th.sort { cursor: pointer; }
 #main th.sort:hover { cursor: pointer; background: #9EC630; border-right: 1px solid #B6D59A; }
 #main th.date_col { width:6em; }
+#main th.value_col { width:9%; }
+#main th.description_col { width:44%; }
+#main th.category_col { width:13%; }
+#main th.account_col { width:13%; }
+#main th.opt_col { width:10%; }
 #main tr { height: 26px; }
 #main td { padding-left: 5px; padding-right: 5px; border-right: 1px solid #FFF; }
 #main tr.row-a { background-color: #FFF; }
@@ -117,7 +123,9 @@ LAYOUT
 #main tr.total { background-color: #D1E3EF; font-weight: bold; border-top: 1px solid #FFF;}
 #main tr.total td { border-right: 1px solid #EFF9FF; }
 #main .opt_delete { background: url(../images/delete.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
-#main .opt_conciliate { background: url(../images/accept.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
+#main .opt_ok { background: url(../images/accept.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
+#main .opt_edit { background: url(../images/pencil.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
+#main .opt_cancel { background: url(../images/cancel.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .hide { display: none; }
 #main .isrec { background-color: #000000; }
 #main .neg { color: #F66; }

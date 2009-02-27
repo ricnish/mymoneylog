@@ -181,41 +181,96 @@ mlog.entriesControl = function() {
         this.updateInputEntry(lineData);
       }
     },
+    /* prepare a selected row to be edited */
     startRowEdit: function(elem) {
-      var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
-      var row = $(elem.parentNode.parentNode).children();
+      var lineId = '#'+elem.parentNode.parentNode.getAttribute('id');
+      /* clear any previous preparation to edit */
+      this.show();
+      var row = $(lineId);
+      var isReconcilable = row.hasClass('row_reconcilable');
+      var cols = row.children();
       var col, pval;
 
-      col = $(row[0]);
+      /* date col */
+      col = $(cols[0]);
       col.unbind();
-      pval = col.html();
-      col.html('<input  id="input_date_row" class="input_date" type="text" value="'+pval+'" />');
-/*
-<input type="checkbox" id="input_pending" class="input_checkbox" />
-*/
-      col = $(row[1]);
+      pval = $.trim(col.html());
+      pval += (isReconcilable)?'?':'';
+      col.html('<input id="input_date_row" class="input_date" type="text" value="'+pval+'" />');
+      /* datepicker */
+      Calendar.setup({
+        inputField: "input_date_row",
+        ifFormat: "%Y-%m-%d",
+        weekNumbers: false
+      });
+
+      /* value col */
+      col = $(cols[1]);
       col.unbind();
       pval = $(col.children()).html();
-      col.html('<input  id="input_value_row" class="" type="text" value="'+pval+'" />');
+      col.html('<input id="input_value_row" class="input_row" type="text" value="'+pval+'" />');
 
-      col = $(row[2]);
+      /* description col */
+      col = $(cols[2]);
       col.unbind();
       pval = col.html();
-      col.html('<input  id="input_description_row" class="" type="text" value="'+pval+'" />');
+      col.html('<input id="input_description_row" class="input_row" type="text" value="'+pval+'" />');
 
-      col = $(row[3]);
+      /* category col */
+      col = $(cols[3]);
       col.unbind();
       pval = col.html();
-      col.html('<input  id="input_category_row" class="" type="text" value="'+
+      col.html('<input id="input_category_row" class="input_row" type="text" value="'+
                pval+
                '" /><div class="suggest_list" id="category_list_row" style="display:none"></div>');
+      /* autocomplete */
+      $('#input_category_row').autocomplete(mlog.categories.getNames(),
+      {
+        minChars: 0,
+        max: 50,
+        selectFirst: false,
+        multiple: true,
+        multipleSeparator: mlog.base.categorySeparator
+      });
 
-      col = $(row[4]);
+      /* account col */
+      col = $(cols[4]);
       col.unbind();
       pval = col.html();
-      col.html('<input  id="input_account_row" class="" type="text" value="'+
+      col.html('<input id="input_account_row" class="input_row" type="text" value="'+
                pval+
                '" /><div class="suggest_list" id="account_list_row" style="display:none"></div>');
+      /* autocomplete */
+      $('#input_account_row').autocomplete(mlog.accounts.getNames(),
+      {
+        minChars: 0,
+        max: 50,
+        selectFirst: false,
+        multiple: true,
+        multipleSeparator: '  '
+      });
+
+      /* option col */
+      col = $(cols[5]);
+      col.html('<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>'+
+               '<span class="opt_cancel" onclick="mlog.entriesControl.show()">&nbsp;</span>');
+
+    },
+    applyRowEdit: function(elem) {
+      var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
+      var lineData = mlog.entries.remove(lineId);
+      var entry = [ $('#input_date_row').val(),
+      $('#input_value_row').val(),
+      $('#input_description_row').val(),
+      $('#input_category_row').val(),
+      $('#input_account_row').val(),
+      ''];
+      var addCount = mlog.entries.getCount();
+      mlog.entries.add(entry);
+      /* refresh entries */
+      this.show();
+      /* stylise new entries */
+      $('#n_'+(addCount)).addClass('new_entry');
     },
     /* display on input when clicked */
     onClickEntry: function(elem){
@@ -294,7 +349,7 @@ mlog.entriesControl = function() {
           odd = !odd;
           /* is reconcilable? */
           if (theData[i][6]) {
-            strRow = strRow.replace(/opt_conciliate hide/,'opt_conciliate');
+            strRow = strRow.replace(/opt_ok hide/,'opt_ok');
             strRow = strRow.replace(/(row-a|row-b)/,'row_reconcilable');
           }
           /* the total */

@@ -221,8 +221,9 @@ mlog.entries = function(){
         if (nTimes>1) {
           newEntry[2] = entry[2] + ' ' + (i+1) + '/' + nTimes;
         }
-        /* add due data description */
-        newEntry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + newEntry[0].substring(0,10)):'';
+        /* add due data description if doesn't have */
+        if (newEntry[2].indexOf(mlog.translator.get('due to'))<0)
+          newEntry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + newEntry[0].substring(0,10)):'';
         _add(newEntry);
         /* if category is empty and has toAccount, do a transfer */
         if (newEntry[3]==='' && toAccount!=='' && newEntry[1] !== 0) {

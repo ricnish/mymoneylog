@@ -46,7 +46,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.161</h2>
+<h2 id="slogan">1.163</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -363,19 +363,19 @@ total
 <th class="first msg sort date_col" onclick="mlog.entriesControl.sortCol(0)">
 date
 </th>
-<th class="msg sort" onclick="mlog.entriesControl.sortCol(1)">
+<th class="msg sort value_col" onclick="mlog.entriesControl.sortCol(1)">
 value
 </th>
-<th class="msg sort" onclick="mlog.entriesControl.sortCol(2)">
+<th class="msg sort description_col" onclick="mlog.entriesControl.sortCol(2)">
 description
 </th>
-<th class="msg sort" onclick="mlog.entriesControl.sortCol(3)">
+<th class="msg sort category_col" onclick="mlog.entriesControl.sortCol(3)">
 category
 </th>
-<th class="msg sort" onclick="mlog.entriesControl.sortCol(4)">
+<th class="msg sort account_col" onclick="mlog.entriesControl.sortCol(4)">
 account
 </th>
-<th class="msg">
+<th class="msg opt_col">
 option
 </th>
 </tr>
@@ -395,9 +395,10 @@ option
 <td class="entry">
 {account}
 </td>
-<td class="col_c">
+<td class="">
+<span class="opt_edit" onclick="mlog.entriesControl.startRowEdit(this)">&nbsp;</span>
 <span class="opt_delete" onclick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
-<span class="opt_conciliate hide" onclick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
+<span class="opt_ok hide" onclick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
 </td>
 </tr>
 <tr class="total">
