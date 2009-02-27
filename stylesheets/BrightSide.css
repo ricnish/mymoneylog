@@ -45,7 +45,7 @@ input:focus { background-color: #ffffcf; }
 select.select_num { border:1px solid #D3EF86; width: 70px; }
 input.input_checkbox { width: 16px; border: 0px; background-color: #fbfcff;}
 .input_inline { display:inline-block; margin-left: 4px; margin-top:1px; }
-input.input_row { width: 98%;}
+input.input_row { width: 97%; }
 /***********************
 LAYOUT
 ************************/
@@ -75,9 +75,6 @@ LAYOUT
 #header li { display:inline; margin:0; padding:0; }
 #header a { float:left; background: url(../images/tableft.gif) no-repeat left top; background-position:0% -42px; margin:0; padding:0 0 0 4px; text-decoration:none; cursor: pointer; }
 #header a span { float:left; display:block; background: url(../images/tabright.gif) no-repeat right top; background-position:100% -42px; padding:6px 15px 3px 8px; color: #FFF; }
-/* Commented Backslash Hack hides rule from IE5-Mac \*/
-#header a span {float:none;}
-/* End IE5-Mac hack */
 #header a:hover span { color:#FFF; }
 #header a:hover { background-position:0% 0px; }
 #header a:hover span { background-position:100% 0px; }
@@ -106,15 +103,15 @@ LAYOUT
 #main th.sort:hover { cursor: pointer; background: #9EC630; border-right: 1px solid #B6D59A; }
 #main th.date_col { width:6em; }
 #main th.value_col { width:9%; }
-#main th.description_col { width:42%; }
-#main th.category_col { width:15%; }
+#main th.description_col { width:40%; }
+#main th.category_col { width:17%; }
 #main th.account_col { width:13%; }
 #main th.opt_col { width:10%; }
 #main tr { height: 26px; }
 #main td { padding-left: 5px; padding-right: 5px; border-right: 1px solid #FFF; }
 #main tr.row-a { background-color: #FFF; }
 #main tr.row-b { background-color: #EFF5FF; }
-#main tr.row_reconcilable { background-color: #FFDABF; font-style:italic; border-bottom: solid 1px #FFF;}
+#main tr.row_reconcilable { background-color: #FFDABF; font-style:italic; border-bottom: solid 1px #FFEDDF;}
 #main tr.new_entry { background-image: url(../images/new.png); background-repeat: no-repeat; background-position: left; background-color: #ffffcf; }
 #main td.col_r { text-align: right; }
 #main td.col_c { text-align: center; }
@@ -150,7 +147,7 @@ table.summary td.first { width: 25%; }
 
 /* http://blog.leetsoft.com/2006/8/22/super-simple-css-bars */
 div.bar-container { float: left; width: 70%; padding-top: 1px; text-align: left; }
-div.bar-container div { background-image: url(../images/bars.png); background-repeat: repeat-x; background-position:100% 0px; height: 14px; border-right: solid 1px #ccc; }
+div.bar-container div.pos { background-image: url(../images/bars.png); background-repeat: repeat-x; background-position:100% 0px; height: 14px; border-right: solid 1px #ccc; }
 div.bar-container div.neg { background-image: url(../images/bars.png); background-repeat: repeat-x; background-position:100% -14px; height: 14px; }
 
 /* pagination */
