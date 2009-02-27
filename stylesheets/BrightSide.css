@@ -106,8 +106,8 @@ LAYOUT
 #main th.sort:hover { cursor: pointer; background: #9EC630; border-right: 1px solid #B6D59A; }
 #main th.date_col { width:6em; }
 #main th.value_col { width:9%; }
-#main th.description_col { width:44%; }
-#main th.category_col { width:13%; }
+#main th.description_col { width:42%; }
+#main th.category_col { width:15%; }
 #main th.account_col { width:13%; }
 #main th.opt_col { width:10%; }
 #main tr { height: 26px; }

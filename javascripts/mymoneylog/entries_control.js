@@ -196,7 +196,7 @@ mlog.entriesControl = function() {
       col.unbind();
       pval = $.trim(col.html());
       pval += (isReconcilable)?'?':'';
-      col.html('<input id="input_date_row" class="input_date" type="text" value="'+pval+'" />');
+      col.html('<input id="input_date_row" class="input_date input_row" type="text" value="'+pval+'" />');
       /* datepicker */
       Calendar.setup({
         inputField: "input_date_row",
