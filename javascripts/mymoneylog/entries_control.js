@@ -7,7 +7,7 @@ mlog.entriesControl = function(){
   var storedSearches = [];
   var filterOptions = {};
   var hideSummary = false;
-  
+
   /* default start date: begin prev month */
   var dtStart = mlog.base.addMonths(new Date, -1);
   dtStart.setDate(1);
@@ -16,7 +16,7 @@ mlog.entriesControl = function(){
   var dtEnd = new Date();
   dtEnd.setDate(dtEnd.getDate() + 7);
   dtEnd = mlog.base.dateToString(dtEnd);
-  
+
   var resetFilterOptions = function(){
     filterOptions = {
       query: '',
@@ -74,7 +74,7 @@ mlog.entriesControl = function(){
           main: $('#main_entries').html()
         };
         $('#main_entries').html('');
-        
+
         mlog.entries.getAll(); /* initialize data */
         /* autocomplete options */
         var acOptions = {
@@ -97,7 +97,7 @@ mlog.entriesControl = function(){
         $('#input_account').result(function(){
           /* on accept jump to: */
           if ($('#input_category').val() != '') {
-            if (!$.browser.opera) 
+            if (!$.browser.opera)
               $('#form_entry button')[0].focus();
           }
           else {
@@ -108,7 +108,7 @@ mlog.entriesControl = function(){
         $('#input_account_to').autocomplete(mlog.accounts.getNames(), acOptions);
         $('#input_account_to').result(function(){
           /* on accept jump to: */
-          if (!$.browser.opera) 
+          if (!$.browser.opera)
             $('#form_entry button')[0].focus();
         });
         /* initialize datepicker */
@@ -157,7 +157,7 @@ mlog.entriesControl = function(){
         this.clearEntry();
       }
     },
-    
+
     /* display an entry to input */
     updateInputEntry: function(lineData){
       if (!lineData) {
@@ -189,13 +189,13 @@ mlog.entriesControl = function(){
     startRowEdit: function(elem){
       var lineId = '#' + elem.parentNode.parentNode.getAttribute('id');
       /* clear any previous preparation to edit */
-      if ($('#input_date_row').length > 0) 
+      if ($('#input_date_row').length > 0)
         this.show();
       var row = $(lineId);
       var isReconcilable = row.hasClass('row_reconcilable');
       var cols = row.children();
       var col, pval;
-      
+
       /* date col */
       col = $(cols[0]);
       col.unbind();
@@ -208,19 +208,19 @@ mlog.entriesControl = function(){
         ifFormat: "%Y-%m-%d",
         weekNumbers: false
       });
-      
+
       /* value col */
       col = $(cols[1]);
       col.unbind();
       pval = $(col.children()).html();
       col.html('<input id="input_value_row" class="input_row" type="text" value="' + pval + '" />');
-      
+
       /* description col */
       col = $(cols[2]);
       col.unbind();
       pval = col.html();
       col.html('<input id="input_description_row" class="input_row" type="text" value="' + pval + '" />');
-      
+
       /* category col */
       col = $(cols[3]);
       col.unbind();
@@ -236,7 +236,7 @@ mlog.entriesControl = function(){
         multiple: true,
         multipleSeparator: mlog.base.categorySeparator
       });
-      
+
       /* account col */
       col = $(cols[4]);
       col.unbind();
@@ -252,12 +252,12 @@ mlog.entriesControl = function(){
         multiple: true,
         multipleSeparator: '  '
       });
-      
+
       /* option col */
       col = $(cols[5]);
       col.html('<span class="opt_cancel" onclick="mlog.entriesControl.show()">&nbsp;</span>&nbsp;' +
       '<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>');
-      
+
     },
     applyRowEdit: function(elem){
       var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
@@ -318,6 +318,11 @@ mlog.entriesControl = function(){
       mlog.entriesControl.init();
       mlog.base.activateMenu('entries');
       filterOptions.pageNumber = (typeof page == 'number') ? page : 1;
+
+      /* just make sure to remove row autocomplete */
+      $('#input_category_row').unautocomplete();
+      $('#input_account_row').unautocomplete();
+
       var theTotal = 0;
       var res = '';
       var theData = mlog.entries.getByFilter(filterOptions);
@@ -384,14 +389,14 @@ mlog.entriesControl = function(){
         mlog.entriesControl.onClickEntry(this);
       });
     },
-    
+
     /* sort table column */
     sortCol: function(index){
       filterOptions.sortReverse = (filterOptions.sortColIndex != index) ? false : !filterOptions.sortReverse;
       filterOptions.sortColIndex = index;
       this.show();
     },
-    
+
     /* clear entry form */
     clearEntry: function(){
       $('#input_date').val(mlog.base.getCurrentDate());
@@ -403,7 +408,7 @@ mlog.entriesControl = function(){
       $('#input_account_to').val('');
       $('#input_date').focus();
     },
-    
+
     /* add an entry from input */
     addEntry: function(elem){
       var entry = [$('#input_date').val(), $('#input_value').val(), $('#input_description').val(), $('#input_category').val(), $('#input_account').val(), $('#input_account_to').val()];
@@ -504,7 +509,7 @@ mlog.entriesControl = function(){
         var regex = eval('/(' + filterOptions.categories.join('|') + ')/i');
         if (regex !== undefined) {
           $.each($('#entries_category_cloud').children(), function(i, v){
-            if (regex.test($(v).html())) 
+            if (regex.test($(v).html()))
               $(v).addClass('tagSelect');
           });
         }
@@ -514,7 +519,7 @@ mlog.entriesControl = function(){
         regex = eval('/(' + filterOptions.accounts.join('|') + ')/i');
         if (regex !== undefined) {
           $.each($('#entries_account_cloud').children(), function(i, v){
-            if (regex.test($(v).html())) 
+            if (regex.test($(v).html()))
               $(v).addClass('tagSelect');
           });
         }
