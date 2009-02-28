@@ -192,16 +192,20 @@ mlog.entriesControl = function(){
       if ($('#input_date_row').length > 0)
         this.show();
       var row = $(lineId);
+      /* retrieve values */
       var isReconcilable = row.hasClass('row_reconcilable');
       var cols = row.children();
-      var col, pval;
+      var _date, _value, _description, _category, _account;
+      _date = $.trim($(cols[0]).html());
+      _date += (isReconcilable) ? '?' : '';
+      _value = $.trim($(cols[1]).children().html());
+      _description = $.trim($(cols[2]).html());
+      _category = $.trim($(cols[3]).html());
+      _account = $.trim($(cols[4]).html());
 
-      /* date col */
-      col = $(cols[0]);
-      col.unbind();
-      pval = $.trim(col.html());
-      pval += (isReconcilable) ? '?' : '';
-      col.html('<input id="input_date_row" class="input_row" type="text" value="' + pval + '" />');
+      /* insert date input */
+      $(cols[0]).unbind().html('<input id="input_date_row" class="input_row" type="text" />');
+      $('#input_date_row').val(_date);
       /* datepicker */
       Calendar.setup({
         inputField: "input_date_row",
@@ -209,25 +213,16 @@ mlog.entriesControl = function(){
         weekNumbers: false
       });
 
-      /* value col */
-      col = $(cols[1]);
-      col.unbind();
-      pval = $(col.children()).html();
-      col.html('<input id="input_value_row" class="input_row" type="text" value="' + pval + '" />');
+      /* insert value input */
+      $(cols[1]).unbind().html('<input id="input_value_row" class="input_row" type="text" />');
+      $('#input_value_row').val(_value);
 
-      /* description col */
-      col = $(cols[2]);
-      col.unbind();
-      pval = col.html();
-      col.html('<input id="input_description_row" class="input_row" type="text" value="' + pval + '" />');
+      /* insert description input */
+      $(cols[2]).unbind().html('<input id="input_description_row" class="input_row" type="text" />');
+      $('#input_description_row').val(_description);
 
-      /* category col */
-      col = $(cols[3]);
-      col.unbind();
-      pval = col.html();
-      col.html('<input id="input_category_row" class="input_row" type="text" value="' +
-      pval +
-      '" /><div class="suggest_list" id="category_list_row" style="display:none"></div>');
+      /* insert category input */
+      $(cols[3]).unbind().html('<input id="input_category_row" class="input_row" type="text" /><div class="suggest_list" id="category_list_row" style="display:none"></div>');
       /* autocomplete */
       $('#input_category_row').autocomplete(mlog.categories.getNames(), {
         minChars: 0,
@@ -235,15 +230,10 @@ mlog.entriesControl = function(){
         selectFirst: false,
         multiple: true,
         multipleSeparator: mlog.base.categorySeparator
-      });
+      }).val(_category);
 
-      /* account col */
-      col = $(cols[4]);
-      col.unbind();
-      pval = col.html();
-      col.html('<input id="input_account_row" class="input_row" type="text" value="' +
-      pval +
-      '" /><div class="suggest_list" id="account_list_row" style="display:none"></div>');
+      /* insert account input */
+      $(cols[4]).unbind().html('<input id="input_account_row" class="input_row" type="text" /><div class="suggest_list" id="account_list_row" style="display:none"></div>');
       /* autocomplete */
       $('#input_account_row').autocomplete(mlog.accounts.getNames(), {
         minChars: 0,
@@ -251,11 +241,10 @@ mlog.entriesControl = function(){
         selectFirst: false,
         multiple: true,
         multipleSeparator: '  '
-      });
+      }).val(_account);
 
-      /* option col */
-      col = $(cols[5]);
-      col.html('<span class="opt_cancel" onclick="mlog.entriesControl.show()">&nbsp;</span>&nbsp;' +
+      /* replace options */
+      $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.show()">&nbsp;</span>&nbsp;' +
       '<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>');
 
     },
