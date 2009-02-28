@@ -244,7 +244,7 @@ mlog.entriesControl = function(){
       }).val(_account);
 
       /* replace options */
-      $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.show()">&nbsp;</span>&nbsp;' +
+      $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.onPageChange()">&nbsp;</span>&nbsp;' +
       '<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>');
 
     },
