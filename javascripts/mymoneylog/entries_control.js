@@ -190,7 +190,7 @@ mlog.entriesControl = function(){
       var lineId = '#' + elem.parentNode.parentNode.getAttribute('id');
       /* clear any previous preparation to edit */
       if ($('#input_date_row').length > 0)
-        this.show();
+        this.onPageChange();
       var row = $(lineId);
       /* retrieve values */
       var isReconcilable = row.hasClass('row_reconcilable');
