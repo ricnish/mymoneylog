@@ -202,6 +202,8 @@ mlog.base = function() {
       menu.addClass('menu_current');
       // show toolbar items
       $('#panel_' + menuId).show();
+			// remove any tooltip
+			mlog.base.removeTooltip();
     },
     stripTags: function(str) {
         return str.replace(/<\/?[^>]+>/gi, '');
@@ -312,7 +314,7 @@ mlog.base = function() {
           grid: {
             tickColor: '#fff',
             backgroundColor: { colors: ["#D5E8F9",'#FFF']},
-            borderColor: '#fff',
+            borderColor: '#6297BC',
             hoverable: true
           },
           points: { show: false },
