@@ -250,10 +250,14 @@ mlog.entriesControl = function(){
     },
     applyRowEdit: function(elem){
       var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
-      var lineData = mlog.entries.remove(lineId);
-      var entry = [$('#input_date_row').val(), $('#input_value_row').val(), $('#input_description_row').val(), $('#input_category_row').val(), $('#input_account_row').val(), ''];
+      mlog.entries.remove(lineId);
       var addCount = mlog.entries.getCount();
-      mlog.entries.add(entry);
+      mlog.entries.add([$('#input_date_row').val(),
+                        $('#input_value_row').val(),
+                        $('#input_description_row').val(),
+                        $('#input_category_row').val(),
+                        $('#input_account_row').val(),
+                        '' ]);
       /* refresh entries */
       this.show();
       /* stylise new entry */

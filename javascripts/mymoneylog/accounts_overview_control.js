@@ -143,19 +143,7 @@ mlog.accountsControl = function() {
         '<div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>' +
         '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
       // draw
-      $.plot($('#chart_canvas'),
-        dataset,
-        {
-          xaxis: {ticks: xTicks},
-          legend: {margin:10,noColumns:2,backgroundOpacity:0.4},
-          colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080',
-                   '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
-                   '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
-                   '#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B',
-                   '#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0'],
-          grid: { backgroundColor: '#FFF' }
-        }
-      );
+      mlog.base.drawChart('#chart_canvas',dataset,xTicks);
     }
   }
 }();

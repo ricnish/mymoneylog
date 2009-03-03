@@ -281,6 +281,60 @@ mlog.base = function() {
         $(v).removeClass("tagSelect");
         if (chk) $(v).addClass("tagSelect");
       });
+    },
+    showTooltip: function(x, y, contents) {
+      $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        border: '1px solid #ff0',
+        padding: '2px',
+        'background-color': '#ffa',
+        opacity: 0.90
+      }).appendTo("body").fadeIn(200);
+    },
+    removeTooltip: function() {
+      $('#tooltip').remove();
+    },
+    drawChart: function(container,dataset, xlabels) {
+      // draw
+      $.plot($(container),
+        dataset,
+        {
+          xaxis: {ticks: xlabels},
+          legend: {margin:10, noColumns:2, backgroundOpacity:0.4},
+          colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080',
+          '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
+          '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
+          '#DDA0DD','#ADFF2F','#4B0082','#FFFFA0','#00FF7F','#BDB76B',
+          '#B0C4DE','#00FFFF','#008000','#000080','#C0C0C0'],
+          grid: {
+            tickColor: '#fff',
+            backgroundColor: { colors: ["#D5E8F9",'#FFF']},
+            borderColor: '#fff',
+            hoverable: true
+          },
+          points: { show: false },
+          lines: { show: true }
+        }
+      );
+      // attach tooltip
+      $(container).bind("plothover", function (event, pos, item) {
+        $("#x").text(pos.x.toFixed(2));
+        $("#y").text(pos.y.toFixed(2));
+        if (item) {
+          mlog.base.removeTooltip();
+          var x = item.datapoint[0].toFixed(2),
+              y = item.datapoint[1].toFixed(2);
+
+          mlog.base.showTooltip(item.pageX, item.pageY,
+                      item.series.label + "<br />" + y);
+        }
+        else {
+          mlog.base.removeTooltip();
+        }
+      });
     }
   };
 }();
