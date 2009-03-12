@@ -3,61 +3,61 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.accountsClass = function(){
-  var accounts = {};
+  var _accounts = {};
   return {
     add: function(account,amount){
       if (account!="") {
         var value = amount || 0;
-        if (accounts[account] === undefined) {
-          accounts[account] = {
+        if (_accounts[account] === undefined) {
+          _accounts[account] = {
             'value': value,
             'qtd': 1
           };
         } else {
-          accounts[account].value += value;
-          accounts[account].qtd ++;
+          _accounts[account].value += value;
+          _accounts[account].qtd ++;
         }
       }
     },
     getNames: function(){
       var accountsDescr = [];
-      for (var account in accounts) {
+      for (var account in _accounts) {
         accountsDescr.push(account);
       }
       return accountsDescr.sort();
     },
     getAll: function() {
       var ret = [];
-      for (var account in accounts) {
-        ret.push([account,accounts[account].value,accounts[account].qtd]);
+      for (var account in _accounts) {
+        ret.push([account,_accounts[account].value,_accounts[account].qtd]);
       }
       return ret;
     },
     getAllwithTotal: function() {
       var ret = [];
       var sum = 0;
-      for (var account in accounts) {
-        ret.push([account,accounts[account].value,accounts[account].qtd]);
-        sum += accounts[account].value;
+      for (var account in _accounts) {
+        ret.push([account,_accounts[account].value,_accounts[account].qtd]);
+        sum += _accounts[account].value;
       }
       ret.sort();
       ret.push([mlog.translator.get('total'),sum,0]);
       return ret;
     },
     reset: function() {
-      accounts = {};
+      _accounts = {};
     },
     remove: function(account,amount) {
       if (account!="") {
         var value = amount || 0;
-        if (accounts[account] === undefined) {
-          accounts[account]  = {
+        if (_accounts[account] === undefined) {
+          _accounts[account]  = {
             'value': value*-1,
             'qtd': 1
           };
         } else {
-          accounts[account].value -= value;
-          if (accounts[account].qtd>0) accounts[account].qtd--;
+          _accounts[account].value -= value;
+          if (_accounts[account].qtd>0) _accounts[account].qtd--;
         }
       }
     }

@@ -3,16 +3,16 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.editorControl = function() {
-  var htmlTemplate = null;
+  var _htmlTemplate = null;
   return {
     /* initialize template ... */
     init: function() {
       /* get template... */
-      if (!htmlTemplate) {
-        htmlTemplate = {
+      if (!_htmlTemplate) {
+        _htmlTemplate = {
           main: $('#main_editor').html()
         };
-        htmlTemplate.main = htmlTemplate.main.replace(/  /gi,'');
+        _htmlTemplate.main = _htmlTemplate.main.replace(/  /gi,'');
         $('#main_editor').html('');
         /* initialize datepicker */
         $('#input_export_from_date').jscalendar().val(mlog.base.getCurrentDate());
@@ -53,7 +53,7 @@ mlog.editorControl = function() {
       var tHeight = $.browser.opera?430: ($(window).height()-160);
       mlog.editorControl.init();
       mlog.base.activateMenu('editor');
-      $('#report').html(htmlTemplate.main);
+      $('#report').html(_htmlTemplate.main);
       $('#text_data').height(tHeight);
       $('#text_data').val(mlog.entries.toString());
       $('#text_data').keydown( mlog.editorControl.onKeyPress );

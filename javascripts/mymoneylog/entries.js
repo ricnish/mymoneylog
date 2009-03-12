@@ -3,8 +3,8 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.entries = function(){
-  var entries = [];
-  var currentDate = mlog.base.getCurrentDate();
+  var _entries = [];
+  var _currentDate = mlog.base.getCurrentDate();
   // store descriptions to suggest
   var _descriptions = {};
   var _add = function(entryArray){
@@ -25,10 +25,10 @@ mlog.entries = function(){
         entry[6] = entry[0].indexOf('?')>-1;
         // parse date
         entry[0] = (entry[0].replace(/[^0-9-]/g, '')).slice(0,10);
-        entry[0] = entry[0].length>9? entry[0]: currentDate;
+        entry[0] = entry[0].length>9? entry[0]: _currentDate;
         if (entry[6]) {
           // if is reconcilable, set past date to current date
-          entry[0]=(entry[0]<currentDate)?currentDate:entry[0];
+          entry[0]=(entry[0]<_currentDate)?_currentDate:entry[0];
         }
         // parse value
         if (typeof entry[1] !== 'number') {
@@ -57,11 +57,11 @@ mlog.entries = function(){
         // parse account
         entry[4] = $.trim(entry[4]).toLowerCase();
         // id
-        entry[5] = entries.length;
-        entries.push(entry);
+        entry[5] = _entries.length;
+        _entries.push(entry);
         // update account list
         if (entry[4] !== '') {
-          if ((entry[0] <= currentDate) && !entry[6]) {
+          if ((entry[0] <= _currentDate) && !entry[6]) {
             mlog.accounts.add(entry[4], entry[1]);
           }
           else {
@@ -74,15 +74,15 @@ mlog.entries = function(){
   };
   /* remove and return an entry */
   var _remove = function(id) {
-    var entry = entries.splice(id, 1)[0];
+    var entry = _entries.splice(id, 1)[0];
     // reorder index
     if (entry) {
-      for (var i = entry[5]; i < entries.length; i++) {
-        entries[i][5] = i;
+      for (var i = entry[5]; i < _entries.length; i++) {
+        _entries[i][5] = i;
       }
     }
     // update if not future or reconcilable entry
-    if ((entry[0] <= currentDate) && !entry[6]) {
+    if ((entry[0] <= _currentDate) && !entry[6]) {
       mlog.accounts.remove(entry[4],entry[1]);
       mlog.categories.remove(entry[3]);
     }
@@ -92,7 +92,7 @@ mlog.entries = function(){
   /* public methods */
   return {
     read: function(){
-      entries = [];
+      _entries = [];
       mlog.accounts.reset();
       mlog.categories.reset();
       var srcData = null;
@@ -126,10 +126,10 @@ mlog.entries = function(){
      * Get entries
      */
     getAll: function(){
-      if (entries.length===0) {
+      if (_entries.length===0) {
         this.read();
       }
-      return entries.slice(0);
+      return _entries.slice(0);
     },
     /* convert entries array to string */
     toString: function(startdate) {
@@ -138,18 +138,18 @@ mlog.entries = function(){
       var tmp = [];
       var initialAccounts = mlog.accountsClass();
       var i;
-      for (i = 0; i < entries.length; i++) {
-        if (entries[i][0]<startDate) {
+      for (i = 0; i < _entries.length; i++) {
+        if (_entries[i][0]<startDate) {
           // set initial accounts values
-          initialAccounts.add(entries[i][4],entries[i][1]);
+          initialAccounts.add(_entries[i][4],_entries[i][1]);
           continue;
         }
         // remove index
         // format date and value
-        txt = entries[i][0] +(entries[i][6]?'?':'')+ mlog.base.dataFieldSeparator +
-          mlog.base.floatToString(entries[i][1]) + mlog.base.dataFieldSeparator;
+        txt = _entries[i][0] +(_entries[i][6]?'?':'')+ mlog.base.dataFieldSeparator +
+          mlog.base.floatToString(_entries[i][1]) + mlog.base.dataFieldSeparator;
         // push description, category and account
-        tmp.push(txt + entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
+        tmp.push(txt + _entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
       }
       initialAccounts = initialAccounts.getAll();
       txt = '';
@@ -188,7 +188,7 @@ mlog.entries = function(){
       }
     },
     get: function(id){
-      return entries[id];
+      return _entries[id];
     },
     add: function(entry){
       /* number of inserts */
@@ -211,7 +211,7 @@ mlog.entries = function(){
           entry[1] = mlog.base.toFloat(entry[1]);
         }
       var reconcilable = entry[0].indexOf('?')>-1;
-      entry[0] = (entry[0].replace(/[^0-9-]/g, '')).slice(0,10) || mlog.base.getCurrentDate();
+      entry[0] = (entry[0].replace(/[^0-9-]/g, '')).slice(0,10) || _currentDate;
       var toAccount = entry[5];
       for (var i=0; i<nTimes; i++) {
         var newEntry = entry.slice(0);
@@ -245,9 +245,9 @@ mlog.entries = function(){
     getByDate: function(dtStart,dtEnd) {
       dtEnd = dtEnd || dtStart;
       var res = [];
-      for (var i=0;i<entries.length;i++) {
-        if (entries[i][0] >= dtStart && entries[i][0] <= dtEnd) {
-          res.push(entries[i]);
+      for (var i=0;i<_entries.length;i++) {
+        if (_entries[i][0] >= dtStart && _entries[i][0] <= dtEnd) {
+          res.push(_entries[i]);
         }
       }
       return res;
@@ -256,7 +256,7 @@ mlog.entries = function(){
       var options = opt || { // default options
         query: '', // text filter or regular expression
         startDate: '2000-01-01', // initial date
-        endDate: mlog.base.getCurrentDate(), // final date
+        endDate: _currentDate, // final date
         values: 0, // all: 0, debit: -1, credit: 1
         categories: [], // selected categories
         accounts: [], // selected accounts
@@ -272,29 +272,29 @@ mlog.entries = function(){
         var regexAcc = new RegExp('('+options.accounts.join('|')+')','i');
         var str = '';
         var i;
-        for (i = 0; i < entries.length; i++) {
-          str = entries[i].join(mlog.base.dataFieldSeparator);
+        for (i = 0; i < _entries.length; i++) {
+          str = _entries[i].join(mlog.base.dataFieldSeparator);
           // filter regular expression
           if (regex!==undefined && !regex.test(str)) {
             continue;
           }
           // filter date range
-          if (entries[i][0] < options.startDate || entries[i][0] > options.endDate) {
+          if (_entries[i][0] < options.startDate || _entries[i][0] > options.endDate) {
             continue;
           }
           // filter category
-          if (regexCat!==undefined && !regexCat.test(entries[i][3])) {
+          if (regexCat!==undefined && !regexCat.test(_entries[i][3])) {
             continue;
           }
           // filter account
-          if (regexAcc!==undefined && !regexAcc.test(entries[i][4])) {
+          if (regexAcc!==undefined && !regexAcc.test(_entries[i][4])) {
             continue;
           }
           // filter value
-          if (entries[i][1]*options.values<0) {
+          if (_entries[i][1]*options.values<0) {
             continue;
           }
-          res.push(entries[i]);
+          res.push(_entries[i]);
         }
         // sort column
         mlog.base.arraySort(res,options.sortColIndex);
@@ -318,7 +318,7 @@ mlog.entries = function(){
       return res;
     },
     getCount: function() {
-      return entries.length;
+      return _entries.length;
     },
     /* just remove and add to remove reconcile */
     reconcile: function(id) {
@@ -330,7 +330,7 @@ mlog.entries = function(){
     /* summarize last n months */
     getCategoriesOverview: function(numberOfMonths, untilDate) {
       var nMonths = numberOfMonths||1;
-      var dtEnd = untilDate || mlog.base.getCurrentDate();
+      var dtEnd = untilDate || _currentDate;
       var dtStart = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),nMonths*-1);
       dtStart.setDate(1);
       dtStart = mlog.base.dateToString(dtStart);
@@ -418,7 +418,7 @@ mlog.entries = function(){
       //      2 - number of elements
       var data = [];
       var nMonths = numberOfMonths;
-      var dtEnd = untilDate || mlog.base.getCurrentDate();
+      var dtEnd = untilDate || _currentDate;
       var accountsParam = selectedAccounts || [];
       accountsParam.sort();
       // calculate start date

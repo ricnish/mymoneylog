@@ -294,7 +294,7 @@ mlog.base = function() {
         padding: '2px',
         'background-color': '#ffa',
         opacity: 0.90
-      }).appendTo("body").fadeIn(200);
+      }).appendTo("body").fadeIn(400);
     },
     removeTooltip: function() {
       $('#tooltip').remove();

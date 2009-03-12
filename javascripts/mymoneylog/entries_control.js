@@ -3,49 +3,75 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.entriesControl = function(){
-  var htmlTemplate = null;
-  var storedSearches = [];
-  var filterOptions = {};
-  var hideSummary = false;
+  var _htmlTemplate = null;
+  var _storedSearches = mlog.base.getCookie('storedSearches').split('~');
+  var _filterOptions = {};
+  var _hideSummary = false;
   /* autocomplete options */
-  var acOptions = {
+  var _acOptions = {
     minChars: 0,
     max: 50,
     selectFirst: false
   };
+	var _acOptionsMulti = {
+    minChars: 0,
+    max: 50,
+    selectFirst: false,
+		multiple: true,
+		multipleSeparator: mlog.base.categorySeparator
+  };
 
   /* default start date: begin prev month */
-  var dtStart = mlog.base.addMonths(new Date, -1);
-  dtStart.setDate(1);
-  dtStart = mlog.base.dateToString(dtStart);
+  var _dtStart = mlog.base.addMonths(new Date, -1);
+  _dtStart.setDate(1);
+  _dtStart = mlog.base.dateToString(_dtStart);
   /* default end date: next week */
-  var dtEnd = new Date();
-  dtEnd.setDate(dtEnd.getDate() + 7);
-  dtEnd = mlog.base.dateToString(dtEnd);
+  var _dtEnd = new Date();
+  _dtEnd.setDate(_dtEnd.getDate() + 7);
+  _dtEnd = mlog.base.dateToString(_dtEnd);
 
   var resetFilterOptions = function(){
-    filterOptions = {
+    _filterOptions = {
       query: '',
       pageNumber: 1,
       entriesPerPage: 50,
-      startDate: dtStart,
-      endDate: dtEnd,
+      startDate: _dtStart,
+      endDate: _dtEnd,
       values: 0,
       categories: [],
       accounts: [],
       sortColIndex: 0,
       sortReverse: true
     };
-    $('#filter_date_from').val(filterOptions.startDate);
-    $('#filter_date_until').val(filterOptions.endDate);
-    $('#filter_query').val(filterOptions.query);
-    $('#filter_values').val(filterOptions.values);
+    $('#filter_date_from').val(_filterOptions.startDate);
+    $('#filter_date_until').val(_filterOptions.endDate);
+    $('#filter_query').val(_filterOptions.query);
+    $('#filter_values').val(_filterOptions.values);
     mlog.entriesControl.updateTagCloud();
   };
+  /* update stored searches */
+	function updateSearches(strQuery) {
+      if (_filterOptions.query != '' && $.inArray(_filterOptions.query, _storedSearches) < 0) {
+				// add to start of array
+        _storedSearches.unshift(_filterOptions.query);
+        var str = _storedSearches.join('~');
+				// remove items if length > 1024
+        while (str.length > 1024) {
+          _storedSearches.pop();
+          str = _storedSearches.join('~');
+        }
+				// store searches in a cookie
+        mlog.base.setCookie('storedSearches', str, 120);
+        /* refresh filter autocomplete */
+        $('#filter_query').setOptions({
+          data: _storedSearches
+        });
+      }
+	};
   return {
     /* initialize template, completers, datepicker... */
     init: function(){
-      if (!htmlTemplate) {
+      if (!_htmlTemplate) {
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
         var rows = $('#summary_table').html().replace(/<\/tr>/gi, '</tr>!*!');
@@ -74,7 +100,7 @@ mlog.entriesControl = function(){
           tRowFutureOdd: rows[1].replace(/row-a/, 'row-b row_future'),
           tRowTotal: rows[2]
         };
-        htmlTemplate = {
+        _htmlTemplate = {
           summary: summaryTemplate,
           entries: entriesTemplate,
           main: $('#main_entries').html()
@@ -83,18 +109,12 @@ mlog.entriesControl = function(){
         /* initialize data */
         mlog.entries.getAll();
         /* description autocomplete */
-        $('#input_description').autocomplete(mlog.entries.getDescriptions(), acOptions);
+        $('#input_description').autocomplete(mlog.entries.getDescriptions(), _acOptions);
         /* category autocomplete */
-        $('#input_category').autocomplete(mlog.categories.getNames(), {
-          minChars: 0,
-          max: 50,
-          selectFirst: false,
-          multiple: true,
-          multipleSeparator: mlog.base.categorySeparator
-        });
+        $('#input_category').autocomplete(mlog.categories.getNames(), _acOptionsMulti);
         /* from account autocomplete */
-        $('#input_account').autocomplete(mlog.accounts.getNames(), acOptions);
-        $('#input_account').result(function(){
+        $('#input_account').autocomplete(mlog.accounts.getNames(), _acOptions
+				).result(function(){
           /* on accept jump to: */
           if ($('#input_category').val() != '') {
             if (!$.browser.opera)
@@ -103,10 +123,18 @@ mlog.entriesControl = function(){
           else {
             $('#input_account_to').focus().select();
           }
-        });
+        }).focus(function() {
+        /* attach on focus event for account transfers */
+		      if ($('#input_category').val() == '') {
+		        $('#transfer').show();
+		      }
+		      else {
+		        $('#transfer').hide();
+		      }
+		    });
         /* to account autocomplete */
-        $('#input_account_to').autocomplete(mlog.accounts.getNames(), acOptions);
-        $('#input_account_to').result(function(){
+        $('#input_account_to').autocomplete(mlog.accounts.getNames(), _acOptions
+				).result(function(){
           /* on accept jump to: */
           if (!$.browser.opera)
             $('#form_entry button')[0].focus();
@@ -115,15 +143,8 @@ mlog.entriesControl = function(){
         $('#input_date').jscalendar().val(mlog.base.getCurrentDate());;
         $('#filter_date_from').jscalendar();
         $('#filter_date_until').jscalendar();
-        /* attach on blur event for account transfers */
-        $('#input_account').focus(this.toggleToAccount);
         /* fill filter autocomplete */
-        storedSearches = mlog.base.getCookie('storedSearches').split('~');
-        $('#filter_query').autocomplete(storedSearches, {
-          minChars: 0,
-          max: 50,
-          selectFirst: false
-        })
+        $('#filter_query').autocomplete(_storedSearches, _acOptions);
         /* auto clear form configuration */
         if (mlog.base.getCookie('entryFormAutoClear') == 'true') {
           $('#input_auto_clear').attr('checked', 'true');
@@ -200,23 +221,17 @@ mlog.entriesControl = function(){
       /* insert description input */
       $(cols[2]).unbind().html('<input id="input_description_row" class="input_row" type="text" />');
       /* description autocomplete */
-      $('#input_description_row').autocomplete(mlog.entries.getDescriptions(), acOptions).val(_description);
+      $('#input_description_row').autocomplete(mlog.entries.getDescriptions(), _acOptions).val(_description);
 
       /* insert category input */
-      $(cols[3]).unbind().html('<input id="input_category_row" class="input_row" type="text" /><div class="suggest_list" id="category_list_row" style="display:none"></div>');
+      $(cols[3]).unbind().html('<input id="input_category_row" class="input_row" type="text" />');
       /* autocomplete */
-      $('#input_category_row').autocomplete(mlog.categories.getNames(), {
-        minChars: 0,
-        max: 50,
-        selectFirst: false,
-        multiple: true,
-        multipleSeparator: mlog.base.categorySeparator
-      }).val(_category);
+      $('#input_category_row').autocomplete(mlog.categories.getNames(), _acOptionsMulti).val(_category);
 
       /* insert account input */
-      $(cols[4]).unbind().html('<input id="input_account_row" class="input_row" type="text" /><div class="suggest_list" id="account_list_row" style="display:none"></div>');
+      $(cols[4]).unbind().html('<input id="input_account_row" class="input_row" type="text" />');
       /* autocomplete */
-      $('#input_account_row').autocomplete(mlog.accounts.getNames(), acOptions).val(_account);
+      $('#input_account_row').autocomplete(mlog.accounts.getNames(), _acOptions).val(_account);
 
       /* replace options */
       $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.onPageChange()">&nbsp;</span>&nbsp;' +
@@ -248,7 +263,7 @@ mlog.entriesControl = function(){
     /* build summary */
     getSummary: function(){
       var res = [];
-      var tpSum = htmlTemplate.summary;
+      var tpSum = _htmlTemplate.summary;
       /* build summary */
       res.push(tpSum.tHead);
       var accounts = mlog.accounts.getAllwithTotal();
@@ -285,7 +300,7 @@ mlog.entriesControl = function(){
     show: function(page){
       mlog.entriesControl.init();
       mlog.base.activateMenu('entries');
-      filterOptions.pageNumber = (typeof page == 'number') ? page : 1;
+      _filterOptions.pageNumber = (typeof page == 'number') ? page : 1;
 
       /* just make sure to remove row autocomplete */
       $('#input_category_row').unautocomplete();
@@ -293,16 +308,16 @@ mlog.entriesControl = function(){
 
       var theTotal = 0;
       var res = '';
-      var theData = mlog.entries.getByFilter(filterOptions);
+      var theData = mlog.entries.getByFilter(_filterOptions);
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
-      var tp = htmlTemplate.entries;
-      var content = htmlTemplate.main;
+      var tp = _htmlTemplate.entries;
+      var content = _htmlTemplate.main;
       var odd = true;
       if (theData.length > 0) {
         /* build summary */
         content = content.replace(/{summaryContent}/, mlog.entriesControl.getSummary());
-        if (hideSummary) {
+        if (_hideSummary) {
           /* apply hide style */
           content = content.replace(/show_next/, 'hide_next');
           content = content.replace(/id="entries_summary"/i, 'id="entries_summary" style="display: none"');
@@ -350,7 +365,7 @@ mlog.entriesControl = function(){
       $('#report').html(content);
       $('#toggle_summary').click(function(){
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
-        hideSummary = !hideSummary;
+        _hideSummary = !_hideSummary;
       });
       /* bind click event on each column */
       $('td.entry').click(function(){
@@ -360,8 +375,8 @@ mlog.entriesControl = function(){
 
     /* sort table column */
     sortCol: function(index){
-      filterOptions.sortReverse = (filterOptions.sortColIndex != index) ? false : !filterOptions.sortReverse;
-      filterOptions.sortColIndex = index;
+      _filterOptions.sortReverse = (_filterOptions.sortColIndex != index) ? false : !_filterOptions.sortReverse;
+      _filterOptions.sortColIndex = index;
       this.show();
     },
 
@@ -412,17 +427,8 @@ mlog.entriesControl = function(){
         this.clearEntry();
       }
     },
-    /* toggle 'to account' */
-    toggleToAccount: function(){
-      if ($('#input_category').val() == '') {
-        $('#transfer').show();
-      }
-      else {
-        $('#transfer').hide();
-      }
-    },
     onPageChange: function(){
-      filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
+      _filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
       mlog.entriesControl.show(parseInt($('#select_page option:selected').attr('value')));
     },
     reconcileEntry: function(elem){
@@ -443,27 +449,14 @@ mlog.entriesControl = function(){
       $.each($('#entries_account_cloud .tagSelect'), function(i, v){
         selectedAccounts.push($(v).html());
       });
-      filterOptions.query = $.trim($('#filter_query').val());
-      filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
-      filterOptions.startDate = $('#filter_date_from').val();
-      filterOptions.endDate = $('#filter_date_until').val();
-      filterOptions.values = parseInt($('#filter_values option:selected').attr('value')) || 0;
-      filterOptions.categories = selectedCategories;
-      filterOptions.accounts = selectedAccounts;
-      /* update stored searches */
-      if (filterOptions.query != '' && $.inArray(filterOptions.query, storedSearches) < 0) {
-        storedSearches.unshift(filterOptions.query);
-        var str = storedSearches.join('~');
-        while (str.length > 1024) {
-          storedSearches.pop();
-          str = storedSearches.join('~');
-        }
-        mlog.base.setCookie('storedSearches', str, 120);
-        /* refresh filter autocomplete */
-        $('#filter_query').setOptions({
-          data: storedSearches
-        });
-      }
+      _filterOptions.query = $.trim($('#filter_query').val());
+      _filterOptions.entriesPerPage = parseInt($('#entriesPerPage option:selected').attr('value') || 50);
+      _filterOptions.startDate = $('#filter_date_from').val();
+      _filterOptions.endDate = $('#filter_date_until').val();
+      _filterOptions.values = parseInt($('#filter_values option:selected').attr('value')) || 0;
+      _filterOptions.categories = selectedCategories;
+      _filterOptions.accounts = selectedAccounts;
+			updateSearches(_filterOptions.query);
     },
     applyOptions: function(){
       this.updateOptions();
@@ -473,8 +466,8 @@ mlog.entriesControl = function(){
       $('#entries_category_cloud').html(mlog.base.arrayToTagCloud(mlog.categories.getAll(), 1));
       $('#entries_account_cloud').html(mlog.base.arrayToTagCloud(mlog.accounts.getAll(), 2));
       // mark selected categories
-      if (filterOptions.categories.length > 0) {
-        var regex = eval('/(' + filterOptions.categories.join('|') + ')/i');
+      if (_filterOptions.categories.length > 0) {
+        var regex = eval('/(' + _filterOptions.categories.join('|') + ')/i');
         if (regex !== undefined) {
           $.each($('#entries_category_cloud').children(), function(i, v){
             if (regex.test($(v).html()))
@@ -483,8 +476,8 @@ mlog.entriesControl = function(){
         }
       }
       // mark selected accounts
-      if (filterOptions.accounts.length > 0) {
-        regex = eval('/(' + filterOptions.accounts.join('|') + ')/i');
+      if (_filterOptions.accounts.length > 0) {
+        regex = eval('/(' + _filterOptions.accounts.join('|') + ')/i');
         if (regex !== undefined) {
           $.each($('#entries_account_cloud').children(), function(i, v){
             if (regex.test($(v).html()))
@@ -499,9 +492,9 @@ mlog.entriesControl = function(){
     },
     /* build paginator */
     buildPaginator: function(numberOfPages){
-      var currentPg = filterOptions.pageNumber;
+      var currentPg = _filterOptions.pageNumber;
       var maxPg = numberOfPages || 1;
-      var entriesPerPage = filterOptions.entriesPerPage;
+      var entriesPerPage = _filterOptions.entriesPerPage;
       var str = [];
       var perPageOption = [20, 50, 100, 200, 500, 1000]; // entries per page options
       str.push('<div class="pagination">');

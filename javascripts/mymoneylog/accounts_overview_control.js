@@ -3,12 +3,12 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.accountsControl = function() {
-  var htmlTemplate = null;
-  var hideOverview = false;
+  var _htmlTemplate = null;
+  var _hideOverview = false;
   return {
     init: function() {
       /* initialize template... */
-      if (!htmlTemplate) {
+      if (!_htmlTemplate) {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
@@ -31,7 +31,7 @@ mlog.accountsControl = function() {
           tRowOddLabel: (rows[1][0]).replace(/row-a/,'row-b'),
           tRowColumn: (rows[1][1]).replace(/<\/tr>/i,'')
         };
-        htmlTemplate = {
+        _htmlTemplate = {
           overview: overviewTemplate,
           main: $('#main_accounts_overview').html()
         };
@@ -56,26 +56,26 @@ mlog.accountsControl = function() {
       var odd = true;
       if (theData!==null) {
         /* build header */
-        res.push(htmlTemplate.overview.tHeadLabel);
+        res.push(_htmlTemplate.overview.tHeadLabel);
         for (var i=0;i<theData[0][1].length;i++) {
-          str = htmlTemplate.overview.tHeadColumn.replace(/{account}/,theData[0][1][i][0]);
+          str = _htmlTemplate.overview.tHeadColumn.replace(/{account}/,theData[0][1][i][0]);
           res.push(str);
         }
         res.push('</tr>'); // closing tag
         /* build accounts rows */
         for (i=0;i<theData.length;i++) {
-          str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
+          str = odd?_htmlTemplate.overview.tRowOddLabel:_htmlTemplate.overview.tRowLabel;
           odd = !odd;
           str = str.replace(/{date}/,theData[i][0]);
           res.push(str);
           /* build values */
-          str = htmlTemplate.overview.tRowColumn;
+          str = _htmlTemplate.overview.tRowColumn;
           for (var y=0;y< theData[i][1].length;y++) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(theData[i][1][y][1])));
           }
           res.push('</tr>'); // closing tag
         }
-        str = htmlTemplate.main;
+        str = _htmlTemplate.main;
         str = str.replace(/{overviewContent}/,res.join(''));
       }
       $('#report').html(str);
@@ -85,7 +85,7 @@ mlog.accountsControl = function() {
       /* hide/show function */
       $('#accounts_chart_title').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
-        hideOverview = !hideOverview;
+        _hideOverview = !_hideOverview;
       });
     },
     updateTagCloud: function() {

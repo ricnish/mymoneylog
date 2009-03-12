@@ -46,7 +46,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.175</h2>
+<h2 id="slogan">1.177</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -91,32 +91,24 @@ $(window).load(function(){ mlog.init(); });
 Description
 </label>
 <input id="input_description" type="text" />
-<div class="suggest_list" id="description_list" style="display:none">
-</div>
 </div>
 <div>
 <label class="msg">
 Category
 </label>
 <input id="input_category" class="autocompleteoff" type="text" />
-<div class="suggest_list" id="category_list" style="display:none">
-</div>
 </div>
 <div>
 <label class="msg">
 From Account
 </label>
 <input id="input_account" class="autocompleteoff" type="text" />
-<div class="suggest_list" id="account_list" style="display:none">
-</div>
 </div>
 <div id="transfer" style="display:none">
 <label class="msg">
 To Account
 </label>
 <input id="input_account_to" type="text" />
-<div class="suggest_list" id="account_list_to" style="display:none">
-</div>
 </div>
 <p>
 <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>

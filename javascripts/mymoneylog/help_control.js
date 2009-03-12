@@ -3,23 +3,23 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.helpControl = function() {
-  var htmlTemplate = null;
+  var _htmlTemplate = null;
   return {
     /* initialize template ... */
     init: function() {
       /* get template... */
-      if (!htmlTemplate) {
-        htmlTemplate = {
+      if (!_htmlTemplate) {
+        _htmlTemplate = {
           main: $('#main_help').html()
         };
-        htmlTemplate.main = htmlTemplate.main.replace(/  /gi,'');
+        _htmlTemplate.main = _htmlTemplate.main.replace(/  /gi,'');
         $('#main_help').html('');
       }
     },
     show: function() {
       mlog.helpControl.init();
       mlog.base.activateMenu('help');
-      $('#report').html(htmlTemplate.main);
+      $('#report').html(_htmlTemplate.main);
     }
   };
 }();

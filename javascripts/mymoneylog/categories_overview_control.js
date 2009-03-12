@@ -3,12 +3,12 @@
  * @author Ricardo Nishimura - 2008
  */
 mlog.categoriesControl = function() {
-  var htmlTemplate = null;
-  var hideOverview = false;
+  var _htmlTemplate = null;
+  var _hideOverview = false;
   return {
     init: function() {
       /* initialize template... */
-      if (!htmlTemplate) {
+      if (!_htmlTemplate) {
         var overviewTemplate = {};
         /* trying to not generate any new markup, just get from html */
         /* break table rows */
@@ -32,7 +32,7 @@ mlog.categoriesControl = function() {
           tRowTotalLabel: rows[1][0].replace(/row-a/,'total'),
           tRowColumn: (rows[1][1]).replace(/<\/tr>/i,'')
         };
-        htmlTemplate = {
+        _htmlTemplate = {
           overview: overviewTemplate,
           main: $('#main_categories_overview').html()
         };
@@ -57,23 +57,23 @@ mlog.categoriesControl = function() {
       if (theData) {
         var list = theData.categories;
         /* build header */
-        res.push(htmlTemplate.overview.tHeadLabel);
+        res.push(_htmlTemplate.overview.tHeadLabel);
         for (month in list[mlog.categories.getNames()[0]]) {
-          str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,month);
+          str = _htmlTemplate.overview.tHeadColumn.replace(/{month}/,month);
           res.push(str);
         }
-        str = htmlTemplate.overview.tHeadColumn.replace(/{month}/,mlog.translator.get('average'));
+        str = _htmlTemplate.overview.tHeadColumn.replace(/{month}/,mlog.translator.get('average'));
         res.push(str + '</tr>'); // closing tag
         /* build categories rows */
         var avgSum = 0;
         var avgCount = 0;
         for (var i=0;i<categoriesList.length;i++) {
-          str = odd?htmlTemplate.overview.tRowOddLabel:htmlTemplate.overview.tRowLabel;
+          str = odd?_htmlTemplate.overview.tRowOddLabel:_htmlTemplate.overview.tRowLabel;
           odd = !odd;
           str = str.replace(/{title}/,categoriesList[i]);
           res.push(str);
           /* build values */
-          str = htmlTemplate.overview.tRowColumn;
+          str = _htmlTemplate.overview.tRowColumn;
           avgSum = 0;
           avgCount = 0;
           for (month in list[categoriesList[i]]) {
@@ -87,11 +87,11 @@ mlog.categoriesControl = function() {
         /* build summary */
         list = theData.summary;
         for (var total in list) {
-          str = htmlTemplate.overview.tRowTotalLabel;
+          str = _htmlTemplate.overview.tRowTotalLabel;
           str = str.replace(/{title}/,total);
           res.push(str);
           /* build values */
-          str = htmlTemplate.overview.tRowColumn;
+          str = _htmlTemplate.overview.tRowColumn;
           avgSum = 0;
           for (month in list[total]) {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(list[total][month])));
@@ -103,7 +103,7 @@ mlog.categoriesControl = function() {
             res.push(str.replace(/{value}/,'&nbsp;'));
           res.push('</tr>'); // closing tag
         }
-        str = htmlTemplate.main;
+        str = _htmlTemplate.main;
         str = str.replace(/{overviewContent}/,res.join(''));
       }
       else {
@@ -116,7 +116,7 @@ mlog.categoriesControl = function() {
       /* hide/show function */
       $('#categories_chart_title').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
-        hideOverview = !hideOverview;
+        _hideOverview = !_hideOverview;
       });
     },
     updateTagCloud: function() {
