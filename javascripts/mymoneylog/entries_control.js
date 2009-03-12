@@ -7,6 +7,12 @@ mlog.entriesControl = function(){
   var storedSearches = [];
   var filterOptions = {};
   var hideSummary = false;
+  /* autocomplete options */
+  var acOptions = {
+    minChars: 0,
+    max: 50,
+    selectFirst: false
+  };
 
   /* default start date: begin prev month */
   var dtStart = mlog.base.addMonths(new Date, -1);
@@ -76,12 +82,6 @@ mlog.entriesControl = function(){
         $('#main_entries').html('');
         /* initialize data */
         mlog.entries.getAll();
-        /* autocomplete options */
-        var acOptions = {
-          minChars: 0,
-          max: 50,
-          selectFirst: false
-        };
         /* description autocomplete */
         $('#input_description').autocomplete(mlog.entries.getDescriptions(), acOptions);
         /* category autocomplete */
@@ -199,7 +199,8 @@ mlog.entriesControl = function(){
 
       /* insert description input */
       $(cols[2]).unbind().html('<input id="input_description_row" class="input_row" type="text" />');
-      $('#input_description_row').val(_description);
+      /* description autocomplete */
+      $('#input_description_row').autocomplete(mlog.entries.getDescriptions(), acOptions).val(_description);
 
       /* insert category input */
       $(cols[3]).unbind().html('<input id="input_category_row" class="input_row" type="text" /><div class="suggest_list" id="category_list_row" style="display:none"></div>');
@@ -215,11 +216,7 @@ mlog.entriesControl = function(){
       /* insert account input */
       $(cols[4]).unbind().html('<input id="input_account_row" class="input_row" type="text" /><div class="suggest_list" id="account_list_row" style="display:none"></div>');
       /* autocomplete */
-      $('#input_account_row').autocomplete(mlog.accounts.getNames(), {
-        minChars: 0,
-        max: 50,
-        selectFirst: false
-      }).val(_account);
+      $('#input_account_row').autocomplete(mlog.accounts.getNames(), acOptions).val(_account);
 
       /* replace options */
       $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.onPageChange()">&nbsp;</span>&nbsp;' +
