@@ -37,13 +37,7 @@ mlog.accountsControl = function() {
         };
         $('#main_accounts_overview').html('');
         /* initialize datepicker */
-        Calendar.setup({
-          inputField: "input_accounts_until_date",
-          ifFormat: "%Y-%m-%d",
-          weekNumbers: false
-        });
-        /* initial date value */
-        $('#input_accounts_until_date').val(mlog.base.getCurrentDate());
+        $('#input_accounts_until_date').jscalendar().val(mlog.base.getCurrentDate());
       }
     },
     /* show overview */
@@ -61,7 +55,6 @@ mlog.accountsControl = function() {
       var str = '<h1>' + mlog.translator.get('no data') + '</h1>';
       var odd = true;
       if (theData!==null) {
-//        theData.reverse();
         /* build header */
         res.push(htmlTemplate.overview.tHeadLabel);
         for (var i=0;i<theData[0][1].length;i++) {

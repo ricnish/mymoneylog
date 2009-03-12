@@ -5,6 +5,8 @@
 mlog.entries = function(){
   var entries = [];
   var currentDate = mlog.base.getCurrentDate();
+  // store descriptions to suggest
+  var _descriptions = {};
   var _add = function(entryArray){
     if (entryArray) {
       var entry = entryArray.slice(0);
@@ -34,6 +36,7 @@ mlog.entries = function(){
         }
         // parse description
         entry[2] = $.trim(entry[2]);
+        _descriptions[entry[2].toLowerCase()] = 0;
         // parse category
         entry[3] = $.trim(entry[3]).toLowerCase();
         // update category list
@@ -502,6 +505,14 @@ mlog.entries = function(){
       catch(e) {
         return null;
       }
+    },
+    // return description´s array
+    getDescriptions: function() {
+      var descr = [];
+      for (var description in _descriptions) {
+        descr.push(description);
+      }
+      return descr.sort();
     }
   };
 }();

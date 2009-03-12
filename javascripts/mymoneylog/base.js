@@ -340,3 +340,15 @@ mlog.base = function() {
     }
   };
 }();
+
+/* extend jquery to setup jscalendar */
+$.fn.jscalendar = function() {
+  if (this[0] !== undefined) {
+    Calendar.setup({
+      inputField: this[0].id,
+      ifFormat: "%Y-%m-%d",
+      weekNumbers: false
+    });
+  }
+  return this;
+};

@@ -74,16 +74,16 @@ mlog.entriesControl = function(){
           main: $('#main_entries').html()
         };
         $('#main_entries').html('');
-
-        mlog.entries.getAll(); /* initialize data */
+        /* initialize data */
+        mlog.entries.getAll();
         /* autocomplete options */
         var acOptions = {
           minChars: 0,
           max: 50,
-          selectFirst: false,
-          multiple: true,
-          multipleSeparator: '  '
+          selectFirst: false
         };
+        /* description autocomplete */
+        $('#input_description').autocomplete(mlog.entries.getDescriptions(), acOptions);
         /* category autocomplete */
         $('#input_category').autocomplete(mlog.categories.getNames(), {
           minChars: 0,
@@ -112,21 +112,9 @@ mlog.entriesControl = function(){
             $('#form_entry button')[0].focus();
         });
         /* initialize datepicker */
-        Calendar.setup({
-          inputField: "input_date",
-          ifFormat: "%Y-%m-%d",
-          weekNumbers: false
-        });
-        Calendar.setup({
-          inputField: "filter_date_from",
-          ifFormat: "%Y-%m-%d",
-          weekNumbers: false
-        });
-        Calendar.setup({
-          inputField: "filter_date_until",
-          ifFormat: "%Y-%m-%d",
-          weekNumbers: false
-        });
+        $('#input_date').jscalendar().val(mlog.base.getCurrentDate());;
+        $('#filter_date_from').jscalendar();
+        $('#filter_date_until').jscalendar();
         /* attach on blur event for account transfers */
         $('#input_account').focus(this.toggleToAccount);
         /* fill filter autocomplete */
@@ -136,8 +124,6 @@ mlog.entriesControl = function(){
           max: 50,
           selectFirst: false
         })
-        /* initial date value */
-        $('#input_date').val(mlog.base.getCurrentDate());
         /* auto clear form configuration */
         if (mlog.base.getCookie('entryFormAutoClear') == 'true') {
           $('#input_auto_clear').attr('checked', 'true');
@@ -203,15 +189,9 @@ mlog.entriesControl = function(){
       _category = $.trim($(cols[3]).html());
       _account = $.trim($(cols[4]).html());
 
-      /* insert date input */
+      /* setup datepicker and insert date input */
       $(cols[0]).unbind().html('<input id="input_date_row" class="input_row" type="text" />');
-      $('#input_date_row').val(_date);
-      /* datepicker */
-      Calendar.setup({
-        inputField: "input_date_row",
-        ifFormat: "%Y-%m-%d",
-        weekNumbers: false
-      });
+      $('#input_date_row').jscalendar().val(_date);
 
       /* insert value input */
       $(cols[1]).unbind().html('<input id="input_value_row" class="input_row" type="text" />');
@@ -238,9 +218,7 @@ mlog.entriesControl = function(){
       $('#input_account_row').autocomplete(mlog.accounts.getNames(), {
         minChars: 0,
         max: 50,
-        selectFirst: false,
-        multiple: true,
-        multipleSeparator: '  '
+        selectFirst: false
       }).val(_account);
 
       /* replace options */
@@ -399,7 +377,6 @@ mlog.entriesControl = function(){
       $('#input_category').val('');
       $('#input_account').val('');
       $('#input_account_to').val('');
-      $('#input_date').focus();
     },
 
     /* add an entry from input */
@@ -424,6 +401,7 @@ mlog.entriesControl = function(){
       /* initial state and update autocompleters */
       $('#transfer').hide();
       $('#input_date').focus();
+      $('#input_pending').attr('checked', '');
       $('#input_category').setOptions({
         data: mlog.categories.getNames()
       });

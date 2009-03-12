@@ -38,13 +38,7 @@ mlog.categoriesControl = function() {
         };
         $('#main_categories_overview').html('');
         /* initialize datepicker */
-        Calendar.setup({
-          inputField: "input_ov_until_date",
-          ifFormat: "%Y-%m-%d",
-          weekNumbers: false
-        });
-        /* initial date value */
-        $('#input_ov_until_date').val(mlog.base.getCurrentDate());
+        $('#input_ov_until_date').jscalendar().val(mlog.base.getCurrentDate());
       }
     },
     /* show overview */

@@ -15,13 +15,7 @@ mlog.editorControl = function() {
         htmlTemplate.main = htmlTemplate.main.replace(/  /gi,'');
         $('#main_editor').html('');
         /* initialize datepicker */
-        Calendar.setup({
-          inputField: "input_export_from_date",
-          ifFormat: "%Y-%m-%d",
-          weekNumbers: false
-        });
-        /* initial date value */
-        $('#input_export_from_date').val(mlog.base.getCurrentDate());
+        $('#input_export_from_date').jscalendar().val(mlog.base.getCurrentDate());
       }
     },
     onKeyPress: function(event) {
@@ -44,7 +38,7 @@ mlog.editorControl = function() {
         } else if (obj.createTextRange) {
           // ie
           document.selection.createRange().text="\t"
-          obj.onblur = function() { 
+          obj.onblur = function() {
             this.focus(); this.onblur = null;
           };
         } else {
