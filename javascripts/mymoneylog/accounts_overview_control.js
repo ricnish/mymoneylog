@@ -6,6 +6,7 @@ mlog.accountsControl = function() {
   var _htmlTemplate = null;
   var _hideOverview = false;
   return {
+    data: null,
     init: function() {
       /* initialize template... */
       if (!_htmlTemplate) {
@@ -47,31 +48,31 @@ mlog.accountsControl = function() {
       $.each($('#show_ov_accounts .tagSelect'), function(i,v) {
         accountsList.push($(v).html());
       });
-      var theData = null;
-      theData = mlog.entries.getAccountsOverview( parseInt($('#accountsNumberMonths option:selected').attr('value'))-1,
+      this.data = null;
+      this.data = mlog.entries.getAccountsOverview( parseInt($('#accountsNumberMonths option:selected').attr('value'))-1,
         $('#input_accounts_until_date').val(),
         accountsList);
       var res = [];
       var str = '<h1>' + mlog.translator.get('no data') + '</h1>';
       var odd = true;
-      if (theData!==null) {
+      if (this.data!==null) {
         /* build header */
         res.push(_htmlTemplate.overview.tHeadLabel);
-        for (var i=0;i<theData[0][1].length;i++) {
-          str = _htmlTemplate.overview.tHeadColumn.replace(/{account}/,theData[0][1][i][0]);
+        for (var i=0;i<this.data[0][1].length;i++) {
+          str = _htmlTemplate.overview.tHeadColumn.replace(/{account}/,this.data[0][1][i][0]);
           res.push(str);
         }
         res.push('</tr>'); // closing tag
         /* build accounts rows */
-        for (i=0;i<theData.length;i++) {
+        for (i=0;i<this.data.length;i++) {
           str = odd?_htmlTemplate.overview.tRowOddLabel:_htmlTemplate.overview.tRowLabel;
           odd = !odd;
-          str = str.replace(/{date}/,theData[i][0]);
+          str = str.replace(/{date}/,this.data[i][0]);
           res.push(str);
           /* build values */
           str = _htmlTemplate.overview.tRowColumn;
-          for (var y=0;y< theData[i][1].length;y++) {
-            res.push(str.replace(/{value}/,mlog.base.formatFloat(theData[i][1][y][1])));
+          for (var y=0;y< this.data[i][1].length;y++) {
+            res.push(str.replace(/{value}/,mlog.base.formatFloat(this.data[i][1][y][1])));
           }
           res.push('</tr>'); // closing tag
         }
@@ -81,7 +82,7 @@ mlog.accountsControl = function() {
       $('#report').html(str);
       res = null;
       /* display the chart */
-      mlog.accountsControl.drawChart(theData);
+      mlog.accountsControl.drawChart(this.data);
       /* hide/show function */
       $('#accounts_chart_title').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
@@ -137,6 +138,19 @@ mlog.accountsControl = function() {
         '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
       // draw
       mlog.base.drawChart('#chart_canvas',dataset,xTicks);
+
+      // attach tooltip
+      $('#chart_canvas').bind("plothover", function (event, pos, item) {
+        mlog.base.removeTooltip();
+        if (item) {
+          var value = item.datapoint[1];
+          var date = mlog.accountsControl.data[item.dataIndex][0];
+          mlog.base.showTooltip(item.pageX, item.pageY,
+                      date + "<br />" +
+                      item.series.label + "<br />" +
+                      mlog.base.formatFloat(value));
+        }
+      });
     }
   }
 }();

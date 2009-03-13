@@ -123,7 +123,7 @@ LAYOUT
 #main .opt_edit { background: url(../images/pencil.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .opt_cancel { background: url(../images/cancel.png) no-repeat left; padding-left: 16px; padding-top: 1px; cursor:pointer; }
 #main .hide { display: none; }
-#main .neg { color: #F66; }
+.neg { color: #F66; }
 #main tr.total .neg { }
 #help { background: url(../images/bg_75white.png) repeat; padding: 12px; }
 .glass { background: url(../images/bg_75white.png) repeat; padding: 10px; }

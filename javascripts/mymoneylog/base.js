@@ -289,9 +289,9 @@ mlog.base = function() {
         position: 'absolute',
         display: 'none',
         top: y + 5,
-        left: x + 5,
+        left: x + 10,
         border: '1px solid #ff0',
-        padding: '2px',
+        padding: '4px',
         'background-color': '#ffa',
         opacity: 0.90
       }).appendTo("body").fadeIn(400);
@@ -321,22 +321,6 @@ mlog.base = function() {
           lines: { show: true }
         }
       );
-      // attach tooltip
-      $(container).bind("plothover", function (event, pos, item) {
-        $("#x").text(pos.x.toFixed(2));
-        $("#y").text(pos.y.toFixed(2));
-        if (item) {
-          mlog.base.removeTooltip();
-          var x = item.datapoint[0].toFixed(2),
-              y = item.datapoint[1].toFixed(2);
-
-          mlog.base.showTooltip(item.pageX, item.pageY,
-                      item.series.label + "<br />" + y);
-        }
-        else {
-          mlog.base.removeTooltip();
-        }
-      });
     }
   };
 }();

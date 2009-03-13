@@ -220,6 +220,17 @@ mlog.categoriesControl = function() {
         '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
       // draw
       mlog.base.drawChart('#chart_canvas',dataset,xTicks);
+
+      // attach tooltip
+      $('#chart_canvas').bind("plothover", function (event, pos, item) {
+        mlog.base.removeTooltip();
+        if (item) {
+          var value = item.datapoint[1];
+          mlog.base.showTooltip(item.pageX, item.pageY,
+                      item.series.label + "<br />" +
+                      mlog.base.formatFloat(value));
+        }
+      });
     }
   }
 }();
