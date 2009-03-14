@@ -132,15 +132,13 @@ mlog.accountsControl = function() {
       }
       // chart container
       var size = $('#accounts_chart').width()-35;
-      $('#accounts_chart').html('<h1 id="accounts_chart_title" class="msg show_next">'+ chartTitle + '</h1>' +
-        '<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">' +
-        '<div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>' +
-        '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
+      $('#accounts_chart_title').html(chartTitle);
+      $('#accounts_chart_canvas').width(size).height(size/1.75);
       // draw
-      mlog.base.drawChart('#chart_canvas',dataset,xTicks);
+      mlog.base.drawChart('#accounts_chart_canvas',dataset,xTicks);
 
       // attach tooltip
-      $('#chart_canvas').bind("plothover", function (event, pos, item) {
+      $('#accounts_chart_canvas').bind("plothover", function (event, pos, item) {
         mlog.base.removeTooltip();
         if (item) {
           var value = item.datapoint[1];

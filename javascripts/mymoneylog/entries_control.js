@@ -13,12 +13,12 @@ mlog.entriesControl = function(){
     max: 50,
     selectFirst: false
   };
-	var _acOptionsMulti = {
+  var _acOptionsMulti = {
     minChars: 0,
     max: 50,
     selectFirst: false,
-		multiple: true,
-		multipleSeparator: mlog.base.categorySeparator
+    multiple: true,
+    multipleSeparator: mlog.base.categorySeparator
   };
 
   /* default start date: begin prev month */
@@ -50,24 +50,24 @@ mlog.entriesControl = function(){
     mlog.entriesControl.updateTagCloud();
   };
   /* update stored searches */
-	function updateSearches(strQuery) {
+  function updateSearches(strQuery) {
       if (_filterOptions.query != '' && $.inArray(_filterOptions.query, _storedSearches) < 0) {
-				// add to start of array
+        // add to start of array
         _storedSearches.unshift(_filterOptions.query);
         var str = _storedSearches.join('~');
-				// remove items if length > 1024
+        // remove items if length > 1024
         while (str.length > 1024) {
           _storedSearches.pop();
           str = _storedSearches.join('~');
         }
-				// store searches in a cookie
+        // store searches in a cookie
         mlog.base.setCookie('storedSearches', str, 120);
         /* refresh filter autocomplete */
         $('#filter_query').setOptions({
           data: _storedSearches
         });
       }
-	};
+  };
   return {
     /* initialize template, completers, datepicker... */
     init: function(){
@@ -115,7 +115,7 @@ mlog.entriesControl = function(){
         $('#input_category').autocomplete(mlog.categories.getNames(), _acOptionsMulti);
         /* from account autocomplete */
         $('#input_account').autocomplete(mlog.accounts.getNames(), _acOptions
-				).result(function(){
+        ).result(function(){
           /* on accept jump to: */
           if ($('#input_category').val() != '') {
             if (!$.browser.opera)
@@ -126,16 +126,16 @@ mlog.entriesControl = function(){
           }
         }).focus(function() {
         /* attach on focus event for account transfers */
-		      if ($('#input_category').val() == '') {
-		        $('#transfer').show();
-		      }
-		      else {
-		        $('#transfer').hide();
-		      }
-		    });
+          if ($('#input_category').val() == '') {
+            $('#transfer').show();
+          }
+          else {
+            $('#transfer').hide();
+          }
+        });
         /* to account autocomplete */
         $('#input_account_to').autocomplete(mlog.accounts.getNames(), _acOptions
-				).result(function(){
+        ).result(function(){
           /* on accept jump to: */
           if (!$.browser.opera)
             $('#form_entry button')[0].focus();
@@ -182,6 +182,7 @@ mlog.entriesControl = function(){
       else {
         $('#input_pending').attr('checked', '');
       }
+      $('#transfer').hide();
     },
     /* remove an entry */
     removeEntry: function(elem){
@@ -194,7 +195,7 @@ mlog.entriesControl = function(){
       }
     },
     /* prepare a selected row to be edited */
-    startRowEdit: function(elem){
+    prepareRowEdit: function(elem){
       var lineId = '#' + elem.parentNode.parentNode.getAttribute('id');
       /* clear any previous preparation to edit */
       if ($('#input_date_row').length > 0)
@@ -240,17 +241,14 @@ mlog.entriesControl = function(){
     onClickEntry: function(elem){
       var id = elem.parentNode.getAttribute('id').substring(2);
       this.updateInputEntry(mlog.entries.get(id));
-      $('#input_date').focus();
-      $('#transfer').hide();
     },
     /* build summary */
     getSummary: function(){
-      var res = [];
       var tpSum = _htmlTemplate.summary;
       /* build summary */
-      res.push(tpSum.tHead);
+      var res = [tpSum.tHead];
       var accounts = mlog.accounts.getAllwithTotal();
-      var maxValue = 0;
+      var maxValue = 0, strRow;
       // find maxValue
       for (var i = 0; i < accounts.length - 1; i++) {
         if (accounts[i][0] != '' && accounts[i][1] != 0) {
@@ -259,7 +257,15 @@ mlog.entriesControl = function(){
       }
       maxValue = maxValue >= 100 ? maxValue : 100; /* at least more then 100 */
       for (i = 0; i < accounts.length; i++) {
-        var strRow = (i < accounts.length - 1) ? tpSum.tRow : tpSum.tRowTotal;
+        if (i < accounts.length - 1) {
+          /* bar style and width */
+          strRow = tpSum.tRow;
+          strRow = strRow.replace(/class="pos"|class=pos/i, (accounts[i][1] < 0 ? 'class="neg"' : 'class="pos"'));
+          strRow = strRow.replace(/99/, Math.abs(Math.round(accounts[i][1]) / maxValue * 100));
+        } else {
+          // process total row
+          strRow = tpSum.tRowTotal;
+        }
         if (accounts[i][0] != '') {
           strRow = strRow.replace(/{account_id}/, accounts[i][0]);
         }
@@ -269,11 +275,7 @@ mlog.entriesControl = function(){
           }
           strRow = strRow.replace(/{account_id}/, '-');
         }
-        /* bar style */
-        strRow = strRow.replace(/class="pos"|class=pos/, (accounts[i][1] < 0 ? 'class="neg"' : 'class="pos"'));
-        /* bar width */
-        strRow = strRow.replace(/99/, Math.abs(Math.round(accounts[i][1]) / maxValue * 100));
-        /* account total */
+        /* value */
         strRow = strRow.replace(/{account_total}/, mlog.base.formatFloat(accounts[i][1]));
         res.push(strRow);
       }
@@ -290,7 +292,7 @@ mlog.entriesControl = function(){
       $('#input_account_row').unautocomplete();
 
       var theTotal = 0;
-      var res = '';
+      var res = [];
       var theData = mlog.entries.getByFilter(_filterOptions);
       var currentDate = mlog.base.getCurrentDate();
       var strRow = '';
@@ -306,7 +308,7 @@ mlog.entriesControl = function(){
           content = content.replace(/id="entries_summary"/i, 'id="entries_summary" style="display: none"');
         }
         /* build entries */
-        res += tp.tHead;
+        res.push(tp.tHead);
         for (var i = 0; i < theData.length - 1; i++) {
           /* apply template tRow or tRowFuture */
           if (theData[i][0] <= currentDate) {
@@ -331,14 +333,14 @@ mlog.entriesControl = function(){
           strRow = strRow.replace(/{description}/, theData[i][2]);
           strRow = strRow.replace(/{category}/, theData[i][3]);
           strRow = strRow.replace(/{account}/, theData[i][4]);
-          res += strRow;
+          res.push(strRow);
         }
         /* end of data, put total */
         strRow = tp.tRowTotal.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
         strRow = strRow.replace(/{entriescount}/, theData.length - 1);
-        res += strRow;
+        res.push(strRow);
         /* assemble table */
-        content = content.replace(/{entriesContent}/, res);
+        content = content.replace(/{entriesContent}/, res.join(''));
         var maxPage = theData.pop().maxPage || 1;
         content += mlog.entriesControl.buildPaginator(maxPage) + '<br />';
       }
@@ -439,7 +441,7 @@ mlog.entriesControl = function(){
       _filterOptions.values = parseInt($('#filter_values option:selected').attr('value')) || 0;
       _filterOptions.categories = selectedCategories;
       _filterOptions.accounts = selectedAccounts;
-			updateSearches(_filterOptions.query);
+      updateSearches(_filterOptions.query);
     },
     applyOptions: function(){
       this.updateOptions();

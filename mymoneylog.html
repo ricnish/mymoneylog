@@ -46,7 +46,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.179</h2>
+<h2 id="slogan">1.180</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -390,7 +390,7 @@ options
 {account}
 </td>
 <td>
-<span class="opt_edit" onclick="mlog.entriesControl.startRowEdit(this)">&nbsp;</span>
+<span class="opt_edit" onclick="mlog.entriesControl.prepareRowEdit(this)">&nbsp;</span>
 <span class="opt_delete" onclick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
 <span class="opt_ok hide" onclick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
 </td>
@@ -433,7 +433,12 @@ This total
 <!-- main_entries ends here -->
 <!-- main_categories_overview starts here -->
 <div id="main_categories_overview" style="display:none;">
-<div id="categories_chart"></div>
+<div id="categories_chart">
+<h1 id="categories_chart_title" class="show_next"></h1>
+<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">
+<div id="categories_chart_canvas"></div>
+</div><b class="rc2g"></b><b class="rc1g"></b></div>
+</div>
 <h1 id="toggle_categories_overview_table" class="msg">Category by month</h1>
 <div id="categories_overview_summary" class="overflow">
 <b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
@@ -461,7 +466,12 @@ description
 <!-- main_categories_overview ends here -->
 <!-- main_accounts_overview starts here -->
 <div id="main_accounts_overview" style="display:none;">
-<div id="accounts_chart"></div>
+<div id="accounts_chart">
+<h1 id="accounts_chart_title" class="msg show_next"></h1>
+<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">
+<div id="accounts_chart_canvas"></div>
+</div><b class="rc2g"></b><b class="rc1g"></b></div>
+</div>
 <h1 id="toggle_accounts_overview_table" class="msg">diary balance</h1>
 <div id="accounts_overview_summary" class="overflow">
 <b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>

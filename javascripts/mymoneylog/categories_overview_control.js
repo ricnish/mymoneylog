@@ -214,15 +214,13 @@ mlog.categoriesControl = function() {
       // chart container
       chartTitle = mlog.translator.get('chart')+': '+chartTitle;
       var size = $('#categories_chart').width()-35;
-      $('#categories_chart').html('<h1 id="categories_chart_title" class="show_next">'+ chartTitle + '</h1>' +
-        '<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">' +
-        '<div id="chart_canvas" style="height:'+(size/1.75)+'px; width:'+(size)+'px;"></div>' +
-        '</div><b class="rc2g"></b><b class="rc1g"></b></div>');
+      $('#categories_chart_title').html(chartTitle);
+      $('#categories_chart_canvas').width(size).height(size/1.75);
       // draw
-      mlog.base.drawChart('#chart_canvas',dataset,xTicks);
+      mlog.base.drawChart('#categories_chart_canvas',dataset,xTicks);
 
       // attach tooltip
-      $('#chart_canvas').bind("plothover", function (event, pos, item) {
+      $('#categories_chart_canvas').bind("plothover", function (event, pos, item) {
         mlog.base.removeTooltip();
         if (item) {
           var value = item.datapoint[1];
