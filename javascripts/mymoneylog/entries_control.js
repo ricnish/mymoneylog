@@ -98,8 +98,7 @@ mlog.entriesControl = function(){
           tRowOdd: rows[1].replace(/row-a/, 'row-b'),
           tRowFuture: rows[1].replace(/row-a/, 'row-a row_future'),
           tRowFutureOdd: rows[1].replace(/row-a/, 'row-b row_future'),
-          tRowTotal: rows[2],
-          tRowEdit: rows[3]
+          tRowTotal: rows[2]
         };
         _htmlTemplate = {
           summary: summaryTemplate,
@@ -211,9 +210,16 @@ mlog.entriesControl = function(){
       _description = $.trim($(cols[2]).html());
       _category = $.trim($(cols[3]).html());
       _account = $.trim($(cols[4]).html());
-      /* insert input fields template */
-      var template = _htmlTemplate.entries.tRowEdit.replace(/<tr>|<\/tr>/gi, '');
-      row.html(template);
+      /* insert input fields
+        obs: injecting from html template is messing in safari and chrome */
+      $(cols[0]).unbind().html('<input id="input_date_row" class="input_row" type="text" />');
+      $(cols[1]).unbind().html('<input id="input_value_row" class="input_row" type="text" />');
+      $(cols[2]).unbind().html('<input id="input_description_row" class="input_row" type="text" />');
+      $(cols[3]).unbind().html('<input id="input_category_row" class="input_row" type="text" />');
+      $(cols[4]).unbind().html('<input id="input_account_row" class="input_row" type="text" />');
+      $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.onPageChange()">&nbsp;</span>&nbsp;' +
+      '<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>');
+
       /* insert values and prepare autocompleters */
       $('#input_date_row').jscalendar().val(_date);
       $('#input_value_row').val(_value);
