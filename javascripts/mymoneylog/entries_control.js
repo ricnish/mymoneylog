@@ -98,7 +98,8 @@ mlog.entriesControl = function(){
           tRowOdd: rows[1].replace(/row-a/, 'row-b'),
           tRowFuture: rows[1].replace(/row-a/, 'row-a row_future'),
           tRowFutureOdd: rows[1].replace(/row-a/, 'row-b row_future'),
-          tRowTotal: rows[2]
+          tRowTotal: rows[2],
+          tRowEdit: rows[3]
         };
         _htmlTemplate = {
           summary: summaryTemplate,
@@ -209,35 +210,17 @@ mlog.entriesControl = function(){
       _description = $.trim($(cols[2]).html());
       _category = $.trim($(cols[3]).html());
       _account = $.trim($(cols[4]).html());
-
-      /* setup datepicker and insert date input */
-      $(cols[0]).unbind().html('<input id="input_date_row" class="input_row" type="text" />');
+      /* insert input fields template */
+      var template = _htmlTemplate.entries.tRowEdit.replace(/<tr>|<\/tr>/gi, '');
+      row.html(template);
+      /* insert values and prepare autocompleters */
       $('#input_date_row').jscalendar().val(_date);
-
-      /* insert value input */
-      $(cols[1]).unbind().html('<input id="input_value_row" class="input_row" type="text" />');
       $('#input_value_row').val(_value);
-
-      /* insert description input */
-      $(cols[2]).unbind().html('<input id="input_description_row" class="input_row" type="text" />');
-      /* description autocomplete */
       $('#input_description_row').autocomplete(mlog.entries.getDescriptions(), _acOptions).val(_description);
-
-      /* insert category input */
-      $(cols[3]).unbind().html('<input id="input_category_row" class="input_row" type="text" />');
-      /* autocomplete */
       $('#input_category_row').autocomplete(mlog.categories.getNames(), _acOptionsMulti).val(_category);
-
-      /* insert account input */
-      $(cols[4]).unbind().html('<input id="input_account_row" class="input_row" type="text" />');
-      /* autocomplete */
       $('#input_account_row').autocomplete(mlog.accounts.getNames(), _acOptions).val(_account);
-
-      /* replace options */
-      $(cols[5]).html('<span class="opt_cancel" onclick="mlog.entriesControl.onPageChange()">&nbsp;</span>&nbsp;' +
-      '<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>');
-
     },
+    /* apply changes after a start row editing */
     applyRowEdit: function(elem){
       var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
       mlog.entries.remove(lineId);

@@ -46,7 +46,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.178</h2>
+<h2 id="slogan">1.179</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -389,7 +389,7 @@ options
 <td class="entry">
 {account}
 </td>
-<td class="">
+<td>
 <span class="opt_edit" onclick="mlog.entriesControl.startRowEdit(this)">&nbsp;</span>
 <span class="opt_delete" onclick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
 <span class="opt_ok hide" onclick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
@@ -404,6 +404,27 @@ This total
 </td>
 <td colspan="4">
 {entriescount}
+</td>
+</tr>
+<tr>
+<td class="first">
+<input id="input_date_row" class="input_row" type="text" />
+</td>
+<td>
+<input id="input_value_row" class="input_row" type="text" />
+</td>
+<td>
+<input id="input_description_row" class="input_row" type="text" />
+</td>
+<td>
+<input id="input_category_row" class="input_row" type="text" />
+</td>
+<td>
+<input id="input_account_row" class="input_row" type="text" />
+</td>
+<td>
+<span class="opt_cancel" onclick="mlog.entriesControl.onPageChange()">&nbsp;</span>&nbsp;
+<span class="opt_ok" onclick="mlog.entriesControl.applyRowEdit(this)">&nbsp;</span>
 </td>
 </tr>
 </table>
