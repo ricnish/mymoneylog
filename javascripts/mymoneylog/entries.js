@@ -45,7 +45,7 @@ mlog.entries = function(){
           var str = entry[3].split($.trim(mlog.base.categorySeparator));
           var tmp = [];
           var value = '';
-          for (var i=0;i<str.length;i++) {
+          for (var i=0,j=str.length;i<j;i++) {
             value = $.trim(str[i]);
             if (value !== '') {
               tmp.push(value);
@@ -77,7 +77,7 @@ mlog.entries = function(){
     var entry = _entries.splice(id, 1)[0];
     // reorder index
     if (entry) {
-      for (var i = entry[5]; i < _entries.length; i++) {
+      for (var i = entry[5],j=_entries.length;i<j; i++) {
         _entries[i][5] = i;
       }
     }
@@ -107,7 +107,7 @@ mlog.entries = function(){
       }
       rawData = rawData.split(mlog.base.dataRecordSeparator);
 
-      for (var i = 0; i < rawData.length; i++) {
+      for (var i = 0, j=rawData.length; i < j; i++) {
         if (rawData[i].indexOf(mlog.base.commentChar) === 0) {
           continue;
         }
@@ -137,8 +137,8 @@ mlog.entries = function(){
       var txt = '';
       var tmp = [];
       var initialAccounts = mlog.accountsClass();
-      var i;
-      for (i = 0; i < _entries.length; i++) {
+      var i,j;
+      for (i = 0, j=_entries.length; i < j; i++) {
         if (_entries[i][0]<startDate) {
           // set initial accounts values
           initialAccounts.add(_entries[i][4],_entries[i][1]);
@@ -154,7 +154,7 @@ mlog.entries = function(){
       initialAccounts = initialAccounts.getAll();
       txt = '';
       if (initialAccounts.length>0) {
-        for (i=0; i<initialAccounts.length;i++) {
+        for (i=0,j=initialAccounts.length; i<j;i++) {
           if (initialAccounts[i][0] !== '') {
             txt += startDate + mlog.base.dataFieldSeparator +
               mlog.base.floatToString(initialAccounts[i][1]) + mlog.base.dataFieldSeparator +
@@ -245,7 +245,7 @@ mlog.entries = function(){
     getByDate: function(dtStart,dtEnd) {
       dtEnd = dtEnd || dtStart;
       var res = [];
-      for (var i=0;i<_entries.length;i++) {
+      for (var i=0,j=_entries.length;i<j;i++) {
         if (_entries[i][0] >= dtStart && _entries[i][0] <= dtEnd) {
           res.push(_entries[i]);
         }
@@ -271,8 +271,8 @@ mlog.entries = function(){
         var regexCat = new RegExp('('+options.categories.join('|')+')','i');
         var regexAcc = new RegExp('('+options.accounts.join('|')+')','i');
         var str = '';
-        var i;
-        for (i = 0; i < _entries.length; i++) {
+        var i,j;
+        for (i = 0, j=_entries.length; i < j; i++) {
           str = _entries[i].join(mlog.base.dataFieldSeparator);
           // filter regular expression
           if (regex!==undefined && !regex.test(str)) {
@@ -307,7 +307,7 @@ mlog.entries = function(){
         iStart = iStart<res.length?iStart:0;
         var iEnd = iStart+options.entriesPerPage;
         var data = [];
-        for (i=iStart;i<iEnd && i<res.length; i++) {
+        for (i=iStart,j=res.length;i<iEnd && i<j; i++) {
           data.push(res[i]);
         }
         // add the maximum page number at tail
@@ -347,7 +347,7 @@ mlog.entries = function(){
       /* initialize months */
       var months = [];
       var month;
-      var i;
+      var i,ilen=categoriesIds.length;
       for (i=nMonths;i>=0;i--) {
         month = mlog.base.addMonths(mlog.base.stringToDate(dtEnd),i*-1);
         month = mlog.base.dateToString(month);
@@ -355,19 +355,19 @@ mlog.entries = function(){
         months.push(month);
       }
       // initialize total
-      for (i=0;i<categoriesIds.length;i++) {
+      for (i=0;i<ilen;i++) {
         total.categories[categoriesIds[i]] = {};
       }
       total.summary[debitId] = {};
       total.summary[creditId] = {};
       total.summary[balanceId] = {};
       total.summary[totalId] = {};
-      for (var m=0; m<months.length; m++) {
+      for (var m=0,l=months.length; m<l; m++) {
         total.summary[debitId][months[m]] = 0;
         total.summary[creditId][months[m]] = 0;
         total.summary[balanceId][months[m]] = 0;
         total.summary[totalId][months[m]] = 0;
-        for (i=0;i<categoriesIds.length;i++) {
+        for (i=0;i<ilen;i++) {
           total.categories[categoriesIds[i]][months[m]] = 0;
         }
       }
@@ -376,7 +376,7 @@ mlog.entries = function(){
       var value;
       var accumulated = 0;
       ovEntries.sort();
-      for (i=0;i<ovEntries.length;i++) {
+      for (i=0,ilen=ovEntries.length;i<ilen;i++) {
         // skip if reconcilable
         if (ovEntries[i][6]) {
           continue;
@@ -387,7 +387,7 @@ mlog.entries = function(){
         categories = categories.split(mlog.base.categorySeparator);
         if (categories[0] !== '') {
           // sum for each category/tag
-          for (var ncat=0;ncat<categories.length;ncat++) {
+          for (var ncat=0,l=categories.length;ncat<l;ncat++) {
             total.categories[categories[ncat]][month] += value;
           }
           /* sum credit (if has category) */
@@ -427,12 +427,13 @@ mlog.entries = function(){
       dtStart = mlog.base.dateToString(dtStart);
       var ovEntries = mlog.entries.getAll();
       ovEntries.sort();
+      var ovLen = ovEntries.length;
       var acc = mlog.accountsClass();
-      var i;
+      var i,j;
       try {
         var regexAcc = new RegExp('('+mlog.accounts.getNames().join('|')+')','i');
         // initialize accounts
-        for (i=0;i<accountsParam.length;i++) {
+        for (i=0,j=accountsParam.length;i<j;i++) {
           if (regexAcc.test(accountsParam[i])) {
             acc.add(accountsParam[i],0);
           }
@@ -446,7 +447,7 @@ mlog.entries = function(){
           withTotal = regexAcc.test(mlog.translator.get('total'));
         }
         // add loop until start date
-        for (i=0;i<ovEntries.length;i++) {
+        for (i=0;i<ovLen;i++) {
           if (ovEntries[i][0]<=dtStart) {
             // filter account
             if (!regexAcc.test(ovEntries[i][4])) {
@@ -464,7 +465,7 @@ mlog.entries = function(){
         tmpDate.setDate(tmpDate.getDate()+1); // add a day
         var nextDate = mlog.base.dateToString(tmpDate);
         // build accounts balance
-        if (i==ovEntries.length && nextDate<dtEnd) {
+        if (i==ovLen && nextDate<dtEnd) {
           // loop to build accounts row
           while (nextDate<=dtEnd) {
             data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
@@ -474,7 +475,7 @@ mlog.entries = function(){
           }
         } else {
           // build account's transactions, starting from previous loop i
-          for (i;i<ovEntries.length;i++){
+          for (i;i<ovLen;i++){
             // stop if out of range
             if (ovEntries[i][0]>dtEnd) {
               data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);

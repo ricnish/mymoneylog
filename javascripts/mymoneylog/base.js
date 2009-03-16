@@ -158,8 +158,8 @@ mlog.base = function() {
     toFloat: function(str) {
       var num = str;
       num = num || '0';
-      num = num.replace(/[.,]([0-9])$/, '@$1');
-      num = num.replace(/[.,]([0-9][0-9])$/, '@$1');
+      num = num.replace(/[^0-9.,+-]/g, '');
+      num = num.replace(/([.,]([0-9])$|[.,]([0-9][0-9])$)/, '@$1');
       num = num.replace(/[^0-9@+-]/g, '');
       num = parseFloat(num.replace('@', '.'));
       return num;
@@ -202,8 +202,8 @@ mlog.base = function() {
       menu.addClass('menu_current');
       // show toolbar items
       $('#panel_' + menuId).show();
-			// remove any tooltip
-			mlog.base.removeTooltip();
+      // remove any tooltip
+      mlog.base.removeTooltip();
     },
     stripTags: function(str) {
         return str.replace(/<\/?[^>]+>/gi, '');
@@ -285,19 +285,10 @@ mlog.base = function() {
       });
     },
     showTooltip: function(x, y, contents) {
-      $('<div id="tooltip">' + contents + '</div>').css( {
-        position: 'absolute',
-        display: 'none',
-        top: y + 5,
-        left: x + 10,
-        border: '1px solid #ff0',
-        padding: '4px',
-        'background-color': '#ffa',
-        opacity: 0.90
-      }).appendTo("body").fadeIn(400);
+      $('#tooltip').css({top: y + 5,left: x + 10}).html(contents).fadeIn(200);
     },
     removeTooltip: function() {
-      $('#tooltip').remove();
+      $('#tooltip').hide();
     },
     drawChart: function(container,dataset, xlabels) {
       // draw

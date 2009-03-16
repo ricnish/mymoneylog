@@ -61,9 +61,11 @@ LAYOUT
 
 /* main */
 #main { float: right; margin-right: 10px; width: 72%; }
+#template { display: none; }
 
 /* sidebar */
-#sidebar { float: left; width: 23%; margin: 0; padding: 0; display: inline; padding: 0 10px; }
+#sidebar { float: left; width: 23%; margin: 0; padding: 0; display: inline; padding: 0 10px; display: none; }
+
 /* Footer */
 #footer { clear: both; background: url(../images/bg_75white.png) repeat; border-top: 5px solid #568EB6; margin: 0; padding: 0; height: 36px; font-size: 95%; }
 #footer a { text-decoration: none; font-weight: bold; }
@@ -177,3 +179,4 @@ div.pagination a:hover { padding: 2px 5px 2px 5px; margin-right: 2px; font-weigh
 
 .rc1g {height:1px; background: url(../images/bg_75white.png) repeat; margin:0 2px;}
 .rc2g {height:1px; background: url(../images/bg_75white.png) repeat; margin:0 1px;}
+#tooltip {position: absolute; display: none; border: 1px solid #ff0; padding: 4px; background-color: #ffa; opacity: 0.90; z-index: 9999}

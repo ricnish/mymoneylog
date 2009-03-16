@@ -64,7 +64,8 @@ mlog.accountsControl = function() {
         }
         res.push('</tr>'); // closing tag
         /* build accounts rows */
-        for (i=0;i<this.data.length;i++) {
+        var j;
+        for (i=0,j=this.data.length;i<j;i++) {
           str = odd?_htmlTemplate.overview.tRowOddLabel:_htmlTemplate.overview.tRowLabel;
           odd = !odd;
           str = str.replace(/{date}/,this.data[i][0]);
@@ -118,14 +119,15 @@ mlog.accountsControl = function() {
       /* build x labels */
       /* as: [[0, '10-01'],[1, '10-02']]... month-day */
       var nTicks = Math.round(data.length/12)||7;
-      for (var i=0;i<data.length;i+=nTicks) {
+      var i,j;
+      for (i=0,j=data.length;i<j;i+=nTicks) {
         xTicks.push([i,data[i][0].slice(5,10)]);
       }
-      for (var i=0;i<data[0][1].length;i++) {
+      for (i=0,j=data[0][1].length;i<j;i++) {
         values = [];
         /* build account's day values */
         /* eg: [[0,100],[1,95]], ... */
-        for (var n=0;n<data.length;n++) {
+        for (var n=0,m=data.length;n<m;n++) {
           values.push([n, data[n][1][i][1]]);
         }
         dataset.push({label: data[0][1][i][0], data: values});

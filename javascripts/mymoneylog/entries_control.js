@@ -255,15 +255,16 @@ mlog.entriesControl = function(){
       var res = [tpSum.tHead];
       var accounts = mlog.accounts.getAllwithTotal();
       var maxValue = 0, strRow;
+      var accounts_len = accounts.length;
       // find maxValue
-      for (var i = 0; i < accounts.length - 1; i++) {
+      for (var i = 0; i < accounts_len - 1; i++) {
         if (accounts[i][0] != '' && accounts[i][1] != 0) {
           maxValue = Math.abs(accounts[i][1]) > maxValue ? Math.abs(accounts[i][1]) : maxValue;
         }
       }
       maxValue = maxValue >= 100 ? maxValue : 100; /* at least more then 100 */
-      for (i = 0; i < accounts.length; i++) {
-        if (i < accounts.length - 1) {
+      for (i = 0; i < accounts_len; i++) {
+        if (i < accounts_len - 1) {
           /* bar style and width */
           strRow = tpSum.tRow;
           strRow = strRow.replace(/class="pos"|class=pos/i, (accounts[i][1] < 0 ? 'class="neg"' : 'class="pos"'));
@@ -315,7 +316,7 @@ mlog.entriesControl = function(){
         }
         /* build entries */
         res.push(tp.tHead);
-        for (var i = 0; i < theData.length - 1; i++) {
+        for (var i = 0, data_len=theData.length - 1 ; i < data_len; i++) {
           /* apply template tRow or tRowFuture */
           if (theData[i][0] <= currentDate) {
             /* apply odd or even template */
@@ -343,7 +344,7 @@ mlog.entriesControl = function(){
         }
         /* end of data, put total */
         strRow = tp.tRowTotal.replace(/{totalvalue}/, mlog.base.formatFloat(theTotal));
-        strRow = strRow.replace(/{entriescount}/, theData.length - 1);
+        strRow = strRow.replace(/{entriescount}/, data_len);
         res.push(strRow);
         /* assemble table */
         content = content.replace(/{entriesContent}/, res.join(''));

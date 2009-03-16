@@ -46,7 +46,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.181</h2>
+<h2 id="slogan">1.182</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -70,7 +70,7 @@ $(window).load(function(){ mlog.init(); });
 <div id="content-wrap">
 <div id="sidebar">
 <!-- entries panel starts here -->
-<div id="panel_entries" class="panel" style="display:none;">
+<div id="panel_entries" class="panel">
 <h1 class="msg">Entry</h1>
 <b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form id="form_entry" action="">
@@ -180,7 +180,7 @@ text
 </div>
 <!-- entries panel ends here -->
 <!-- categories overview panel starts here -->
-<div id="panel_categories_overview" class="panel" style="display:none;">
+<div id="panel_categories_overview" class="panel">
 <h1 class="msg">Options</h1>
 <b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
@@ -235,7 +235,7 @@ chart
 </div>
 <!-- categories overview panel ends here -->
 <!-- accounts overview panel starts here -->
-<div id="panel_accounts_overview" class="panel" style="display:none;">
+<div id="panel_accounts_overview" class="panel">
 <h1 class="msg">Options</h1>
 <b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
@@ -282,7 +282,7 @@ show
 </div>
 <!-- accounts overview panel ends here -->
 <!-- editor panel starts here -->
-<div id="panel_editor" class="panel" style="display:none;">
+<div id="panel_editor" class="panel">
 <h1 class="msg">Options</h1>
 <b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action="">
@@ -307,14 +307,15 @@ from
 <b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
 </div><!-- editor panel ends here -->
 <!-- help panel starts here -->
-<div id="panel_help" class="panel" style="display:none;">
+<div id="panel_help" class="panel">
 </div><!-- help panel ends here -->
 </div><!-- main starts here -->
 <div id="main">
 <div id="report">
 </div>
+<div id="template">
 <!-- main_entries starts here -->
-<div id="main_entries" style="display:none;">
+<div id="main_entries">
 <a name="EntriesStart"></a>
 <h1 id="toggle_summary" class="msg show_next">Summary</h1>
 <div id="entries_summary">
@@ -411,12 +412,12 @@ This total
 </div>
 <!-- main_entries ends here -->
 <!-- main_categories_overview starts here -->
-<div id="main_categories_overview" style="display:none;">
+<div id="main_categories_overview">
 <div id="categories_chart">
 <h1 id="categories_chart_title" class="show_next"></h1>
-<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">
+<div><b class="rc1g">&nbsp;</b><b class="rc2g">&nbsp;</b><div class="glass">
 <div id="categories_chart_canvas"></div>
-</div><b class="rc2g"></b><b class="rc1g"></b></div>
+</div><b class="rc2g">&nbsp;</b><b class="rc1g">&nbsp;</b></div>
 </div>
 <h1 id="toggle_categories_overview_table" class="msg">Category by month</h1>
 <div id="categories_overview_summary" class="overflow">
@@ -444,12 +445,12 @@ description
 </div>
 <!-- main_categories_overview ends here -->
 <!-- main_accounts_overview starts here -->
-<div id="main_accounts_overview" style="display:none;">
+<div id="main_accounts_overview">
 <div id="accounts_chart">
 <h1 id="accounts_chart_title" class="msg show_next"></h1>
-<div><b class="rc1g"></b><b class="rc2g"></b><div class="glass">
+<div><b class="rc1g">&nbsp;</b><b class="rc2g">&nbsp;</b><div class="glass">
 <div id="accounts_chart_canvas"></div>
-</div><b class="rc2g"></b><b class="rc1g"></b></div>
+</div><b class="rc2g">&nbsp;</b><b class="rc1g">&nbsp;</b></div>
 </div>
 <h1 id="toggle_accounts_overview_table" class="msg">diary balance</h1>
 <div id="accounts_overview_summary" class="overflow">
@@ -477,7 +478,7 @@ date
 </div>
 <!-- main_overview ends here -->
 <!-- main_editor starts here -->
-<div id="main_editor" style="display:none;">
+<div id="main_editor">
 <h1 class="msg">text data source</h1>
 <b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
 <form action=""><br />
@@ -488,10 +489,12 @@ date
 </div>
 <!-- main_editor ends here -->
 <!-- main_help starts here -->
-<div id="main_help" style="display:none;">
+<div id="main_help">
 <p class="msg">help text</p>
 </div>
 <!-- main_help ends here -->
+</div>
+<!-- template ends here -->
 </div>
 <!-- content-wrap ends here -->
 </div>
@@ -512,9 +515,9 @@ date
 <iframe id="dataframe" src="data.html" style="visibility:hidden;width:0px;height:0px">
 <!-- the source file name is also defined in javascripts/mymoneylog/base.js -->
 </iframe>
-<div id="applet">
-</div>
+<div id="applet"></div>
 <!-- body-bg ends here -->
+<div id="tooltip"></div>
 </div>
 </body>
 </html>
