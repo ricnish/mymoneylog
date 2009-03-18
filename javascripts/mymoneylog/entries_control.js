@@ -108,41 +108,40 @@ mlog.entriesControl = function(){
         $('#main_entries').html('');
         /* initialize data */
         mlog.entries.getAll();
+
+        /* initialize datepicker */
+        $('#input_date').val(mlog.base.getCurrentDate());
+
         /* description autocomplete */
         $('#input_description').autocomplete(mlog.entries.getDescriptions(), _acOptions);
+
         /* category autocomplete */
         $('#input_category').autocomplete(mlog.categories.getNames(), _acOptionsMulti);
+
         /* from account autocomplete */
         $('#input_account').autocomplete(mlog.accounts.getNames(), _acOptions
-        ).result(function(){
-          /* on accept jump to: */
-          if ($('#input_category').val() != '') {
-            if (!$.browser.opera)
-              $('#form_entry button')[0].focus();
-          }
-          else {
-            $('#input_account_to').focus().select();
-          }
-        }).focus(function() {
-        /* attach on focus event for account transfers */
-          if ($('#input_category').val() == '') {
-            $('#transfer').show();
-          }
-          else {
-            $('#transfer').hide();
-          }
-        });
+          ).result(function(){
+            /* on accept jump to: */
+            if ($('#input_category').val() != '') {
+              if (!$.browser.opera)
+                $('#form_entry button')[0].focus();
+            }
+            else {
+              $('#input_account_to').focus().select();
+            }
+          }).focus(function() {
+          /* attach on focus event for account transfers */
+            if ($('#input_category').val() == '') {
+              $('#transfer').show();
+            }
+            else {
+              $('#transfer').hide();
+            }
+          });
+
         /* to account autocomplete */
-        $('#input_account_to').autocomplete(mlog.accounts.getNames(), _acOptions
-        ).result(function(){
-          /* on accept jump to: */
-          if (!$.browser.opera)
-            $('#form_entry button')[0].focus();
-        });
-        /* initialize datepicker */
-        $('#input_date').jscalendar().val(mlog.base.getCurrentDate());;
-        $('#filter_date_from').jscalendar();
-        $('#filter_date_until').jscalendar();
+        $('#input_account_to').autocomplete(mlog.accounts.getNames(), _acOptions);
+
         /* fill filter autocomplete */
         $('#filter_query').autocomplete(_storedSearches, _acOptions);
         /* auto clear form configuration */
@@ -295,8 +294,7 @@ mlog.entriesControl = function(){
       _filterOptions.pageNumber = (typeof page == 'number') ? page : 1;
 
       /* just make sure to remove row autocomplete */
-      $('#input_category_row').unautocomplete();
-      $('#input_account_row').unautocomplete();
+      $('#entries_table .ac_input').each( function() { $(this).unautocomplete(); });
 
       var theTotal = 0;
       var res = [];
@@ -406,6 +404,9 @@ mlog.entriesControl = function(){
       $('#transfer').hide();
       $('#input_date').focus();
       $('#input_pending').attr('checked', '');
+      $('#input_description').setOptions({
+        data: mlog.entries.getDescriptions()
+      });
       $('#input_category').setOptions({
         data: mlog.categories.getNames()
       });

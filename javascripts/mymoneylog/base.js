@@ -316,13 +316,30 @@ mlog.base = function() {
   };
 }();
 
-/* extend jquery to setup jscalendar */
+/* jquery to setup jscalendar */
 $.fn.jscalendar = function() {
   if (this[0] !== undefined) {
     Calendar.setup({
       inputField: this[0].id,
       ifFormat: "%Y-%m-%d",
       weekNumbers: false
+    });
+  }
+  return this;
+};
+
+/* jquery to handle enter key on input elem */
+$.fn.jumpOnEnterKey = function() {
+  if (this !== undefined) {
+    this.bind("keypress", function(e) {
+      /* handle ENTER key */
+      if (e.keyCode == 13) {
+        var inputs = $(this).parents("form").eq(0).find(":input:visible");
+        var idx = inputs.index(this);
+        inputs[idx + 1].focus();
+        return false;
+      }
+      return true;
     });
   }
   return this;

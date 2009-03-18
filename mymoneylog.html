@@ -46,7 +46,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.182</h2>
+<h2 id="slogan">1.183</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -76,39 +76,39 @@ $(window).load(function(){ mlog.init(); });
 <form id="form_entry" action="">
 <div>
 <label class="msg">Date</label>
-<input id="input_date" class="input_date autocompleteoff" type="text" />
+<input id="input_date" class="input_date jump_on_enter_key" type="text" />
 <span class="input_inline">
-<input type="checkbox" id="input_pending" class="input_checkbox" />
+<input type="checkbox" id="input_pending" class="input_checkbox jump_on_enter_key" />
 <span class="msg">pending</span>
 </span>
 </div>
 <div>
 <label class="msg">Value</label>
-<input id="input_value" type="text" />
+<input id="input_value" type="text" class="jump_on_enter_key" />
 </div>
 <div>
 <label class="msg">
 Description
 </label>
-<input id="input_description" type="text" />
+<input id="input_description" type="text" class="jump_on_enter_key" />
 </div>
 <div>
 <label class="msg">
 Category
 </label>
-<input id="input_category" class="autocompleteoff" type="text" />
+<input id="input_category" type="text" />
 </div>
 <div>
 <label class="msg">
 From Account
 </label>
-<input id="input_account" class="autocompleteoff" type="text" />
+<input id="input_account" type="text" />
 </div>
 <div id="transfer" style="display:none">
 <label class="msg">
 To Account
 </label>
-<input id="input_account_to" type="text" />
+<input id="input_account_to" type="text" class="jump_on_enter_key" />
 </div>
 <p>
 <button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
@@ -145,13 +145,13 @@ accounts
 <label class="msg">
 from
 </label>
-<input id="filter_date_from" class="input_date autocompleteoff" type="text" readonly="readonly" />
+<input id="filter_date_from" class="input_date" type="text" readonly="readonly" />
 </div>
 <div class="float-left">
 <label class="msg">
 until
 </label>
-<input id="filter_date_until" class="input_date autocompleteoff" type="text" readonly="readonly" />
+<input id="filter_date_until" class="input_date" type="text" readonly="readonly" />
 </div>
 <div class="clear"></div>
 <div>
@@ -168,7 +168,7 @@ value
 <label class="msg">
 text
 </label>
-<input type="text" id="filter_query" class="textbox autocompleteoff" />
+<input type="text" id="filter_query" class="textbox" />
 </div>
 <p>
 <button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>
@@ -208,7 +208,7 @@ Show last
 <label class="msg">
 Until
 </label>
-<input id="input_ov_until_date" class="input_date autocompleteoff" type="text" readonly="readonly" onchange="mlog.categoriesControl.updateView()" />
+<input id="input_ov_until_date" class="input_date" type="text" readonly="readonly" onchange="mlog.categoriesControl.updateView()" />
 </div>
 <div>
 <label class="msg">
@@ -264,7 +264,7 @@ Show last
 <label class="msg">
 Until
 </label>
-<input id="input_accounts_until_date" class="input_date autocompleteoff" type="text" readonly="readonly" onchange="mlog.accountsControl.updateView()" />
+<input id="input_accounts_until_date" class="input_date" type="text" readonly="readonly" onchange="mlog.accountsControl.updateView()" />
 </div>
 <div>
 <label class="msg">
@@ -298,7 +298,7 @@ show
 <label class="msg">
 from
 </label>
-<input id="input_export_from_date" class="input_date autocompleteoff" type="text" readonly="readonly" />
+<input id="input_export_from_date" class="input_date" type="text" readonly="readonly" />
 </div>
 <p>
 <button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
@@ -502,7 +502,7 @@ date
 <div id="footer">
 <div class="footer-left">
 <p class="align-left">
-&nbsp;&copy;2007 <a href="http://nishimura.eti.br">Ricardo Nishimura</a>
+&nbsp;2008 <a href="http://nishimura.eti.br">Ricardo Nishimura</a>
 | Adapted design from <a href="http://www.styleshout.com/">styleshout</a>
 | Icons by <a href="http://www.famfamfam.com/lab/icons/silk/">famfamfam</a>
 </p>

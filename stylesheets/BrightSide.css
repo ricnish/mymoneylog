@@ -55,8 +55,8 @@ LAYOUT
 
 /* header */
 #header { position: relative; height: 85px; background: url(../images/headerbg.gif) repeat-x 0% 100%; }
-#header h1#logo { position: absolute; margin: 0; padding: 0; font: bolder 4em 'Trebuchet MS', Arial, Sans-serif; letter-spacing: -2px; top: 18px; left: 5px; cursor:pointer; }
-#header h2#slogan { position: absolute; top:50px; left: 8px; color: #888; text-indent: 0px; font: bold 11px Tahoma, 'trebuchet MS', Sans-serif; text-transform: none; }
+#header h1#logo { position: absolute; margin: 0; padding: 0; font: bolder 4em 'Trebuchet MS', Arial, Sans-serif; letter-spacing: -2px; top: 18px; left: 5px; }
+#header h2#slogan { position: absolute; top:50px; left: 8px; color: #888; text-indent: 0px; font: bold 11px Tahoma, 'trebuchet MS', Sans-serif; text-transform: none; cursor:pointer; }
 #header #locale { float: right; margin-top: 15px; }
 
 /* main */

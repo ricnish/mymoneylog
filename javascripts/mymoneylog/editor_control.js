@@ -15,7 +15,7 @@ mlog.editorControl = function() {
         _htmlTemplate.main = _htmlTemplate.main.replace(/  /gi,'');
         $('#main_editor').html('');
         /* initialize datepicker */
-        $('#input_export_from_date').jscalendar().val(mlog.base.getCurrentDate());
+        $('#input_export_from_date').val(mlog.base.getCurrentDate());
       }
     },
     onKeyPress: function(event) {

@@ -38,7 +38,7 @@ mlog.accountsControl = function() {
         };
         $('#main_accounts_overview').html('');
         /* initialize datepicker */
-        $('#input_accounts_until_date').jscalendar().val(mlog.base.getCurrentDate());
+        $('#input_accounts_until_date').val(mlog.base.getCurrentDate());
       }
     },
     /* show overview */
