@@ -336,7 +336,8 @@ $.fn.jumpOnEnterKey = function() {
       if (e.keyCode == 13) {
         var inputs = $(this).parents("form").eq(0).find(":input:visible");
         var idx = inputs.index(this);
-        inputs[idx + 1].focus();
+        $(inputs[idx + 1]).focus().select();
+        e.stopPropagation();
         return false;
       }
       return true;

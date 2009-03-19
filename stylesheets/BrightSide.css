@@ -149,7 +149,7 @@ div.overflow { overflow: auto; }
 table.summary { background: #fff url(../images/toolbar-bg.png) repeat-x ; }
 table.summary tr { background:none; }
 table.summary td.first { width: 25%; }
-#main table.summary td.value { padding-left: 0px; background-image: url(../images/vert-bg.gif); background-repeat: repeat-x; border-bottom: solid 0px #FFF; }
+#main table.summary td.value { padding-left: 0px; background-image: url(../images/vert-bg.gif); background-repeat: repeat-x; }
 
 /* http://blog.leetsoft.com/2006/8/22/super-simple-css-bars */
 div.bar-container { float: left; width: 70%; padding-top: 1px; text-align: left; }

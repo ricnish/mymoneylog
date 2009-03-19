@@ -140,7 +140,12 @@ mlog.entriesControl = function(){
           });
 
         /* to account autocomplete */
-        $('#input_account_to').autocomplete(mlog.accounts.getNames(), _acOptions);
+        $('#input_account_to').autocomplete(mlog.accounts.getNames(), _acOptions
+        ).result(function(){
+          /* on accept jump to: */
+          if (!$.browser.opera)
+            $('#form_entry button')[0].focus();
+        });
 
         /* fill filter autocomplete */
         $('#filter_query').autocomplete(_storedSearches, _acOptions);
