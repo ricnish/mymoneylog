@@ -9,15 +9,12 @@ mlog.entriesControl = function(){
   var _hideSummary = false;
   /* autocomplete options */
   var _acOptions = {
-    minChars: 0,
-    max: 50,
-    selectFirst: false
+    minChars: 0
   };
   var _acOptionsMulti = {
     minChars: 0,
-    max: 50,
-    selectFirst: false,
     multiple: true,
+    selectFirst: false,
     multipleSeparator: mlog.base.categorySeparator
   };
 
@@ -113,7 +110,7 @@ mlog.entriesControl = function(){
         $('#input_date').val(mlog.base.getCurrentDate());
 
         /* description autocomplete */
-        $('#input_description').autocomplete(mlog.entries.getDescriptions(), _acOptions);
+        $('#input_description').autocomplete(mlog.entries.getDescriptions(),{selectFirst: false});
 
         /* category autocomplete */
         $('#input_category').autocomplete(mlog.categories.getNames(), _acOptionsMulti);
@@ -227,7 +224,7 @@ mlog.entriesControl = function(){
       /* insert values and prepare autocompleters */
       $('#input_date_row').jscalendar().val(_date);
       $('#input_value_row').val(_value);
-      $('#input_description_row').autocomplete(mlog.entries.getDescriptions(), _acOptions).val(_description);
+      $('#input_description_row').autocomplete(mlog.entries.getDescriptions(),{selectFirst: false}).val(_description);
       $('#input_category_row').autocomplete(mlog.categories.getNames(), _acOptionsMulti).val(_category);
       $('#input_account_row').autocomplete(mlog.accounts.getNames(), _acOptions).val(_account);
     },
