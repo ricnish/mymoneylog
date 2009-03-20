@@ -54,9 +54,7 @@ mlog.editorControl = function() {
       mlog.editorControl.init();
       mlog.base.activateMenu('editor');
       $('#report').html(_htmlTemplate.main);
-      $('#text_data').height(tHeight);
-      $('#text_data').val(mlog.entries.toString());
-      $('#text_data').keydown( mlog.editorControl.onKeyPress );
+      $('#text_data').height(tHeight).val(mlog.entries.toString()).keydown( mlog.editorControl.onKeyPress );
     },
     applyChanges: function() {
       // if data.html doesn't exists, create and load it
@@ -64,8 +62,7 @@ mlog.editorControl = function() {
         mlog.entries.save();
         $("#dataframe").load( function() {
           mlog.editorControl.applyChanges();
-        } );
-        $("#dataframe").attr('src', mlog.base.dataFileName);
+        }).attr('src', mlog.base.dataFileName);
         return;
       }
       $("#dataframe").unbind('load');
