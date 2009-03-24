@@ -186,12 +186,16 @@ mlog.entriesControl = function(){
     },
     /* remove an entry */
     removeEntry: function(elem){
-      var lineId = elem.parentNode.parentNode.getAttribute('id').substring(2);
+      var el = $(elem.parentNode.parentNode);
+      el.addClass('bg_delete');
+      var lineId = el.attr('id').substring(2);
       if (confirm(mlog.translator.get('delete').toUpperCase() + ': ' + mlog.translator.get('are you sure?'))) {
         var lineData = mlog.entries.remove(lineId);
-        this.show();
         mlog.entriesControl.updateTagCloud();
         this.updateInputEntry(lineData);
+        el.fadeOut("normal", function() { mlog.entriesControl.show(); } );
+      } else {
+        el.removeClass('bg_delete');
       }
     },
     /* prepare a selected row to be edited */
