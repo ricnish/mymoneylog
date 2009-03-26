@@ -140,19 +140,17 @@ mlog.entries = function(){
       var i,j;
       for (i = 0, j=_entries.length; i < j; i++) {
         if (_entries[i][0]<startDate) {
-          // set initial accounts values
+          // set initial accounts values: account, value
           initialAccounts.add(_entries[i][4],_entries[i][1]);
           continue;
         }
-        // remove index
-        // format date and value
-        txt = _entries[i][0] +(_entries[i][6]?'?':'')+ mlog.base.dataFieldSeparator +
-          mlog.base.floatToString(_entries[i][1]) + mlog.base.dataFieldSeparator;
-        // push description, category and account
-        tmp.push(txt + _entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
+        // push "date TAB value TAB description TAB category TAB account"
+        tmp.push(_entries[i][0] +(_entries[i][6]?'?':'')+ mlog.base.dataFieldSeparator +
+          mlog.base.floatToString(_entries[i][1]) + mlog.base.dataFieldSeparator +
+          _entries[i].slice(2,5).join(mlog.base.dataFieldSeparator));
       }
       initialAccounts = initialAccounts.getAll();
-      txt = '';
+      // setup initial accounts values if necessary
       if (initialAccounts.length>0) {
         for (i=0,j=initialAccounts.length; i<j;i++) {
           if (initialAccounts[i][0] !== '') {
