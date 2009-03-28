@@ -62,7 +62,7 @@ mlog.categoriesControl = function() {
           str = _htmlTemplate.overview.tHeadColumn.replace(/{month}/,month);
           res.push(str);
         }
-        str = _htmlTemplate.overview.tHeadColumn.replace(/{month}/,mlog.translator.get('average'));
+        str = _htmlTemplate.overview.tHeadColumn.replace(/{month}/,mlog.translator.msg('average'));
         res.push(str + '</tr>'); // closing tag
         /* build categories rows */
         var avgSum = 0;
@@ -97,7 +97,7 @@ mlog.categoriesControl = function() {
             res.push(str.replace(/{value}/,mlog.base.formatFloat(list[total][month])));
             avgSum += list[total][month];
           }
-          if (total != mlog.translator.get('accumulated'))
+          if (total != mlog.translator.msg('accumulated'))
             res.push(str.replace(/{value}/,mlog.base.formatFloat(avgSum/avgCount)));
           else
             res.push(str.replace(/{value}/,'&nbsp;'));
@@ -107,7 +107,7 @@ mlog.categoriesControl = function() {
         str = str.replace(/{overviewContent}/,res.join(''));
       }
       else {
-        str = '<h1>' + mlog.translator.get('no data') + '</h1>';
+        str = '<h1>' + mlog.translator.msg('no data') + '</h1>';
       }
       $('#report').html(str);
       res = null;
@@ -158,7 +158,7 @@ mlog.categoriesControl = function() {
       });
       /* build x labels */
       /* as: [[0, '2008-01'],[1, '2008-02']]... */
-      for (month in data.summary[mlog.translator.get('balance')]) {
+      for (month in data.summary[mlog.translator.msg('balance')]) {
         xTicks.push([count, month]);
         count++;
       }
@@ -167,7 +167,7 @@ mlog.categoriesControl = function() {
         (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
         showDebits = (chartSelection === 'line_debit');
         list = data.categories;
-        chartTitle = showDebits?mlog.translator.get('expenses by category'):mlog.translator.get('credits by category');
+        chartTitle = showDebits?mlog.translator.msg('expenses by category'):mlog.translator.msg('credits by category');
         for (var category in list) {
           /* if not checked skip */
           if ($.inArray(category,categoriesChecked)<0) continue;
@@ -190,12 +190,12 @@ mlog.categoriesControl = function() {
         // chart line (total)
         // draw summary chart
         list = data.summary;
-        chartTitle = mlog.translator.get('overview');
+        chartTitle = mlog.translator.msg('overview');
         for (var description in list) {
           count = 0;
           values = [];
           // if debit show value as positive
-          if (description == mlog.translator.get('debit')) {
+          if (description == mlog.translator.msg('debit')) {
             showDebits=true;
           } else {
             showDebits=false;
@@ -212,7 +212,7 @@ mlog.categoriesControl = function() {
         }
       }
       // chart container
-      chartTitle = mlog.translator.get('chart')+': '+chartTitle;
+      chartTitle = mlog.translator.msg('chart')+': '+chartTitle;
       var size = $('#categories_chart').width()-35;
       $('#categories_chart_title').html(chartTitle);
       $('#categories_chart_canvas').width(size).height(size/1.75);

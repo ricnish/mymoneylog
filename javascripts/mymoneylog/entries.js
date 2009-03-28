@@ -103,7 +103,7 @@ mlog.entries = function(){
       if (srcData) {
         rawData = srcData.innerHTML;
       } else {
-        rawData = mlog.translator.get('datasample');
+        rawData = mlog.translator.msg('datasample');
       }
       rawData = rawData.split(mlog.base.dataRecordSeparator);
 
@@ -156,7 +156,7 @@ mlog.entries = function(){
           if (initialAccounts[i][0] !== '') {
             txt += startDate + mlog.base.dataFieldSeparator +
               mlog.base.floatToString(initialAccounts[i][1]) + mlog.base.dataFieldSeparator +
-              mlog.translator.get('initial value') + mlog.base.dataFieldSeparator +
+              mlog.translator.msg('initial value') + mlog.base.dataFieldSeparator +
               mlog.base.dataFieldSeparator +
               initialAccounts[i][0] + '\n';
           }
@@ -168,24 +168,24 @@ mlog.entries = function(){
       var filename = mlog.base.getDataPathName().replace(/data.html/,startdate+'_data.html');
       var result = mlog.base.saveFile(filename,this.toString(startdate));
       if (!result) {
-        alert(mlog.translator.get('could not store the data'));
+        alert(mlog.translator.msg('could not store the data'));
         return;
       }
-      alert(mlog.translator.get('data exported to file:')+'\n'+filename);
+      alert(mlog.translator.msg('data exported to file:')+'\n'+filename);
     },
     save: function(){
       var result = mlog.base.saveFile(mlog.base.getDataPathName(),this.toString());
       if (!result) {
-        alert(mlog.translator.get('could not store the data'));
+        alert(mlog.translator.msg('could not store the data'));
       }
     },
     backup: function(){
       var result = mlog.base.saveFile(mlog.base.getDataPathName() + '.old',this.toString());
       if (!result) {
-        alert(mlog.translator.get('could not store the data'));
+        alert(mlog.translator.msg('could not store the data'));
       }
     },
-    get: function(id){
+    getById: function(id){
       return _entries[id];
     },
     add: function(entry){
@@ -223,8 +223,8 @@ mlog.entries = function(){
           newEntry[2] = entry[2] + ' ' + (i+1) + '/' + nTimes;
         }
         /* add due data description if doesn't have */
-        if (newEntry[2].indexOf(mlog.translator.get('due to'))<0)
-          newEntry[2] += (reconcilable)?(' - ' + mlog.translator.get('due to') + ' ' + newEntry[0].substring(0,10)):'';
+        if (newEntry[2].indexOf(mlog.translator.msg('due to'))<0)
+          newEntry[2] += (reconcilable)?(' - ' + mlog.translator.msg('due to') + ' ' + newEntry[0].substring(0,10)):'';
         _add(newEntry);
         /* if category is empty and has toAccount, do a transfer */
         if (newEntry[3]==='' && toAccount!=='' && newEntry[1] !== 0) {
@@ -338,10 +338,10 @@ mlog.entries = function(){
         summary:{}
         };
       var categoriesIds = mlog.categories.getNames();
-      var debitId = mlog.translator.get('debit');
-      var creditId = mlog.translator.get('credit');
-      var balanceId = mlog.translator.get('balance');
-      var totalId = mlog.translator.get('accumulated');
+      var debitId = mlog.translator.msg('debit');
+      var creditId = mlog.translator.msg('credit');
+      var balanceId = mlog.translator.msg('balance');
+      var totalId = mlog.translator.msg('accumulated');
       /* initialize months */
       var months = [];
       var month;
@@ -442,7 +442,7 @@ mlog.entries = function(){
         regexAcc = new RegExp('('+accountsParam.join('|')+')','i');
         var withTotal = true;
         if (regexAcc!==undefined) {
-          withTotal = regexAcc.test(mlog.translator.get('total'));
+          withTotal = regexAcc.test(mlog.translator.msg('total'));
         }
         // add loop until start date
         for (i=0;i<ovLen;i++) {

@@ -128,6 +128,7 @@ LAYOUT
 #main .hide { display: none; }
 .neg { color: #F66; }
 #main tr.total .neg { }
+#main tr.bg_delete .neg { color: #FFF; }
 #help { background: url(../images/bg_75white.png) repeat; padding: 12px; }
 .glass { background: url(../images/bg_75white.png) repeat; padding: 10px; }
 div.overflow { overflow: auto; }
@@ -161,8 +162,8 @@ div.bar-container div.neg { background-image: url(../images/bars.png); backgroun
 /* pagination */
 div.pagination { padding:3px; margin:3px; text-align:right; }
 div.pagination select { padding: 1px 1px 1px 1px; width: 50px; }
-div.pagination a { padding: 2px 5px 2px 5px; margin-right: 2px; font-weight: bold; border:1px solid #D3EF86; text-decoration: none; color: #9EC630; background-color: #fff; }
-div.pagination a:hover { padding: 2px 5px 2px 5px; margin-right: 2px; font-weight: bold; background-color: #9EC630; color: #FFF; cursor:pointer; }
+div.pagination a { padding: 2px 5px 2px 5px; margin-right: 2px; border:1px solid #D3EF86; text-decoration: none; color: #9EC630; background-color: #fff; }
+div.pagination a:hover { padding: 2px 5px 2px 5px; margin-right: 2px; background-color: #9EC630; color: #FFF; cursor:pointer; }
 
 /* chart */
 #main div.legend table { width: auto; }

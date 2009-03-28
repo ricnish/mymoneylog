@@ -189,7 +189,7 @@ mlog.entriesControl = function(){
       var el = $(elem.parentNode.parentNode);
       el.addClass('bg_delete');
       var lineId = el.attr('id').substring(2);
-      if (confirm(mlog.translator.get('delete').toUpperCase() + ': ' + mlog.translator.get('are you sure?'))) {
+      if (confirm(mlog.translator.msg('delete').toUpperCase() + ': ' + mlog.translator.msg('are you sure?'))) {
         var lineData = mlog.entries.remove(lineId);
         mlog.entriesControl.updateTagCloud();
         this.updateInputEntry(lineData);
@@ -200,7 +200,14 @@ mlog.entriesControl = function(){
     },
     /* prepare a selected row to be edited */
     prepareRowEdit: function(elem){
-      var lineId = '#' + elem.parentNode.parentNode.getAttribute('id');
+      var lineId = elem.parentNode.parentNode.getAttribute('id');
+      if (lineId===null) {
+        // from double click event
+        lineId = elem.parentNode.getAttribute('id');
+      }
+      if (lineId.indexOf('n_')<0)
+        return;
+      lineId = '#' + lineId;
       /* clear any previous preparation to edit */
       if ($('#input_date_row').length > 0)
         this.onPageChange();
@@ -251,7 +258,7 @@ mlog.entriesControl = function(){
     /* display on input when clicked */
     onClickEntry: function(elem){
       var id = elem.parentNode.getAttribute('id').substring(2);
-      this.updateInputEntry(mlog.entries.get(id));
+      this.updateInputEntry(mlog.entries.getById(id));
     },
     /* build summary */
     getSummary: function(){
@@ -356,7 +363,7 @@ mlog.entriesControl = function(){
         content += mlog.entriesControl.buildPaginator(maxPage) + '<br />';
       }
       else {
-        content = '<h1>' + mlog.translator.get('no data') + '</h1>';
+        content = '<h1>' + mlog.translator.msg('no data') + '</h1>';
       }
       $('#report').html(content);
       $('#toggle_summary').click(function(){
@@ -366,6 +373,8 @@ mlog.entriesControl = function(){
       /* bind click event on each column */
       $('td.entry').click(function(){
         mlog.entriesControl.onClickEntry(this);
+      }).dblclick(function(){
+        mlog.entriesControl.prepareRowEdit(this);
       });
     },
 
@@ -432,7 +441,7 @@ mlog.entriesControl = function(){
     },
     reconcileEntry: function(elem){
       var id = elem.parentNode.parentNode.getAttribute('id').substring(2);
-      if (confirm(mlog.translator.get('conciliate').toUpperCase() + ': ' + mlog.translator.get('are you sure?'))) {
+      if (confirm(mlog.translator.msg('conciliate').toUpperCase() + ': ' + mlog.translator.msg('are you sure?'))) {
         mlog.entries.reconcile(id);
         this.show();
         $('#n_' + (mlog.entries.getCount() - 1)).addClass('new_entry');
@@ -507,12 +516,12 @@ mlog.entriesControl = function(){
         }
       }
       str.push('</select>&nbsp;<span class="msg">' +
-      mlog.translator.get('per page') +
+      mlog.translator.msg('per page') +
       '</span>' +
       '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
       var prevPg = (currentPg - 1 > 0) ? currentPg - 1 : currentPg;
-      str.push('<a onclick="mlog.entriesControl.show(' + prevPg + ')">&laquo;</a>');
-      str.push('&nbsp;' + mlog.translator.get('page') + '&nbsp;');
+      str.push('<a onclick="mlog.entriesControl.show(' + prevPg + ')">&lt;</a>');
+      str.push('&nbsp;' + mlog.translator.msg('page') + '&nbsp;');
       str.push('<select id="select_page" onchange="mlog.entriesControl.onPageChange()">');
       for (i = 1; i <= maxPg; i++) {
         if (i == currentPg) {
@@ -522,9 +531,9 @@ mlog.entriesControl = function(){
           str.push('<option value="' + i + '">' + i + '</option>');
         }
       }
-      str.push('</select>&nbsp;' + mlog.translator.get('of') + '&nbsp;' + maxPg + '&nbsp;');
+      str.push('</select>&nbsp;' + mlog.translator.msg('of') + '&nbsp;' + maxPg + '&nbsp;');
       var nextPg = (currentPg + 1 <= maxPg) ? currentPg + 1 : currentPg;
-      str.push('<a onclick="mlog.entriesControl.show(' + nextPg + ')">&raquo;</a>');
+      str.push('<a onclick="mlog.entriesControl.show(' + nextPg + ')">&gt;</a>');
       str.push('</div>');
       return str.join('');
     }

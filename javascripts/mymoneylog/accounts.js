@@ -41,7 +41,7 @@ mlog.accountsClass = function(){
         sum += _accounts[account].value;
       }
       ret.sort();
-      ret.push([mlog.translator.get('total'),sum,0]);
+      ret.push([mlog.translator.msg('total'),sum,0]);
       return ret;
     },
     reset: function() {

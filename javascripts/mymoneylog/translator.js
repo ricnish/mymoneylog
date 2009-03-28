@@ -23,14 +23,13 @@ mlog.translator = function() {
       return localeId;
     },
 
-    get: function(msg) {
+    msg: function(msg) {
       msg = $.trim(msg.toLowerCase());
       msg = mlog.translation[msg] || msg;
       return msg;
     },
     /* translate all html msg */
     translateDocument: function() {
-
       // init locales selection
       var selLocales = '';
       $.each(mlog.translator.getLocales(), function() {
@@ -41,7 +40,7 @@ mlog.translator = function() {
       $('#select_locales').html(selLocales);
       
       $('.msg').each( function(){
-        $(this).html(mlog.translator.get($(this).html()));
+        $(this).html(mlog.translator.msg($(this).html()));
       }
       );
     },

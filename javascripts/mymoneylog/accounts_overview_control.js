@@ -53,7 +53,7 @@ mlog.accountsControl = function() {
         $('#input_accounts_until_date').val(),
         accountsList);
       var res = [];
-      var str = '<h1>' + mlog.translator.get('no data') + '</h1>';
+      var str = '<h1>' + mlog.translator.msg('no data') + '</h1>';
       var odd = true;
       if (this.data!==null) {
         /* build header */
@@ -112,7 +112,7 @@ mlog.accountsControl = function() {
       if (data===null) {
         return;
       }
-      var chartTitle = mlog.translator.get('chart')+': '+mlog.translator.get('diary balance');
+      var chartTitle = mlog.translator.msg('chart')+': '+mlog.translator.msg('diary balance');
       var xTicks = [];
       var dataset = [];
       var values = [];
