@@ -200,8 +200,8 @@ mlog.entriesControl = function(){
     },
     /* prepare a selected row to be edited */
     prepareRowEdit: function(elem){
-      var lineId = elem.parentNode.parentNode.getAttribute('id');
-      if (lineId===null) {
+      var lineId = elem.parentNode.parentNode.getAttribute('id') || '';
+      if (lineId=='') {
         // from double click event
         lineId = elem.parentNode.getAttribute('id');
       }
