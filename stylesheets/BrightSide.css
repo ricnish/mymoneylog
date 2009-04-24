@@ -129,6 +129,8 @@ LAYOUT
 .neg { color: #F66; }
 #main tr.total .neg { }
 #main tr.bg_delete .neg { color: #FFF; }
+#main td.selectSum { background: #FEFF6F; cursor:pointer; }
+#main td.total.selectSum { background: #7FCCFF; }
 #help { background: url(../images/bg_75white.png) repeat; padding: 12px; }
 .glass { background: url(../images/bg_75white.png) repeat; padding: 10px; }
 div.overflow { overflow: auto; }

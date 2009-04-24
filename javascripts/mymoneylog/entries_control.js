@@ -129,7 +129,7 @@ mlog.entriesControl = function(){
           }).focus(function() {
           /* attach on focus event for account transfers */
             if ($('#input_category').val() == '') {
-              $('#transfer').show();
+              $('#transfer').slideDown();
             }
             else {
               $('#transfer').hide();
@@ -376,6 +376,9 @@ mlog.entriesControl = function(){
       }).dblclick(function(){
         mlog.entriesControl.prepareRowEdit(this);
       });
+
+			mlog.entriesControl.setupCellSum();
+
     },
 
     /* sort table column */
@@ -536,6 +539,57 @@ mlog.entriesControl = function(){
       str.push('<a onclick="mlog.entriesControl.show(' + nextPg + ')">&gt;</a>');
       str.push('</div>');
       return str.join('');
+    },
+
+    setupCellSum: function() {
+      $('#entries_table td.col_r').click(function() {
+          mlog.entriesControl.toggleCellSum(this);
+      });
+    },
+    toggleCellSum: function(elem) {
+      $(elem).toggleClass('selectSum');
+      // show sum if any
+      var posX = $(elem).position().left + $(elem).width() + 4;
+      var posY = $(elem).position().top - 4;
+      mlog.entriesControl.showCellSum(posX,posY);
+      // first unbind any previous cell sum
+      $('#entries_table td').unbind('mouseenter mouseleave');
+      // bind mouse hover event
+      $('#entries_table td.selectSum').hover(
+        // in
+        function(ev) {
+          mlog.entriesControl.showCellSum(ev.pageX+10,ev.pageY-10);
+        },
+        // out
+        function() {
+          mlog.base.removeTooltip();
+        }
+      );
+    },
+    showCellSum: function(posX,posY) {
+      var sum = 0;
+      var val = 0;
+      var count = 0;
+      var msg = mlog.translator.msg('sum');
+      // sum selection
+      $('#entries_table td.selectSum').each(
+        function(i,v) {
+          val = mlog.base.toFloat($(v).children().html());
+          if ($(v).hasClass('total')) {
+            // if total was selected, subtract
+            sum = val - sum;
+            msg = mlog.translator.msg('total') + '&nbsp;-&nbsp;' + msg;
+          }
+          else
+            sum += val;
+          count = i;
+        }
+      );
+      msg = msg + ':&nbsp;' + mlog.base.formatFloat(sum);
+      if (sum != 0 && count > 0)
+        mlog.base.showTooltip(posX,posY,msg);
+      else
+        mlog.base.removeTooltip();
     }
   };
 }();
