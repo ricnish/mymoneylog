@@ -377,8 +377,7 @@ mlog.entriesControl = function(){
         mlog.entriesControl.prepareRowEdit(this);
       });
 
-			mlog.entriesControl.setupCellSum();
-
+      mlog.entriesControl.setupCellSum();
     },
 
     /* sort table column */
@@ -542,6 +541,7 @@ mlog.entriesControl = function(){
     },
 
     setupCellSum: function() {
+      mlog.base.removeTooltip();
       $('#entries_table td.col_r').click(function() {
           mlog.entriesControl.toggleCellSum(this);
       });
@@ -585,7 +585,7 @@ mlog.entriesControl = function(){
           count = i;
         }
       );
-      msg = msg + ':&nbsp;' + mlog.base.formatFloat(sum);
+      msg = msg + '&nbsp;=&nbsp;' + mlog.base.formatFloat(sum);
       if (sum != 0 && count > 0)
         mlog.base.showTooltip(posX,posY,msg);
       else
