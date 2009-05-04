@@ -68,14 +68,11 @@ mlog.base = function() {
     dataFieldSeparator: '\t',
     dataRecordSeparator: /[\n\r]+/,
     categorySeparator: '; ',
-    commentChar: '#',
     dataFileName: 'data.html',
     /* end config parameters */
     getDataPathName: function() {
       var filename = document.location.pathname;
-      if (filename.indexOf('\\')!=-1) {
-        filename = filename.replace(/\\/g,"/");
-      }
+      filename = filename.replace(/\\/g,"/");
       filename = filename.split('/');
       filename[filename.length-1] = mlog.base.dataFileName;
       filename = filename.join('/');

@@ -8,7 +8,7 @@ mlog.entries = function(){
   // store descriptions to suggest
   var _descriptions = {};
   var _add = function(entryArray){
-    if (entryArray) {
+    if (entryArray.length>2) {
       var entry = entryArray.slice(0);
       try {
         /*
@@ -108,14 +108,8 @@ mlog.entries = function(){
       rawData = rawData.split(mlog.base.dataRecordSeparator);
 
       for (var i = 0, j=rawData.length; i < j; i++) {
-        if (rawData[i].indexOf(mlog.base.commentChar) === 0) {
-          continue;
-        }
-        if (rawData[i].indexOf(mlog.base.dataFieldSeparator) == -1) {
-          continue;
-        }
-        // add as array
-        _add( rawData[i].split(mlog.base.dataFieldSeparator) );
+        // add array
+        _add(rawData[i].split(mlog.base.dataFieldSeparator));
       }
       if (!srcData) {
         /* if there was no data file, set source to empty */
@@ -197,12 +191,12 @@ mlog.entries = function(){
         /* if multiply * : insert n times the same value */
         args = entry[1].split('*');
         entry[1] = mlog.base.toFloat(args[0]);
-        nTimes = parseInt(args[1],10) || 1;
+        nTimes = parseInt(args[1]||0) || 1;
       } else
         if (entry[1].indexOf('/') > 0) {
           /* if divided / : insert n times the value/nTimes */
           args = entry[1].split('/');
-          nTimes = parseInt(args[1],10) || 1;
+          nTimes = parseInt(args[1]||0) || 1;
           entry[1] = Math.round(mlog.base.toFloat(args[0])/nTimes*100)/100;
         }
         else {
