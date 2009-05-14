@@ -24,7 +24,7 @@ mlog.entries = function(){
         // is reconcilable
         entry[6] = entry[0].indexOf('?')>-1;
         // parse date
-        entry[0] = (entry[0].replace(/[^0-9-]/g, '')).slice(0,10);
+        entry[0] = mlog.base.stripTags((entry[0].replace(/[^0-9-]/g, '')).slice(0,10));
         entry[0] = entry[0].length>9? entry[0]: _currentDate;
         if (entry[6]) {
           // if is reconcilable, set past date to current date
@@ -35,10 +35,10 @@ mlog.entries = function(){
           entry[1] = mlog.base.toFloat(entry[1]);
         }
         // parse description
-        entry[2] = $.trim(entry[2]);
+        entry[2] = mlog.base.stripTags($.trim(entry[2]));
         _descriptions[entry[2].toLowerCase()] = 0;
         // parse category
-        entry[3] = $.trim(entry[3]).toLowerCase();
+        entry[3] = mlog.base.stripTags($.trim(entry[3]).toLowerCase());
         // update category list
         if (entry[3] !== '') {
           // deals with multiple categories
@@ -55,7 +55,7 @@ mlog.entries = function(){
           entry[3] = tmp.join(mlog.base.categorySeparator);
         }
         // parse account
-        entry[4] = $.trim(entry[4]).toLowerCase();
+        entry[4] = mlog.base.stripTags($.trim(entry[4]).toLowerCase());
         // id
         entry[5] = _entries.length;
         _entries.push(entry);

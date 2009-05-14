@@ -67,8 +67,8 @@ mlog.editorControl = function() {
       }
       $("#dataframe").unbind('load');
 
-      // to do: sanitize
-      var txt = $('#text_data').val();
+      // sanitize
+      var txt = mlog.base.stripTags($('#text_data').val());
       // perform backup
       mlog.entries.backup();
       var srcData = document.getElementById('dataframe').contentWindow.document.getElementById('data');

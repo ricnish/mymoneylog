@@ -146,12 +146,6 @@ mlog.base = function() {
       var myClass = (num < 0) ? 'neg' : 'pos';
       return '<span class="' + myClass + '">' + mlog.base.floatToString(num) + '<\/span>';
     },
-    sortCol: function(control, index){
-      // if the same, flip reverse state
-      control.sortColRev = (control.sortColIndex == index) ? control.sortColRev ^= true : false;
-      control.sortColIndex = index;
-      control.show();
-    },
     toFloat: function(str) {
       var num = str;
       num = num || '0';
