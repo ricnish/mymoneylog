@@ -131,7 +131,7 @@ mlog.entriesControl = function(){
             /* on accept jump to: */
             if ($('#input_category').val() != '') {
               if (!$.browser.opera)
-                $('#form_entry button')[0].focus();
+                $('#form_entry button.msg')[0].focus();
             }
             else {
               $('#input_account_to').focus().select();
@@ -151,7 +151,7 @@ mlog.entriesControl = function(){
         ).result(function(){
           /* on accept jump to: */
           if (!$.browser.opera)
-            $('#form_entry button')[0].focus();
+            $('#form_entry button.msg')[0].focus();
         });
 
         /* fill filter autocomplete */
