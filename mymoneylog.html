@@ -7,11 +7,13 @@
 <meta name="Distribution" content="Global" />
 <meta name="Author" content="Ricardo Nishimura - http://code.google.com/p/mymoneylog" />
 <link rel="stylesheet" href="stylesheets/BrightSide.css" type="text/css" />
-<link rel="stylesheet" type="text/css" media="all" href="stylesheets/calendar-blue.css" title="calendar-blue.css" />
+<link rel="stylesheet" href="stylesheets/jquery.calculator.css" type="text/css" />
+<link rel="stylesheet" href="stylesheets/calendar-blue.css" type="text/css" />
 <script src="javascripts/jquery/jquery.min.js" type="text/javascript"></script>
 <script src="javascripts/jquery/jquery.autocomplete.pack.js" type="text/javascript"></script>
 <!--[if IE]><script src="javascripts/excanvas/excanvas.min.js" type="text/javascript"></script><![endif]-->
 <script src="javascripts/jquery/jquery.flot.min.js" type="text/javascript"></script>
+<script src="javascripts/jquery/jquery.calculator.pack.js" type="text/javascript"></script>
 <script src="javascripts/jscalendar/calendar.min.js" type="text/javascript"></script>
 <script src="javascripts/jscalendar/calendar-setup.min.js" type="text/javascript"></script>
 <script src="javascripts/mymoneylog/base.js" type="text/javascript"></script>
@@ -46,7 +48,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.195</h2>
+<h2 id="slogan">1.196</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -84,7 +86,9 @@ $(window).load(function(){ mlog.init(); });
 </div>
 <div>
 <label class="msg">Value</label>
-<input id="input_value" type="text" class="jump_on_enter_key" />
+<div class="input_container">
+<input id="input_value" type="text" class="input_calculator" />
+</div>
 </div>
 <div>
 <label class="msg">

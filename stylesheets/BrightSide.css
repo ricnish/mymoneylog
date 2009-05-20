@@ -46,6 +46,9 @@ select.select_num { border:1px solid #D3EF86; width: 70px; }
 input.input_checkbox { width: 16px; border: 0px; background-color: #fbfcff;}
 .input_inline { margin-left: 4px; margin-top:1px; }
 input.input_row { width: 97%; }
+div.input_container { border:1px solid #D3EF86; padding: 0px; text-align: left; background-color: #fff; width: 99%}
+input.input_calculator { padding: 2px; border: 0px; width: 82%; }
+
 /***********************
 LAYOUT
 ************************/

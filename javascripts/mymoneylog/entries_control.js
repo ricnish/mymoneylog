@@ -106,6 +106,16 @@ mlog.entriesControl = function(){
         /* initialize data */
         mlog.entries.getAll();
 
+        /* initialize calculator */
+        $('#input_value').calculator({layout:
+            ['MC_7_8_9_/' + $.calculator.CLOSE, 'MR_4_5_6_*' + $.calculator.USE,
+            'MS_1_2_3_-BS', 'M+_0_._=_+' + $.calculator.CLEAR],
+            showOn: 'button',
+            buttonImageOnly: false,
+            buttonImage: 'images/calculator.png',
+            constrainInput: false,
+            decimalChar: mlog.translation.centschar });
+
         /* initialize datepicker */
         $('#input_date').val(mlog.base.getCurrentDate());
 
