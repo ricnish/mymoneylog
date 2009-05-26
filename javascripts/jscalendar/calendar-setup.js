@@ -65,7 +65,7 @@ Calendar.setup = function (params) {
 	param_default("inputField",     null);
 	param_default("displayArea",    null);
 	param_default("button",         null);
-	param_default("eventName",      Calendar.is_ie?"click":"mousedown");
+	param_default("eventName",      (Calendar.is_ie||Calendar.is_opera)?"click":"mousedown");
 	param_default("ifFormat",       "%Y/%m/%d");
 	param_default("daFormat",       "%Y/%m/%d");
 	param_default("singleClick",    true);
