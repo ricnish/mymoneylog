@@ -48,7 +48,7 @@ input.input_checkbox { width: 16px; border: 0px; background-color: #fbfcff;}
 input.input_row { width: 97%; }
 div.input_container { border:1px solid #D3EF86; padding: 0px; width: 99%; background-color: #fff; background-image: url(../images/calculator.png); background-repeat: no-repeat; background-position: right;}
 input.input_calculator { padding: 2px; border: 0px; width: 88%; }
-
+.inline_label { display: inline; font-weight: normal; }
 /***********************
 LAYOUT
 ************************/
