@@ -51,15 +51,15 @@ mlog.base = function() {
         var res = document.applets["DataWriter"].saveFile(filePath,"UTF-8",content);
         if (res>0) { return true; }
       }
+      return false;
     } catch(e) {}
     try {
       var s = new java.io.PrintStream(new java.io.FileOutputStream(filePath));
       s.print(content);
       s.close();
-    } catch(er) {
-      return null;
-    }
-    return true;
+      return true;
+    } catch(er) {}
+    return false;
   };
 
   // public:

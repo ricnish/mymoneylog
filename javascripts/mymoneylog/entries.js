@@ -354,7 +354,7 @@ mlog.entries = function(){
       total.summary[creditId] = {};
       total.summary[balanceId] = {};
       total.summary[totalId] = {};
-      for (var m=0,l=months.length; m<l; m++) {
+      for (var m=0,l1=months.length; m<l1; m++) {
         total.summary[debitId][months[m]] = 0;
         total.summary[creditId][months[m]] = 0;
         total.summary[balanceId][months[m]] = 0;
@@ -379,7 +379,7 @@ mlog.entries = function(){
         categories = categories.split(mlog.base.categorySeparator);
         if (categories[0] !== '') {
           // sum for each category/tag
-          for (var ncat=0,l=categories.length;ncat<l;ncat++) {
+          for (var ncat=0,l2=categories.length;ncat<l2;ncat++) {
             total.categories[categories[ncat]][month] += value;
           }
           /* sum credit (if has category) */
@@ -481,7 +481,7 @@ mlog.entries = function(){
             nextDate = mlog.base.dateToString(tmpDate);
           }
           // add entry to account's date
-          if (ovEntries[i][0]==nextDate) {
+          if (ovEntries[i][0]==nextDate && !ovEntries[i][6]) {
             acc.add(ovEntries[i][4],ovEntries[i][1])
             if (i==ovEntries.length-1) {
               data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);

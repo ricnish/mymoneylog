@@ -4,6 +4,8 @@
  */
 mlog.init = function(){
   mlog.translator.translateDocument();
+  /* initialize data */
+  mlog.entries.getAll();
   /* initialize and show entries */
   mlog.entriesControl.show();
   $('#report').show();

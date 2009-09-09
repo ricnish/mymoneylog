@@ -38,7 +38,7 @@ mlog.translator = function() {
         '>'+ this +'</option>';
       })
       $('#select_locales').html(selLocales);
-      
+
       $('.msg').each( function(){
         $(this).html(mlog.translator.msg($(this).html()));
       }

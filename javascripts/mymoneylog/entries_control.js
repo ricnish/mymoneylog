@@ -64,7 +64,7 @@ mlog.entriesControl = function(){
           data: _storedSearches
         });
       }
-  };
+  }
   return {
     /* initialize template, completers, datepicker... */
     init: function(){
@@ -103,8 +103,6 @@ mlog.entriesControl = function(){
           main: $('#main_entries').html()
         };
         $('#main_entries').html('');
-        /* initialize data */
-        mlog.entries.getAll();
 
         /* initialize calculator */
         $('#input_value').calculator({layout:
