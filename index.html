@@ -1,0 +1,553 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="Description" content="personal finance application" />
+<meta name="Keywords" content="money, finance, personal" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Distribution" content="Global" />
+<meta name="Author" content="Ricardo Nishimura - http://code.google.com/p/mymoneylog" />
+<link rel="stylesheet" href="stylesheets/BrightSide.css" type="text/css" />
+<link rel="stylesheet" href="stylesheets/jquery.calculator.css" type="text/css" />
+<link rel="stylesheet" href="stylesheets/calendar-blue.css" type="text/css" />
+<script src="javascripts/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="javascripts/jquery/jquery.autocomplete.pack.js" type="text/javascript"></script>
+<!--[if IE]><script src="javascripts/excanvas/excanvas.min.js" type="text/javascript"></script><![endif]-->
+<script src="javascripts/jquery/jquery.flot.min.js" type="text/javascript"></script>
+<script src="javascripts/jquery/jquery.calculator.pack.js" type="text/javascript"></script>
+<script src="javascripts/jscalendar/calendar.min.js" type="text/javascript"></script>
+<script src="javascripts/jscalendar/calendar-setup.min.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/base.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/translator.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/categories.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/accounts.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/entries.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/help_control.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/editor_control.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/entries_control.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/categories_overview_control.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/accounts_overview_control.js" type="text/javascript"></script>
+<script src="javascripts/mymoneylog/init_demo_only.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(window).load(function(){ mlog.init(); });
+//]]>
+</script>
+<title>myMoneyLog</title>
+<link rel="icon" type="image/png" href="images/money.png" />
+</head>
+<body>
+<div id="body-bg">
+<!-- wrap starts here -->
+<div id="wrap">
+<div id="header">
+<div id="locale">
+<select id="select_locales" class="select_num" onchange="mlog.base.setLocale()">
+<option value="en-us">en-us</option>
+</select>
+</div>
+<h1 id="logo">
+<img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
+</h1>
+<h2 id="slogan">1.203</h2>
+<!-- Menu Tabs -->
+<ul>
+<li id="menu_entries">
+<a><span class="msg">Entries</span></a>
+</li>
+<li id="menu_categories_overview">
+<a><span class="msg">Categories</span></a>
+</li>
+<li id="menu_accounts_overview">
+<a><span class="msg">Accounts</span></a>
+</li>
+<li id="menu_editor">
+<a><span class="msg">Data Editor</span></a>
+</li>
+<li id="menu_help">
+<a><span class="msg">Help</span></a>
+</li>
+</ul>
+</div>
+<!-- content-wrap starts here -->
+<div id="content-wrap">
+<div id="sidebar">
+<!-- entries panel starts here -->
+<div id="panel_entries" class="panel">
+<h1 class="msg">Entry</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form id="form_entry" action="">
+<div>
+<label class="msg">Date</label>
+<input id="input_date" class="input_date jump_on_enter_key" type="text" />
+<span class="input_inline">
+<input type="checkbox" id="input_pending" class="input_checkbox jump_on_enter_key" />
+<label for="input_pending" class="msg inline_label">pending</label>
+</span>
+</div>
+<div>
+<label class="msg">Value</label>
+<div class="input_container">
+<input id="input_value" type="text" class="input_calculator" />
+</div>
+</div>
+<div>
+<label class="msg">
+Description
+</label>
+<input id="input_description" type="text" />
+</div>
+<div>
+<label class="msg">
+Category
+</label>
+<input id="input_category" type="text" />
+</div>
+<div>
+<label class="msg">
+From Account
+</label>
+<input id="input_account" type="text" />
+</div>
+<div id="transfer" style="display:none">
+<label class="msg">
+To Account
+</label>
+<input id="input_account_to" type="text" />
+</div>
+<p>
+<button class="button msg" type="button" onclick="mlog.entriesControl.addEntry(this)">Add</button>
+&nbsp;
+<button class="button msg" type="button" onclick="mlog.entriesControl.clearEntry()">Clear</button>
+</p>
+<p>
+<input type="checkbox" id="input_auto_clear" class="input_checkbox" />
+<label for="input_auto_clear" class="msg inline_label">clear on add</label>
+</p>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+<h1 class="msg">filter</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form class="options" action="">
+<div>
+<label class="msg">
+categories
+</label>
+<div class="align-center">
+<span class="tagCloud msg selectAll" onclick="mlog.base.toggleAllTagCloud(this)">all</span>
+<span id="entries_category_cloud"></span>
+</div>
+</div>
+<div>
+<label class="msg">
+accounts
+</label>
+<div class="align-center">
+<span class="tagCloud msg selectAll" onclick="mlog.base.toggleAllTagCloud(this)">all</span>
+<span id="entries_account_cloud"></span>
+</div>
+</div>
+<div class="float-left" style="margin-right:4px">
+<label class="msg">
+from
+</label>
+<input id="filter_date_from" class="input_date" type="text" readonly="readonly" />
+</div>
+<div class="float-left">
+<label class="msg">
+until
+</label>
+<input id="filter_date_until" class="input_date" type="text" readonly="readonly" />
+</div>
+<div class="clear"></div>
+<div>
+<label class="msg">
+value
+</label>
+<select id="filter_values">
+<option value="0" class="msg">all</option>
+<option value="-1" class="msg">debit</option>
+<option value="1" class="msg">credit</option>
+</select>
+</div>
+<div>
+<label class="msg">
+text
+</label>
+<input type="text" id="filter_query" class="textbox" />
+</div>
+<p>
+<button class="button msg" type="button" onclick="mlog.entriesControl.applyOptions()">Apply</button>
+&nbsp;
+<button class="button msg" type="button" onclick="mlog.entriesControl.resetFilter()">cancel</button>
+</p>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+</div>
+<!-- entries panel ends here -->
+<!-- categories overview panel starts here -->
+<div id="panel_categories_overview" class="panel">
+<h1 class="msg">Options</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form action="">
+<div>
+<label class="msg">
+Show last
+</label>
+<select id="overviewNumberMonths" class="select_num" onchange="mlog.categoriesControl.updateView()">
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4" selected="selected">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="30">30</option>
+<option value="36">36</option>
+</select>&nbsp;<span class="msg">months</span>
+</div>
+<div>
+<label class="msg">
+Until
+</label>
+<input id="input_ov_until_date" class="input_date" type="text" readonly="readonly" onchange="mlog.categoriesControl.updateView()" />
+</div>
+<div>
+<label class="msg">
+show
+</label>
+<div class="align-center">
+<span class="tagCloud msg selectAll" onclick="mlog.categoriesControl.toggleAllTagCloud(this)">all</span>
+<span id="show_ov_categories">
+</span>
+</div>
+</div>
+<div>
+<label class="msg">
+chart
+</label>
+<select id="chartSelection" class="" onchange="mlog.categoriesControl.updateView()">
+<option value="line_debit" selected="selected" class="msg">line (debit)</option>
+<option value="line_credit" class="msg">line (credit)</option>
+<option value="line_total" class="msg">line (total)</option>
+</select>
+</div>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+</div>
+<!-- categories overview panel ends here -->
+<!-- accounts overview panel starts here -->
+<div id="panel_accounts_overview" class="panel">
+<h1 class="msg">Options</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form action="">
+<div>
+<label class="msg">
+Show last
+</label>
+<select id="accountsNumberMonths" class="select_num" onchange="mlog.accountsControl.updateView()">
+<option value="1">1</option>
+<option value="2" selected="selected">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="30">30</option>
+<option value="36">36</option>
+</select>&nbsp;<span class="msg">months</span>
+</div>
+<div>
+<label class="msg">
+Until
+</label>
+<input id="input_accounts_until_date" class="input_date" type="text" readonly="readonly" onchange="mlog.accountsControl.updateView()" />
+</div>
+<div>
+<label class="msg">
+show
+</label>
+<div class="align-center">
+<span class="tagCloud msg selectAll" onclick="mlog.accountsControl.toggleAllTagCloud(this)">all</span>
+<span id="show_ov_accounts">
+</span>
+</div>
+</div>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+<br />
+</div>
+<!-- accounts overview panel ends here -->
+<!-- editor panel starts here -->
+<div id="panel_editor" class="panel">
+<h1 class="msg">Options</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form action="">
+<p>
+<button class="button msg" type="button" onclick="mlog.editorControl.applyChanges()">Apply</button>
+</p>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+<h1 class="msg">Export</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form action="">
+<div>
+<label class="msg">
+from
+</label>
+<input id="input_export_from_date" class="input_date" type="text" readonly="readonly" />
+</div>
+<p>
+<button class="button msg" type="button" onclick="mlog.editorControl.exportFromDate()">export</button>
+</p>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+</div><!-- editor panel ends here -->
+<!-- help panel starts here -->
+<div id="panel_help" class="panel">
+</div><!-- help panel ends here -->
+</div><!-- main starts here -->
+<div id="main">
+<div id="report">
+</div>
+<div id="template">
+<!-- main_entries starts here -->
+<div id="main_entries">
+<h1 id="toggle_summary" class="msg show_next">Summary</h1>
+<div id="entries_summary">
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
+<table class="summary" id="summary_table">
+<tr>
+<th class="msg">
+account
+</th>
+<th class="msg">
+total
+</th>
+</tr>
+<tr class="highlt">
+<td class="first">
+{account_id}
+</td>
+<td class="col_r value">
+<div class="bar-container">
+<div class="pos" style="width:99%"></div>
+</div>
+{account_total}
+</td>
+</tr>
+<tr class="total">
+<td>
+{account_id}
+</td>
+<td class="col_r">
+{account_total}
+</td>
+</tr>
+</table>
+<b class="rc3t">&nbsp;</b><b class="rc4t">&nbsp;</b>
+</div>
+<h1 class="msg">Entries</h1>
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
+<table id="entries_table">
+<tr id="entries_row_head">
+<th class="first msg sort date_col" onclick="mlog.entriesControl.sortCol(0)">
+date
+</th>
+<th class="msg sort value_col" onclick="mlog.entriesControl.sortCol(1)">
+value
+</th>
+<th class="msg sort description_col" onclick="mlog.entriesControl.sortCol(2)">
+description
+</th>
+<th class="msg sort category_col" onclick="mlog.entriesControl.sortCol(3)">
+category
+</th>
+<th class="msg sort account_col" onclick="mlog.entriesControl.sortCol(4)">
+account
+</th>
+<th class="msg opt_col">
+options
+</th>
+</tr>
+<tr id="rowId" class="highlt row-a">
+<td class="first col_c entry">
+{date}
+</td>
+<td class="col_r entry">
+{value}
+</td>
+<td class="entry">
+{description}
+</td>
+<td class="entry">
+{category}
+</td>
+<td class="entry">
+{account}
+</td>
+<td>
+<span class="opt_edit" onclick="mlog.entriesControl.prepareRowEdit(this)">&nbsp;</span>
+<span class="opt_delete" onclick="mlog.entriesControl.removeEntry(this)">&nbsp;</span>
+<span class="opt_ok hide" onclick="mlog.entriesControl.reconcileEntry(this)">&nbsp;</span>
+</td>
+</tr>
+<tr class="total">
+<td class="first col_c msg">
+This total
+</td>
+<td class="col_r total">
+{totalvalue}
+</td>
+<td colspan="4">
+{entriescount}
+</td>
+</tr>
+</table>
+<b class="rc3t">&nbsp;</b><b class="rc4t">&nbsp;</b>
+</div>
+<!-- main_entries ends here -->
+<!-- main_categories_overview starts here -->
+<div id="main_categories_overview">
+<div id="categories_chart">
+<h1 id="categories_chart_title" class="show_next"></h1>
+<div><b class="rc1g">&nbsp;</b><b class="rc2g">&nbsp;</b><div class="glass">
+<div id="categories_chart_canvas"></div>
+</div><b class="rc2g">&nbsp;</b><b class="rc1g">&nbsp;</b></div>
+</div>
+<h1 id="toggle_categories_overview_table" class="msg">Category by month</h1>
+<div id="categories_overview_summary" class="overflow">
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
+<table id="categories_overview_table">
+<tr>
+<th class="first msg">
+description
+</th>
+<th>
+{month}
+</th>
+</tr>
+<tr class="highlt row-a">
+<td class="first">
+{title}
+</td>
+<td class="col_r">
+{value}
+</td>
+</tr>
+</table>
+</div>
+<br />
+</div>
+<!-- main_categories_overview ends here -->
+<!-- main_accounts_overview starts here -->
+<div id="main_accounts_overview">
+<div id="accounts_chart">
+<h1 id="accounts_chart_title" class="msg show_next"></h1>
+<div><b class="rc1g">&nbsp;</b><b class="rc2g">&nbsp;</b><div class="glass">
+<div id="accounts_chart_canvas"></div>
+</div><b class="rc2g">&nbsp;</b><b class="rc1g">&nbsp;</b></div>
+</div>
+<h1 id="toggle_accounts_overview_table" class="msg">diary balance</h1>
+<div id="accounts_overview_summary" class="overflow">
+<b class="rc1t">&nbsp;</b><b class="rc2t">&nbsp;</b>
+<table id="accounts_overview_table">
+<tr>
+<th class="first msg date_col">
+date
+</th>
+<th>
+{account}
+</th>
+</tr>
+<tr class="highlt row-a">
+<td class="first col_c">
+{date}
+</td>
+<td class="col_r">
+{value}
+</td>
+</tr>
+</table>
+</div>
+<br />
+</div>
+<!-- main_overview ends here -->
+<!-- main_editor starts here -->
+<div id="main_editor">
+<h1 class="msg">text data source</h1>
+<b class="rc1f">&nbsp;</b><b class="rc2f">&nbsp;</b>
+<form action="">
+<p>
+<textarea class="textarea_data" id="text_data" rows="1" cols="1"></textarea>
+</p>
+</form>
+<b class="rc2f">&nbsp;</b><b class="rc1f">&nbsp;</b>
+<br /><br />
+</div>
+<!-- main_editor ends here -->
+<!-- main_help starts here -->
+<div id="main_help">
+<p class="msg">help text</p>
+</div>
+<!-- main_help ends here -->
+</div>
+<!-- template ends here -->
+</div>
+<!-- content-wrap ends here -->
+</div>
+<!-- main ends here --><!-- footer starts here -->
+<div id="footer">
+<div class="footer-left">
+<p class="align-left">
+&nbsp;2008 <a href="http://nishimura.eti.br">Ricardo Nishimura</a>
+| Adapted design from <a href="http://www.styleshout.com/">styleshout</a>
+| Icons by <a href="http://www.famfamfam.com/lab/icons/silk/">famfamfam</a>
+</p>
+</div>
+</div>
+<b class="rc2g">&nbsp;</b><b class="rc1g">&nbsp;</b>
+<!-- footer ends here -->
+<!-- wrap ends here -->
+</div>
+<iframe id="dataframe" src="data.html" style="visibility:hidden;width:0px;height:0px">
+<!-- the source file name is also defined in javascripts/mymoneylog/base.js -->
+</iframe>
+<div id="applet"></div>
+<!-- body-bg ends here -->
+<div id="tooltip"></div>
+</div>
+</body>
+</html>
