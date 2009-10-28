@@ -162,6 +162,15 @@ mlog.categoriesControl = function() {
         xTicks.push([count, month]);
         count++;
       }
+      if (xTicks.length>12) {
+        var nTicks = Math.round(data.length/12)||2;
+        var tmp = [];
+        var i,j;
+        for (i=0,j=xTicks.length;i<j;i+=nTicks) {
+          tmp.push(xTicks[i]);
+        }
+        xTicks = tmp;
+      }
       // if any category selected: draw line category chart
       if (categoriesChecked.length>0 &&
         (chartSelection == 'line_credit' || chartSelection == 'line_debit')) {
