@@ -144,7 +144,7 @@ mlog.accountsControl = function() {
         mlog.base.removeTooltip();
         if (item) {
           var value = item.datapoint[1];
-          var date = mlog.accountsControl.data[item.dataIndex][0];
+          var date = data[item.dataIndex][0];
           mlog.base.showTooltip(item.pageX, item.pageY,
                       date + "<br />" +
                       item.series.label + "<br />" +

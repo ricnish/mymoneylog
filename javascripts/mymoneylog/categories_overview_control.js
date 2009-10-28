@@ -6,6 +6,7 @@ mlog.categoriesControl = function() {
   var _htmlTemplate = null;
   var _hideOverview = false;
   return {
+    data: null,
     init: function() {
       /* initialize template... */
       if (!_htmlTemplate) {
@@ -48,14 +49,15 @@ mlog.categoriesControl = function() {
       $.each($('#show_ov_categories .tagSelect'), function(i,v) {
         categoriesList.push($(v).html());
       });
-      var theData = mlog.entries.getCategoriesOverview( parseInt($('#overviewNumberMonths option:selected').attr('value'))-1,
+      this.data = null;
+      this.data = mlog.entries.getCategoriesOverview( parseInt($('#overviewNumberMonths option:selected').attr('value'))-1,
         $('#input_ov_until_date').val());
       var res = [];
       var str = '';
       var odd = true;
       var month = null;
-      if (theData) {
-        var list = theData.categories;
+      if (this.data) {
+        var list = this.data.categories;
         /* build header */
         res.push(_htmlTemplate.overview.tHeadLabel);
         for (month in list[mlog.categories.getNames()[0]]) {
@@ -85,7 +87,7 @@ mlog.categoriesControl = function() {
           res.push('</tr>'); // closing tag
         }
         /* build summary */
-        list = theData.summary;
+        list = this.data.summary;
         for (var total in list) {
           str = _htmlTemplate.overview.tRowTotalLabel;
           str = str.replace(/{title}/,total);
@@ -112,7 +114,7 @@ mlog.categoriesControl = function() {
       $('#report').html(str);
       res = null;
       /* display the chart */
-      mlog.categoriesControl.drawChart(theData);
+      mlog.categoriesControl.drawChart(this.data);
       /* hide/show function */
       $('#categories_chart_title').click( function() {
         $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
@@ -163,7 +165,7 @@ mlog.categoriesControl = function() {
         count++;
       }
       if (xTicks.length>12) {
-        var nTicks = Math.round(data.length/12)||2;
+        var nTicks = Math.ceil(xTicks.length/12);
         var tmp = [];
         var i,j;
         for (i=0,j=xTicks.length;i<j;i+=nTicks) {
@@ -211,7 +213,7 @@ mlog.categoriesControl = function() {
           }
           for (month in list[description]) {
             tmpValue = Math.round(list[description][month]) * (showDebits?-1:1)
-            values.push([count, tmpValue]);
+            values.push([count, tmpValue, month]);
             count++;
           }
           dataset.push({
@@ -232,8 +234,18 @@ mlog.categoriesControl = function() {
       $('#categories_chart_canvas').bind("plothover", function (event, pos, item) {
         mlog.base.removeTooltip();
         if (item) {
+          var idx=0;
+          var date = '';
+          for (month in data.summary[mlog.translator.msg('balance')]) {
+            if (idx == item.dataIndex) {
+              date = month;
+              break;
+            }
+            idx++;
+          }
           var value = item.datapoint[1];
           mlog.base.showTooltip(item.pageX, item.pageY,
+                      date + "<br />" +
                       item.series.label + "<br />" +
                       mlog.base.formatFloat(value));
         }
