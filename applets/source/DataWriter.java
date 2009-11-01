@@ -11,6 +11,7 @@ public class DataWriter extends java.applet.Applet {
           FileOutputStream fos = new FileOutputStream(filename);
           fos.write(data.getBytes(charset));
           fos.close();
+          Thread.sleep(200);
           return new Integer(1);
         } catch (Exception e) {
           e.printStackTrace();
