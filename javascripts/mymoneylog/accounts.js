@@ -36,13 +36,18 @@ mlog.accountsClass = function(){
     getAllwithTotal: function() {
       var ret = [];
       var sum = 0;
+      var maxValue = 0;
+      var tmpVal = 0;
       for (var account in _accounts) {
         ret.push([account,_accounts[account].value,_accounts[account].qtd]);
-        sum += _accounts[account].value;
+        tmpVal = _accounts[account].value;
+        sum += tmpVal;
+        tmpVal = Math.abs(tmpVal);
+        maxValue = tmpVal > maxValue ? tmpVal : maxValue;
       }
       ret.sort();
       ret.push([mlog.translator.msg('total'),sum,0]);
-      return ret;
+      return { 'accounts': ret, 'max_value': maxValue};
     },
     reset: function() {
       _accounts = {};

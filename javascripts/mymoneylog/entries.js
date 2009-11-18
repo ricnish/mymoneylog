@@ -444,7 +444,7 @@ mlog.entries = function(){
           break;
         }
       }
-      data.push([dtStart,withTotal?acc.getAllwithTotal():acc.getAll()]);
+      data.push([dtStart,withTotal?acc.getAllwithTotal().accounts:acc.getAll()]);
       var tmpDate = mlog.base.stringToDate(dtStart);
       tmpDate.setHours(1); // avoid daylight saving calc
       tmpDate.setDate(tmpDate.getDate()+1); // add a day
@@ -453,7 +453,7 @@ mlog.entries = function(){
       if (i==ovLen && nextDate<dtEnd) {
         // loop to build accounts row
         while (nextDate<=dtEnd) {
-          data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+          data.push([nextDate,withTotal?acc.getAllwithTotal().accounts:acc.getAll()]);
           // increment the nextDate
           tmpDate.setDate(tmpDate.getDate()+1); // add a day
           nextDate = mlog.base.dateToString(tmpDate);
@@ -463,7 +463,7 @@ mlog.entries = function(){
         for (i;i<ovLen;i++){
           // stop if out of range
           if (ovEntries[i][0]>dtEnd) {
-            data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+            data.push([nextDate,withTotal?acc.getAllwithTotal().accounts:acc.getAll()]);
             break;
           }
           // filter account
@@ -472,7 +472,7 @@ mlog.entries = function(){
           }
           // loop to build accounts row
           while ((ovEntries[i][0]>nextDate) && (nextDate<=dtEnd)) {
-            data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+            data.push([nextDate,withTotal?acc.getAllwithTotal().accounts:acc.getAll()]);
             // increment the nextDate
             tmpDate.setDate(tmpDate.getDate()+1); // add a day
             nextDate = mlog.base.dateToString(tmpDate);
@@ -481,7 +481,7 @@ mlog.entries = function(){
           if (ovEntries[i][0]==nextDate && !ovEntries[i][6]) {
             acc.add(ovEntries[i][4],ovEntries[i][1])
             if (i==ovEntries.length-1) {
-              data.push([nextDate,withTotal?acc.getAllwithTotal():acc.getAll()]);
+              data.push([nextDate,withTotal?acc.getAllwithTotal().accounts:acc.getAll()]);
             }
           }
         }

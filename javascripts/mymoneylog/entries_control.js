@@ -267,15 +267,11 @@ mlog.entriesControl = function(){
       var tpSum = _htmlTemplate.summary;
       /* build summary */
       var res = [tpSum.tHead];
-      var accounts = mlog.accounts.getAllwithTotal();
-      var maxValue = 0, strRow;
+      var summary = mlog.accounts.getAllwithTotal();
+      var accounts = summary.accounts;
+      var strRow;
       var accounts_len = accounts.length;
-      // find maxValue
-      for (var i = 0; i < accounts_len - 1; i++) {
-        if (accounts[i][0] != '' && accounts[i][1] != 0) {
-          maxValue = Math.abs(accounts[i][1]) > maxValue ? Math.abs(accounts[i][1]) : maxValue;
-        }
-      }
+      var maxValue = summary.max_value, 
       maxValue = maxValue >= 100 ? maxValue : 100; /* at least more then 100 */
       for (i = 0; i < accounts_len; i++) {
         if (i < accounts_len - 1) {
@@ -291,10 +287,10 @@ mlog.entriesControl = function(){
           strRow = strRow.replace(/{account_id}/, accounts[i][0]);
         }
         else {
-          if (accounts[i][1] == 0) {
-            continue; /* if account and value are empty, move next */
-          }
           strRow = strRow.replace(/{account_id}/, '-');
+        }
+        if (Math.round(accounts[i][1]*100) == 0) {
+          continue; /* if account value is zero, move next */
         }
         /* value */
         strRow = strRow.replace(/{account_total}/, mlog.base.formatFloat(accounts[i][1]));

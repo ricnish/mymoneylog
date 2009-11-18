@@ -91,7 +91,7 @@ mlog.accountsControl = function() {
       });
     },
     updateTagCloud: function() {
-      $('#show_ov_accounts').html(mlog.base.arrayToTagCloud(mlog.accounts.getAllwithTotal(),2));
+      $('#show_ov_accounts').html(mlog.base.arrayToTagCloud(mlog.accounts.getAllwithTotal().accounts,2));
       $('#show_ov_accounts .tagCloud').click(function(v) {
         mlog.base.toggleTag(v);
         mlog.accountsControl.updateView();
