@@ -48,7 +48,7 @@ $(window).load(function(){ mlog.init(); });
 <h1 id="logo">
 <img src="images/mymoneylog.png" alt="myMoneyLog" width="254" height="45" />
 </h1>
-<h2 id="slogan">1.210</h2>
+<h2 id="slogan">1.211</h2>
 <!-- Menu Tabs -->
 <ul>
 <li id="menu_entries">
@@ -79,6 +79,10 @@ $(window).load(function(){ mlog.init(); });
 <div>
 <label class="msg">Date</label>
 <input id="input_date" class="input_date jump_on_enter_key" type="text" />
+<span class="input_inline">
+<input type="checkbox" id="input_pending" class="input_checkbox jump_on_enter_key" />
+<label for="input_pending" class="msg inline_label">pending</label>
+</span>
 </div>
 <div>
 <label class="msg">Value</label>

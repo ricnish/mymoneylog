@@ -93,8 +93,8 @@ mlog.entriesControl = function(){
           tHead: rows[0],
           tRow: rows[1],
           tRowOdd: rows[1].replace(/row-a/, 'row-b'),
-          tRowFuture: rows[1].replace(/row-a/, 'row-a row_future'),
-          tRowFutureOdd: rows[1].replace(/row-a/, 'row-b row_future'),
+          tRowFuture: rows[1].replace(/row-a/, 'row-a_future'),
+          tRowFutureOdd: rows[1].replace(/row-a/, 'row-b_future'),
           tRowTotal: rows[2]
         };
         _htmlTemplate = {
@@ -179,11 +179,17 @@ mlog.entriesControl = function(){
       if (!lineData) {
         return;
       }
-      $('#input_date').val(lineData[0]+(lineData[6]?"?":""));
+      $('#input_date').val(lineData[0]);
       $('#input_value').val(mlog.base.floatToString(lineData[1]));
       $('#input_description').val(lineData[2]);
       $('#input_category').val(lineData[3] || '');
       $('#input_account').val(lineData[4] || '');
+      if (lineData[6]) {
+        $('#input_pending').attr('checked', 'true');
+      }
+      else {
+        $('#input_pending').attr('checked', '');
+      }
       $('#transfer').hide();
     },
     /* remove an entry */
@@ -215,7 +221,7 @@ mlog.entriesControl = function(){
         this.onPageChange();
       var row = $(lineId);
       /* retrieve values */
-      var isReconcilable = row.hasClass('row_future');
+      var isReconcilable = row.hasClass('row-a_future') || row.hasClass('row-b_future');
       var cols = row.children();
       var _date, _value, _description, _category, _account;
       _date = $.trim($(cols[0]).html());
@@ -388,6 +394,7 @@ mlog.entriesControl = function(){
     clearEntry: function(){
       $('#input_date').val(mlog.base.getCurrentDate());
       $('#input_value').val('');
+      $('#input_pending').attr('checked', '');
       $('#input_description').val('');
       $('#input_category').val('');
       $('#input_account').val('');
@@ -396,7 +403,14 @@ mlog.entriesControl = function(){
 
     /* add an entry from input */
     addEntry: function(elem){
-      var entry = [$('#input_date').val(), $('#input_value').val(), $('#input_description').val(), $('#input_category').val(), $('#input_account').val(), $('#input_account_to').val()];
+      var entry = [$('#input_date').val(), 
+        $('#input_value').val(), 
+        $('#input_description').val(), 
+        $('#input_category').val(), 
+        $('#input_account').val(), 
+        $('#input_account_to').val()];
+      /* is it reconcilable */
+      entry[0] += $('#input_pending').attr('checked') ? '?' : '';
       var addCount = mlog.entries.getCount();
       mlog.entries.add(entry);
       /* refresh entries */
@@ -414,6 +428,7 @@ mlog.entriesControl = function(){
       /* initial state and update autocompleters */
       $('#transfer').hide();
       $('#input_date').focus();
+      $('#input_pending').attr('checked', '');
       $('#input_description').setOptions({
         data: mlog.entries.getDescriptions()
       });
