@@ -221,7 +221,7 @@ mlog.entriesControl = function(){
         this.onPageChange();
       var row = $(lineId);
       /* retrieve values */
-      var isReconcilable = row.hasClass('row-a_future') || row.hasClass('row-b_future');
+      var isReconcilable = row.hasClass('row_reconcilable');
       var cols = row.children();
       var _date, _value, _description, _category, _account;
       _date = $.trim($(cols[0]).html());
@@ -341,9 +341,10 @@ mlog.entriesControl = function(){
             strRow = odd ? tp.tRowOdd : tp.tRow;
           }
           odd = !odd;
-          /* is reconcilable? */
+          /* if is reconcilable */
           if (theData[i][6]) {
             strRow = strRow.replace(/opt_ok hide/, 'opt_ok');
+            strRow = strRow.replace(/_future/, '_future row_reconcilable');
           }
           /* the total */
           theTotal += theData[i][1];
