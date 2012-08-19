@@ -156,18 +156,24 @@ mlog.entriesControl = function(){
         $('#filter_query').autocomplete(_storedSearches, _acOptions);
         /* auto clear form configuration */
         if (mlog.base.getCookie('entryFormAutoClear') == 'true') {
-          $('#input_auto_clear').attr('checked', 'true');
+          $('#input_auto_clear').prop('checked', true);
         }
         else {
-          $('#input_auto_clear').attr('checked', '');
+          $('#input_auto_clear').prop('checked', false);
         }
         $('#input_auto_clear').click(function(){
-          if ($('#input_auto_clear').attr('checked') == true) {
+          if ($('#input_auto_clear').prop('checked') === true) {
             mlog.base.setCookie('entryFormAutoClear', 'true');
           }
           else {
             mlog.base.setCookie('entryFormAutoClear', 'false');
           }
+        });
+        $('#toggle_entry').click(function(){
+          $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
+        });
+        $('#toggle_filter').click(function(){
+          $(this).toggleClass('hide_next').toggleClass('show_next').next('div').slideToggle("slow");
         });
         resetFilterOptions();
         this.clearEntry();
@@ -185,10 +191,10 @@ mlog.entriesControl = function(){
       $('#input_category').val(lineData[3] || '');
       $('#input_account').val(lineData[4] || '');
       if (lineData[6]) {
-        $('#input_pending').attr('checked', 'true');
+        $('#input_pending').prop('checked', true);
       }
       else {
-        $('#input_pending').attr('checked', '');
+        $('#input_pending').prop('checked', false);
       }
       $('#transfer').hide();
     },
@@ -395,7 +401,7 @@ mlog.entriesControl = function(){
     clearEntry: function(){
       $('#input_date').val(mlog.base.getCurrentDate());
       $('#input_value').val('');
-      $('#input_pending').attr('checked', '');
+      $('#input_pending').prop('checked', false);
       $('#input_description').val('');
       $('#input_category').val('');
       $('#input_account').val('');
@@ -411,7 +417,7 @@ mlog.entriesControl = function(){
         $('#input_account').val(), 
         $('#input_account_to').val()];
       /* is it reconcilable */
-      entry[0] += $('#input_pending').attr('checked') ? '?' : '';
+      entry[0] += $('#input_pending').prop('checked') ? '?' : '';
       var addCount = mlog.entries.getCount();
       mlog.entries.add(entry);
       /* refresh entries */
@@ -429,7 +435,7 @@ mlog.entriesControl = function(){
       /* initial state and update autocompleters */
       $('#transfer').hide();
       $('#input_date').focus();
-      $('#input_pending').attr('checked', '');
+      $('#input_pending').prop('checked', false);
       $('#input_description').setOptions({
         data: mlog.entries.getDescriptions()
       });
@@ -442,7 +448,7 @@ mlog.entriesControl = function(){
       $('#input_account_to').val('').setOptions({
         data: mlog.accounts.getNames()
       });
-      if ($('#input_auto_clear').attr('checked')) {
+      if ($('#input_auto_clear').prop('checked')) {
         this.clearEntry();
       }
     },
