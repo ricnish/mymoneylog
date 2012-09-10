@@ -287,7 +287,7 @@ mlog.base = function() {
         dataset,
         {
           xaxis: {ticks: xlabels},
-          legend: {margin:10, noColumns:2, backgroundOpacity:0.4},
+          legend: {margin:10, noColumns:2, backgroundOpacity:0.4, position: "nw"},
           colors: ["#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed",'#808080',
           '#808000','#008080','#0000FF','#00FF00','#800080','#FF00FF',
           '#800000','#FF0000','#FFFF00','#FF8C0','#FFA07A','#D2691E',
