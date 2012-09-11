@@ -20,13 +20,13 @@ mlog.entriesControl = function(){
     multipleSeparator: mlog.base.categorySeparator
   };
 
-  /* default start date: begin prev month */
-  var _dtStart = mlog.base.addMonths(new Date, -1);
+  /* default start date: begin of month */
+  var _dtStart = mlog.base.addMonths(new Date, 0);
   _dtStart.setDate(1);
   _dtStart = mlog.base.dateToString(_dtStart);
-  /* default end date: next week */
+  /* default end date: current */
   var _dtEnd = new Date();
-  _dtEnd.setDate(_dtEnd.getDate() + 7);
+  _dtEnd.setDate(_dtEnd.getDate());
   _dtEnd = mlog.base.dateToString(_dtEnd);
 
   var resetFilterOptions = function(){
