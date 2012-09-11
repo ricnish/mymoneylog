@@ -48,10 +48,11 @@ mlog.accountsControl = function() {
       $.each($('#show_ov_accounts .tagSelect'), function(i,v) {
         accountsList.push($(v).html());
       });
+	  var usePendent = $('#input_sum_pendent').prop('checked') === true;
       this.data = null;
       this.data = mlog.entries.getAccountsOverview( parseInt($('#accountsNumberMonths option:selected').attr('value'))-1,
         $('#input_accounts_until_date').val(),
-        accountsList);
+        accountsList, usePendent);
       var res = [];
       var str = '<h1>' + mlog.translator.msg('no data') + '</h1>';
       var odd = true;
