@@ -9,10 +9,12 @@ mlog.entriesControl = function(){
   var _hideSummary = false;
   /* autocomplete options */
   var _acOptions = {
-    minChars: 0
+    minChars: 0,
+	max: 100
   };
   var _acOptionsMulti = {
     minChars: 0,
+	max: 100,
     multiple: true,
     selectFirst: false,
     multipleSeparator: mlog.base.categorySeparator
