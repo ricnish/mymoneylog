@@ -23,6 +23,26 @@ mlog.base = function() {
   };
   // Returns null if it can't do it, false if there's an error, true if it saved OK
   var mozillaSaveFile = function(filePath,content) {
+	// try AsYouWish extension
+	if (AsYouWish !== undefined) {
+		try {
+			AsYouWish.requestPrivs('file', function (file) {
+				try {
+					var txtStream = file.open(filePath, 'w');					
+					txtStream.write(content);
+					txtStream.close();
+				}
+				catch (e) {
+					return false;
+				}
+			});
+			return true;
+		} catch (e) {
+			alert('page error: ' + e);
+			return false;
+		}
+	}  
+	// firefox till v16
     if(window.Components) {
       try {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
