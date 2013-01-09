@@ -26,7 +26,7 @@ mlog.base = function() {
 	// try AsYouWish extension
 	if (AsYouWish !== undefined) {
 		try {
-			AsYouWish.requestPrivs('file', function (file) {
+			AsYouWish.requestPrivs('sdk/io/file', function (file) {
 				try {
 					var txtStream = file.open(filePath, 'w');					
 					txtStream.write(content);
