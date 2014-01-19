@@ -1,7 +1,7 @@
 myMoneyLog
 ==========
 
-Is a very simple way to control your finances with the help from your browser, you don't need to be connected to the internet because it runs from your local file system and uses a simple HTML file to store your entries.
+It is a very simple way to control your finances with the help from your browser, you don't need to be connected to the internet because it runs from your local file system and uses a simple HTML file to store your entries.
 
 It's not a server application, you just unpack in your local drive and open in your browser.
 
