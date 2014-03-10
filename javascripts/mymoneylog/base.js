@@ -114,11 +114,11 @@ mlog.base = function() {
         "<title>myMoneyLog Data File</title></head><body><pre id=\"data\">\n" +
         content +
         "</pre></body></html>";
-      if ($.browser.mozilla) {
-        return mozillaSaveFile(filePath, content);
-      }
-      else if ($.browser.msie) {
+      if (mlog.base.isIE()) {
         return ieSaveFile(filePath, content);
+      }
+      else if ($.browser.mozilla) {
+        return mozillaSaveFile(filePath, content);
       }
       return javaSaveFile(filePath, content);
     },
@@ -323,6 +323,11 @@ mlog.base = function() {
           lines: { show: true }
         }
       );
+    },
+    isIE: function() { return (
+      (navigator.appName == 'Microsoft Internet Explorer') || 
+      ((navigator.appName == 'Netscape') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null))
+      ); 
     }
   };
 }();
